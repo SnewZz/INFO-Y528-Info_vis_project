@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Weather Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet/dist/leaflet.css" />
+  <script src="https://cdn.jsdelivr.net/npm/leaflet/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* CSS styles for the dashboard components */
+    #map {
+      height: 400px;
+      width: 100%;
+    }
+    #chart {
+      height: 300px;
+      width: 100%;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div id="chart">
+    <canvas id="chartCanvas"></canvas> <!-- Add a canvas element inside the div with ID "chart" -->
+  </div>
+  <script>
+    // JavaScript code for the dashboard components
+    document.addEventListener("DOMContentLoaded", function(event) {
+      // Create a Leaflet map
+      var map = L.map('map').setView([-25.2744, 133.7751], 5);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(map);
+
+      // Create a Chart.js bar chart
+      var ctx = document.getElementById('chartCanvas').getContext('2d'); // Get context of the canvas element
+      var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+          datasets: [{
+            label: 'Temperature (°C)',
+            data: [30, 25, 22, 20, 18, 15, 14],
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 35
+            }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
