@@ -1,61 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Weather Dashboard</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet/dist/leaflet.css" />
-  <script src="https://cdn.jsdelivr.net/npm/leaflet/dist/leaflet.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    /* CSS styles for the dashboard components */
-    #map {
-      height: 400px;
-      width: 100%;
-    }
-    #chart {
-      height: 300px;
-      width: 100%;
-      margin-top: 20px;
-    }
-  </style>
+    <meta charset="utf-8" />
+    <title>Leaflet Map with Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet/dist/leaflet.css" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <div id="map"></div>
-  <div id="chart">
-    <canvas id="chartCanvas"></canvas> <!-- Add a canvas element inside the div with ID "chart" -->
-  </div>
-  <script>
-    // JavaScript code for the dashboard components
-    document.addEventListener("DOMContentLoaded", function(event) {
-      // Create a Leaflet map
-      var map = L.map('map').setView([-25.2744, 133.7751], 5);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-      }).addTo(map);
+    <div id="map" style="height: 400px;"></div>
+    <div id="dashboard">
+        <h2>Data Dashboard</h2>
+        <p id="data-info">Click on a marker on the map to display data here.</p>
+    </div>
+    <script>
+        // Create Leaflet map
+        var map = L.map('map').setView([-23.6980, 133.8807], 4);
 
-      // Create a Chart.js bar chart
-      var ctx = document.getElementById('chartCanvas').getContext('2d'); // Get context of the canvas element
-      var chart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-          datasets: [{
-            label: 'Temperature (°C)',
-            data: [30, 25, 22, 20, 18, 15, 14],
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true,
-              max: 35
-            }
-          }
+        // Add tile layer to the map
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Add markers with data to the map
+        var marker1 = L.marker([-36.0737, 146.9135]).addTo(map).bindPopup("Albury");
+        var marker2 = L.marker([-34.9285, 138.6007]).addTo(map).bindPopup("Adelaide");
+        var marker3 = L.marker([-35.0031, 117.8657]).addTo(map).bindPopup("Albany");
+        var marker4 = L.marker([-23.6980, 133.8807]).addTo(map).bindPopup("Alice Springs");
+
+        // Attach click event listener to markers
+        marker1.on('click', function () {
+            updateDataInfo("Data for Marker 1");
+        });
+
+        marker2.on('click', function () {
+            updateDataInfo("Data for Marker 2");
+        });
+
+        marker3.on('click', function () {
+            updateDataInfo("Data for Marker 3");
+        });
+
+        marker4.on('click', function () {
+            updateDataInfo("Data for Marker 4");
+        });
+
+        // Update data info in the dashboard
+        function updateDataInfo(data) {
+            document.getElementById('data-info').innerText = data;
         }
-      });
-    });
-  </script>
+    </script>
 </body>
 </html>
+
