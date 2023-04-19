@@ -1,5 +1,7 @@
-var map = L.map('map').setView([37.8, -96], 4);
-var geoJson;
+var map = L.map('map').setView([-29.50, 145], 4);
+
+var tab = [[L.marker([-27.46, 153.0280900],{title:'Brisbane'}),L.marker([-28.00, 153.4308800],{title:'Gold Coast'}),L.marker([-19.26, 146.80],{title:'Townsville'}),L.marker([-16.92, 145.76],{title:'Cairns'})]];
+var names = [['Brisbane','Gold Coast','Townsville','Cairns']];
 
 var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -39,16 +41,49 @@ function highlightFeature(e) {
     });
 
     layer.bringToFront();
-    //info.update(layer.feature.properties);
+    info.update(layer.feature.properties);
 }
 
 function resetHighlight(e) {
     geojson.resetStyle(e.target);
+    var layer = e.target;
+
+    /*for (let i = 0; i < tab[layer.feature.properties.code].length; i++){
+        tab[layer.feature.properties.code][i].unbindTooltip();
+        map.removeLayer(tab[layer.feature.properties.code][i]);
+    }*/
     info.update();
 }
 
 function zoomToFeature(e) {
-    map.fitBounds(e.target.getBounds());
+    //map.fitBounds(e.target.getBounds()); //TO ZOOM
+    //marker = L.marker([-27.46, 153.0280900],{title:'Brisbane'}).addTo(map).bindTooltip("Brisbane", {permanent: true, direction: ''});
+    var layer = e.target;
+
+    //Faudrait prendre tous les layers sauf la variable layer 
+
+    map.eachLayer(function(lay) {if( lay == layer ) console.log("hello")});
+
+    for (let i = 0; i < tab[layer.feature.properties.code].length; i++){
+        tab[layer.feature.properties.code][i].unbindTooltip();
+        map.removeLayer(tab[layer.feature.properties.code][i]);
+    }
+
+    for (let i = 0; i < tab[layer.feature.properties.code].length; i++){
+        tab[layer.feature.properties.code][i].addTo(map).bindTooltip(names[layer.feature.properties.code][i], {permanent: true, direction: 'right'});
+    }
+
+    layer.setStyle({
+        fillColor: 'white',
+        weight: 2,
+        opacity: 1,
+        color: 'black',
+        dashArray: '5',
+        fillOpacity: 0
+    });
+    //console.log(e.target.getBounds().getSouthWest().lat);
+    
+    //L.marker([e.target.getBounds().getSouthWest().lng, e.target.getBounds().getSouthWest().lat],zIndexOffset=100).addTo(map);
 }
 
 function onEachFeature(feature, layer) {
@@ -58,6 +93,13 @@ function onEachFeature(feature, layer) {
         click: zoomToFeature
     });
 }
+
+var geojson;
+
+geojson= L.geoJson(statesData, {
+    style: style,
+    onEachFeature: onEachFeature
+}).addTo(map);
 
 
 
@@ -100,7 +142,3 @@ legend.addTo(map);
 
 //geojson = L.geoJson(statesData, {style: style}).addTo(map);
 
-geojson = L.geoJson(statesData, {
-    style: style,
-    onEachFeature: onEachFeature
-}).addTo(map);
