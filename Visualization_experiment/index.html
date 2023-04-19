@@ -10,9 +10,9 @@
   <style>
     /* Sélecteur pour le conteneur du graphique */
     #chart {
-      width: 50%;
+      width: 50px;
       /* Largeur souhaitée en pixels */
-      height: 50%;
+      height: 30px;
       /* Hauteur souhaitée en pixels */
     }
   </style>
@@ -107,6 +107,10 @@
           }
         }
       });
+      var chartContainer = document.getElementById('chart').parentNode;
+      chartContainer.style.width = chart.width + "px";
+      chartContainer.style.height = chart.height + "px";
+
     }
 
   </script>
