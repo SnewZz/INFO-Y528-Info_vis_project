@@ -47,40 +47,38 @@ function highlightFeature(e) {
 function resetHighlight(e) {
     geojson.resetStyle(e.target);
     var layer = e.target;
-
-    /*for (let i = 0; i < tab[layer.feature.properties.code].length; i++){
-        tab[layer.feature.properties.code][i].unbindTooltip();
-        map.removeLayer(tab[layer.feature.properties.code][i]);
-    }*/
+    //map.zoomOut();
+    //map.fitBounds(map.getBounds());
+    //map.flyTo(new L.latLngBounds([-29.50, 145]))
     info.update();
 }
 
 function zoomToFeature(e) {
     //map.fitBounds(e.target.getBounds()); //TO ZOOM
     //marker = L.marker([-27.46, 153.0280900],{title:'Brisbane'}).addTo(map).bindTooltip("Brisbane", {permanent: true, direction: ''});
-    var layer = e.target;
-
-    //Faudrait prendre tous les layers sauf la variable layer 
-
-    map.eachLayer(function(lay) {if( lay == layer ) console.log("hello")});
-
-    for (let i = 0; i < tab[layer.feature.properties.code].length; i++){
-        tab[layer.feature.properties.code][i].unbindTooltip();
-        map.removeLayer(tab[layer.feature.properties.code][i]);
+    var layer1 = e.target;
+ 
+    for (let i = 0; i < tab.length; i++){
+        if (i != layer1.feature.properties.code){
+            for (let j = 0; j < tab[i].length; j++){
+                tab[i][j].unbindTooltip();
+                map.removeLayer(tab[i][j]);
+            }
+        }
     }
 
-    for (let i = 0; i < tab[layer.feature.properties.code].length; i++){
-        tab[layer.feature.properties.code][i].addTo(map).bindTooltip(names[layer.feature.properties.code][i], {permanent: true, direction: 'right'});
+    for (let i = 0; i < tab[layer1.feature.properties.code].length; i++){
+        tab[layer1.feature.properties.code][i].addTo(map).bindTooltip(names[layer1.feature.properties.code][i], {permanent: false, direction: 'right'});
     }
 
-    layer.setStyle({
+    /*layer1.setStyle({
         fillColor: 'white',
         weight: 2,
         opacity: 1,
         color: 'black',
         dashArray: '5',
         fillOpacity: 0
-    });
+    });*/
     //console.log(e.target.getBounds().getSouthWest().lat);
     
     //L.marker([e.target.getBounds().getSouthWest().lng, e.target.getBounds().getSouthWest().lat],zIndexOffset=100).addTo(map);
