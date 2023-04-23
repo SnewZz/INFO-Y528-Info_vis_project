@@ -39,12 +39,37 @@
   </div>
   <script>
     // Create Leaflet map
-    var map = L.map('map').setView([-23.6980, 133.8807], 4);
+    var map = L.map('map').setView([-25, 135], 4);
 
     // Add tile layer to the map
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
+      attribution: '© OpenStreetMap contributors',
+      maxZoom: 18,
     }).addTo(map);
+
+    var cities = [
+      { name: "Sydney", lat: -33.865143, lng: 151.2099, temperature: 24 },
+      { name: "Melbourne", lat: -37.8136, lng: 144.9631, temperature: 18 },
+      { name: "Brisbane", lat: -27.4698, lng: 153.0251, temperature: 28 },
+    ];
+
+    var circleOptions = {
+      color: "red",
+      fillColor: "#f03",
+      fillOpacity: 0.5,
+      weight: 1
+    };
+
+    for (var i = 0; i < cities.length; i++) {
+      var city = cities[i];
+      var circle = L.circleMarker([city.lat, city.lng], {
+        radius: city.temperature,
+        ...circleOptions
+      }).addTo(map);
+
+      // Ajout d'un popup d'informations pour chaque cercle
+      circle.bindPopup(`<b>${city.name}</b><br>Temperature: ${city.temperature}°C`);
+    }
 
     // Add markers with data to the map
     var marker1 = L.marker([-36.0737, 146.9135]).addTo(map).bindPopup("Albury");
