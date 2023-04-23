@@ -1,3 +1,5 @@
+// Need of running the "py -m http.server 8000" to work
+
 document.addEventListener("DOMContentLoaded", function () {
     d3.csv("../data/au.csv").then(function (data) {
         // Create Leaflet map
