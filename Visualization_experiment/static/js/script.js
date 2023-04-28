@@ -12,42 +12,58 @@ document.addEventListener("DOMContentLoaded", function () {
             maxZoom: 18,
         }).addTo(map);
 
+        $.getJSON("../static/geoJSON/local-government-area.geojson", function(data) {
+            // Création de la couche GeoJSON avec des options de style
+            var myLayer = L.geoJSON(data, {
+                style: function(feature) {
+                    return {
+                        color: "red",
+                        weight: 2,
+                        fillOpacity: 0.5
+                    };
+                },
+                onEachFeature: function(feature, layer) {
+                    layer.bindPopup(`<b>${feature.properties.name}</b>`);
+                }
+            }).addTo(map);
+        });
+
         var cities = [
             // { name: "Sydney", lat: -33.865143, lng: 151.2099, temperature: 24 },
             // { name: "Melbourne", lat: -37.8136, lng: 144.9631, temperature: 18 },
             // { name: "Brisbane", lat: -27.4698, lng: 153.0251, temperature: 28 },
         ];
 
-        var populationTotale = 0;
-        data.forEach(function (d) {
-            cities.push({
-                name: d.city,
-                lat: parseInt(d.lat),
-                lng: parseInt(d.lng),
-                pop: parseInt(d.population)
-            });
-            populationTotale += parseInt(d.population);
-        });
+        // var populationTotale = 0;
+        // data.forEach(function (d) {
+        //     cities.push({
+        //         name: d.city,
+        //         lat: parseInt(d.lat),
+        //         lng: parseInt(d.lng),
+        //         pop: parseInt(d.population)
+        //     });
+        //     populationTotale += parseInt(d.population);
+        // });
 
 
 
-        var circleOptions = {
-            color: "red",
-            fillColor: "#f03",
-            fillOpacity: 0.5,
-            weight: 1
-        };
+        // var circleOptions = {
+        //     color: "red",
+        //     fillColor: "#f03",
+        //     fillOpacity: 0.5,
+        //     weight: 1
+        // };
 
-        for (var i = 0; i < cities.length; i++) {
-            var city = cities[i];
-            var circle = L.circleMarker([city.lat, city.lng], {
-                radius: parseInt(city.pop)/populationTotale * 100,
-                ...circleOptions
-            }).addTo(map);
+        // for (var i = 0; i < cities.length; i++) {
+        //     var city = cities[i];
+        //     var circle = L.circleMarker([city.lat, city.lng], {
+        //         radius: parseInt(city.pop)/populationTotale * 100,
+        //         ...circleOptions
+        //     }).addTo(map);
 
-            // Ajout d'un popup d'informations pour chaque cercle
-            circle.bindPopup(`<b>${city.name}</b><br>Size of the population: ${city.pop}`);
-        }
+        //     // Ajout d'un popup d'informations pour chaque cercle
+        //     circle.bindPopup(`<b>${city.name}</b><br>Size of the population: ${city.pop}`);
+        // }
 
         // Add markers with data to the map
         var marker1 = L.marker([-36.0737, 146.9135]).addTo(map).bindPopup("Albury");
@@ -126,5 +142,5 @@ document.addEventListener("DOMContentLoaded", function () {
             chartContainer.style.height = chart.height + "px";
 
         }
-    });
+     });
 });
