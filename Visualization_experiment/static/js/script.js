@@ -1,6 +1,11 @@
 // Need of running the "py -m http.server 8000" to work
 
-
+/**
+ * A function that give an appropriate color to represent the number of city of the dataset in a region.
+ *
+ * @param {number} n - The number of city in a region for which we want the color
+ * @returns {string} The color, if the number of city is close to 40 it will be darker blue, else lighter blue. If the number is 0 the color is white.
+ */
 function getColor(n) {
     if (n === 0) {
         return '#F0F0F0';
@@ -15,6 +20,9 @@ function getColor(n) {
 
 
 document.addEventListener("DOMContentLoaded", function () {
+    /**
+     * Open and manipulate the csv file
+     */
     d3.csv("../data/au.csv").then(function (data) {
         // Create Leaflet map
         var map = L.map('map').setView([-25, 135], 4);
@@ -47,7 +55,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 regions[i] = [];
                 regionsColor[i] = 0;
                 var lga = data.features[i];
-                //console.log(data.features[i])
                 for (var j = 0; j < cities.length; j++) {
                     var city = cities[j];
                     var point = turf.point([city.lng, city.lat]);
@@ -56,19 +63,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         regionsColor[i]++;
                     }
                 }
-                // var lga = data.features[i];
-                // regions[lga.properties.name] = 0;
-                // for (var j = 0; j < cities.length; j++) {
-                //     var city = cities[j];
-                //     // var point = turf.point([city.lng, city.lat]);
-                //     // if (turf.booleanPointInPolygon(point, lga)) {
-                //     //     regions[lga.properties.name]++;
-                //     // }
-                // }
             }
-            console.log(regionsColor)
             
-            //var colorScale = chroma.scale(['white', 'blue']).domain([0, Math.max(...Object.values(regionsColor))]);
             // Parcourir à nouveau le GeoJSON et ajouter chaque région à la carte en lui attribuant une couleur 
             for (var i = 0; i < data.features.length; i++) {
                 var lga = data.features[i];
@@ -83,50 +79,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 }).addTo(map);
             }
             geoJSONLayer.eachLayer(function(layer){
-                console.log("fine")
                 layer.on('click', function(){
                     var regionId = layer.feature.id;
                     var regionName = layer.feature.properties.lga_name_long;
-                    console.log(regionId)
-                    console.log(regionName)
                     updateDataInfo(regionName)
                 })
             })
-            // // Création de la couche GeoJSON avec des options de style
-            // var myLayer = L.geoJSON(data, {
-            //     style: function (feature) {
-            //         return {
-            //             color: "red",
-            //             weight: 2,
-            //             fillOpacity: 0.5
-            //         };
-            //     },
-            //     onEachFeature: function (feature, layer) {
-            //         layer.bindPopup(`<b>${feature.properties.name}</b>`);
-            //     }
-            // }).addTo(map);
         });
-
-
-
-
-        // var circleOptions = {
-        //     color: "red",
-        //     fillColor: "#f03",
-        //     fillOpacity: 0.5,
-        //     weight: 1
-        // };
-
-        // for (var i = 0; i < cities.length; i++) {
-        //     var city = cities[i];
-        //     var circle = L.circleMarker([city.lat, city.lng], {
-        //         radius: parseInt(city.pop)/populationTotale * 100,
-        //         ...circleOptions
-        //     }).addTo(map);
-
-        //     // Ajout d'un popup d'informations pour chaque cercle
-        //     circle.bindPopup(`<b>${city.name}</b><br>Size of the population: ${city.pop}`);
-        // }
 
         // Add markers with data to the map
         // var marker1 = L.marker([-36.0737, 146.9135]).addTo(map).bindPopup("Albury");
@@ -156,54 +115,54 @@ document.addEventListener("DOMContentLoaded", function () {
         // });
 
         // Update data info in the dashboard
-        function updateDataInfo(data) {
-            document.getElementById('data-info').innerText = data;
-        }
+        // function updateDataInfo(data) {
+        //     document.getElementById('data-info').innerText = data;
+        // }
 
-        // Generate random temperature data for the chart
-        function generateRandomTempData() {
-            var tempData = [];
-            for (var i = 0; i < 7; i++) { // Generating data for 7 months
-                tempData.push(Math.floor(Math.random() * 20) + 10); // Random temperature between 10 and 30
-            }
-            return tempData;
-        }
-        var chart;
-        // Generate chart
-        function generateChart() {
-            var ctx = document.getElementById('chart').getContext('2d');
-            var tempData = generateRandomTempData();
-            // Détruire l'instance précédente du graphique s'il en existe une
-            if (typeof chart !== 'undefined') {
-                chart.destroy();
-            }
-            chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-                    datasets: [{
-                        label: 'Temperature',
-                        data: tempData,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 40 // Set the maximum value on y-axis to 40
-                        }
-                    }
-                }
-            });
-            var chartContainer = document.getElementById('chart').parentNode;
-            chartContainer.style.width = chart.width + "px";
-            chartContainer.style.height = chart.height + "px";
+        // // Generate random temperature data for the chart
+        // function generateRandomTempData() {
+        //     var tempData = [];
+        //     for (var i = 0; i < 7; i++) { // Generating data for 7 months
+        //         tempData.push(Math.floor(Math.random() * 20) + 10); // Random temperature between 10 and 30
+        //     }
+        //     return tempData;
+        // }
+        // var chart;
+        // // Generate chart
+        // function generateChart() {
+        //     var ctx = document.getElementById('chart').getContext('2d');
+        //     var tempData = generateRandomTempData();
+        //     // Détruire l'instance précédente du graphique s'il en existe une
+        //     if (typeof chart !== 'undefined') {
+        //         chart.destroy();
+        //     }
+        //     chart = new Chart(ctx, {
+        //         type: 'line',
+        //         data: {
+        //             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        //             datasets: [{
+        //                 label: 'Temperature',
+        //                 data: tempData,
+        //                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        //                 borderColor: 'rgba(75, 192, 192, 1)',
+        //                 borderWidth: 1
+        //             }]
+        //         },
+        //         options: {
+        //             responsive: true,
+        //             maintainAspectRatio: false,
+        //             scales: {
+        //                 y: {
+        //                     beginAtZero: true,
+        //                     max: 40 // Set the maximum value on y-axis to 40
+        //                 }
+        //             }
+        //         }
+        //     });
+        //     var chartContainer = document.getElementById('chart').parentNode;
+        //     chartContainer.style.width = chart.width + "px";
+        //     chartContainer.style.height = chart.height + "px";
 
-        }
+        // }
     });
 });
