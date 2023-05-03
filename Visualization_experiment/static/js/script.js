@@ -1,5 +1,19 @@
 // Need of running the "py -m http.server 8000" to work
 
+
+function getColor(n) {
+    if (n === 0) {
+        return '#F0F0F0';
+    } else {
+        const baseColor = chroma('blue').saturate(0.8).brighten(1);
+        // Calculer la saturation en fonction du nombre de villes
+        const saturation = Math.min(n / 40, 1);
+        // Créer une couleur plus foncée en utilisant la fonction darken de chroma.js
+        return baseColor.darken(saturation * 2);
+    }
+}
+
+
 document.addEventListener("DOMContentLoaded", function () {
     d3.csv("../data/au.csv").then(function (data) {
         // Create Leaflet map
@@ -12,38 +26,87 @@ document.addEventListener("DOMContentLoaded", function () {
             maxZoom: 18,
         }).addTo(map);
 
-        $.getJSON("../static/geoJSON/local-government-area.geojson", function(data) {
-            // Création de la couche GeoJSON avec des options de style
-            var myLayer = L.geoJSON(data, {
-                style: function(feature) {
-                    return {
-                        color: "red",
-                        weight: 2,
-                        fillOpacity: 0.5
-                    };
-                },
-                onEachFeature: function(feature, layer) {
-                    layer.bindPopup(`<b>${feature.properties.name}</b>`);
+        var cities = [];
+
+        var populationTotale = 0;
+        data.forEach(function (d) {
+            cities.push({
+                name: d.city,
+                lat: parseInt(d.lat),
+                lng: parseInt(d.lng),
+                pop: parseInt(d.population)
+            });
+            populationTotale += parseInt(d.population);
+        });
+        var geoJSONLayer;
+        $.getJSON("../static/geoJSON/local-government-area.geojson", function (data) {
+
+            var regions = {};
+            var regionsColor = {};
+            for (var i = 0; i < data.features.length; i++) {
+                regions[i] = [];
+                regionsColor[i] = 0;
+                var lga = data.features[i];
+                //console.log(data.features[i])
+                for (var j = 0; j < cities.length; j++) {
+                    var city = cities[j];
+                    var point = turf.point([city.lng, city.lat]);
+                    if (turf.booleanPointInPolygon(point, lga)) {
+                        regions[i].push(city);
+                        regionsColor[i]++;
+                    }
                 }
-            }).addTo(map);
+                // var lga = data.features[i];
+                // regions[lga.properties.name] = 0;
+                // for (var j = 0; j < cities.length; j++) {
+                //     var city = cities[j];
+                //     // var point = turf.point([city.lng, city.lat]);
+                //     // if (turf.booleanPointInPolygon(point, lga)) {
+                //     //     regions[lga.properties.name]++;
+                //     // }
+                // }
+            }
+            console.log(regionsColor)
+            
+            //var colorScale = chroma.scale(['white', 'blue']).domain([0, Math.max(...Object.values(regionsColor))]);
+            // Parcourir à nouveau le GeoJSON et ajouter chaque région à la carte en lui attribuant une couleur 
+            for (var i = 0; i < data.features.length; i++) {
+                var lga = data.features[i];
+                var fillColor = getColor(regionsColor[i])
+                geoJSONLayer = L.geoJSON(lga, {
+                    style: {
+                        fillColor: fillColor,
+                        fillOpacity: 0.8,
+                        weight: 2,
+                        color: 'white'
+                    }
+                }).addTo(map);
+            }
+            geoJSONLayer.eachLayer(function(layer){
+                console.log("fine")
+                layer.on('click', function(){
+                    var regionId = layer.feature.id;
+                    var regionName = layer.feature.properties.lga_name_long;
+                    console.log(regionId)
+                    console.log(regionName)
+                    updateDataInfo(regionName)
+                })
+            })
+            // // Création de la couche GeoJSON avec des options de style
+            // var myLayer = L.geoJSON(data, {
+            //     style: function (feature) {
+            //         return {
+            //             color: "red",
+            //             weight: 2,
+            //             fillOpacity: 0.5
+            //         };
+            //     },
+            //     onEachFeature: function (feature, layer) {
+            //         layer.bindPopup(`<b>${feature.properties.name}</b>`);
+            //     }
+            // }).addTo(map);
         });
 
-        var cities = [
-            // { name: "Sydney", lat: -33.865143, lng: 151.2099, temperature: 24 },
-            // { name: "Melbourne", lat: -37.8136, lng: 144.9631, temperature: 18 },
-            // { name: "Brisbane", lat: -27.4698, lng: 153.0251, temperature: 28 },
-        ];
-
-        // var populationTotale = 0;
-        // data.forEach(function (d) {
-        //     cities.push({
-        //         name: d.city,
-        //         lat: parseInt(d.lat),
-        //         lng: parseInt(d.lng),
-        //         pop: parseInt(d.population)
-        //     });
-        //     populationTotale += parseInt(d.population);
-        // });
 
 
 
@@ -66,31 +129,31 @@ document.addEventListener("DOMContentLoaded", function () {
         // }
 
         // Add markers with data to the map
-        var marker1 = L.marker([-36.0737, 146.9135]).addTo(map).bindPopup("Albury");
-        var marker2 = L.marker([-34.9285, 138.6007]).addTo(map).bindPopup("Adelaide");
-        var marker3 = L.marker([-35.0031, 117.8657]).addTo(map).bindPopup("Albany");
-        var marker4 = L.marker([-23.6980, 133.8807]).addTo(map).bindPopup("Alice Springs");
+        // var marker1 = L.marker([-36.0737, 146.9135]).addTo(map).bindPopup("Albury");
+        // var marker2 = L.marker([-34.9285, 138.6007]).addTo(map).bindPopup("Adelaide");
+        // var marker3 = L.marker([-35.0031, 117.8657]).addTo(map).bindPopup("Albany");
+        // var marker4 = L.marker([-23.6980, 133.8807]).addTo(map).bindPopup("Alice Springs");
 
-        // Attach click event listener to markers
-        marker1.on('click', function () {
-            updateDataInfo("Data for Marker 1");
-            generateChart();
-        });
+        // // Attach click event listener to markers
+        // marker1.on('click', function () {
+        //     updateDataInfo("Data for Marker 1");
+        //     generateChart();
+        // });
 
-        marker2.on('click', function () {
-            updateDataInfo("Data for Marker 2");
-            generateChart();
-        });
+        // marker2.on('click', function () {
+        //     updateDataInfo("Data for Marker 2");
+        //     generateChart();
+        // });
 
-        marker3.on('click', function () {
-            updateDataInfo("Data for Marker 3");
-            generateChart();
-        });
+        // marker3.on('click', function () {
+        //     updateDataInfo("Data for Marker 3");
+        //     generateChart();
+        // });
 
-        marker4.on('click', function () {
-            updateDataInfo("Data for Marker 4");
-            generateChart();
-        });
+        // marker4.on('click', function () {
+        //     updateDataInfo("Data for Marker 4");
+        //     generateChart();
+        // });
 
         // Update data info in the dashboard
         function updateDataInfo(data) {
@@ -142,5 +205,5 @@ document.addEventListener("DOMContentLoaded", function () {
             chartContainer.style.height = chart.height + "px";
 
         }
-     });
+    });
 });
