@@ -1,14 +1,3 @@
-/* html,
-    body {
-      margin: 0;
-      padding: 0;
-    }
-
-    * {
-      box-sizing: border-box;
-      /* Remplacer par votre police font-family: 'Montserrat', Times, serif; 
-    } */
-
 /* Sélecteur pour le conteneur du graphique */
 #chart {
     width: 50px;
@@ -16,3 +5,48 @@
     height: 30px;
     /* Hauteur souhaitée en pixels */
 }
+body{
+  background-color: lightsteelblue;
+}
+
+#map{
+  float: left;
+  width: 75%;
+  height: 400px;
+}
+#menu-container{
+  float: left;
+  width: 25%;
+  height: 400px;
+  display: flex;
+}
+#menu{
+  width: 90%;
+  height: 95%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  border-radius: 10px;
+  border: 2px solid black;
+}
+
+#dashboard-container{
+  clear: both; /* efface les floats précédents */
+  width: 100%;
+  height: 600px; /* ou la hauteur que tu veux */
+  display: flex;
+}
+
+/* #dashboard{
+  width: 100%;
+  height: 95%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  border-radius: 10px;
+  border: 2px solid black;
+} */
