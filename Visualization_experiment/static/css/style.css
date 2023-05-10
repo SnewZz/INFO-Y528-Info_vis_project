@@ -1,8 +1,8 @@
 /* Sélecteur pour le conteneur du graphique */
 #chart {
-    width: 50px;
+    width: 150px;
     /* Largeur souhaitée en pixels */
-    height: 30px;
+    height: 130px;
     /* Hauteur souhaitée en pixels */
 }
 body{

@@ -12,8 +12,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.1/chroma.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 
-  <script src="../static/js/script.js"></script>
+  <script type="text/javascript" src="../static/js/new_script.js" defer></script>
 </head>
 
 <body>
@@ -28,6 +29,14 @@
       <div id="dashboard">
         <h2>Data Dashboard</h2>
         <p id="data-info"></p>
+        <input id = "slider1" min ="1" max="10" type="range">
+        <div id="result1"> </div>
+    
+        <h3>Year slider</h3>
+        <input id = "slider2" min ="2010" max="2015" type="range" value="2010">
+        <div id="result2"> </div>
+
+        <h3>DATA</h3>
         <canvas id="chart"></canvas>
       </div>
     </div>

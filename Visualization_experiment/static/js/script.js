@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
     /**
      * Open and manipulate the csv file
      */
-    d3.csv("../data/coordCities.csv").then(function (data) {
+    d3.csv("../static/data/coordCities.csv").then(function (data) {
         // Create Leaflet map
         var map = L.map('map').setView([-25, 135], 4);
 
