@@ -16,9 +16,134 @@ function getColor(n) {
     }
 }
 
-function updateDataInfo(e){
+function updateDataInfo(e) {
     document.getElementById('data-info').innerText = e;
 }
+
+function loadCities() {
+    var cities = []
+
+    d3.csv("../static/data/coord_cities.csv").then(function (data) {
+        data.forEach(function (d) {
+            cities.push({
+                id: parseInt(d.id_location),
+                name: d.city,
+                lat: parseInt(d.lat),
+                lng: parseInt(d.long),
+                state: d.state,
+                lga: d.lga,
+            });
+        });
+    });
+
+    return cities;
+}
+
+function loadCitiesPerRegion(cities) {
+    var citiesPerRegion = {};
+    $.getJSON("../static/geoJSON/local-government-area.geojson", function (data) {
+
+        for (var i = 0; i < data.features.length; i++) {
+            citiesPerRegion[i] = [];
+            var lga = data.features[i];
+            for (var j = 0; j < cities.length; j++) {
+                var city = cities[j];
+                var point = turf.point([city.lng, city.lat]);
+                if (turf.booleanPointInPolygon(point, lga)) {
+                    citiesPerRegion[i].push(city);
+                }
+            }
+        }
+    });
+
+    return citiesPerRegion;
+}
+
+function loadRegions() {
+    var regions;
+    $.getJSON("../static/geoJSON/local-government-area.geojson", function (data) {
+        regions = data;
+    });
+    return regions;
+}
+
+function computeNbCitiesPerRegion() {
+
+}
+
+function updateMap(regions, data) {
+    for (var i = 0; i < regions.features.length; i++){
+        var lga = data.features[i];
+        var fillColor = getColor(data[i])
+        L.geoJSON(lga, {
+            style: {
+                fillColor: fillColor,
+                fillOpacity: 0.8,
+                weight: 2,
+                color: 'white'
+            }
+        }).addTo(map).eachLayer(function (layer) {
+            layer.on('click', function () {
+                var regionId = layer.feature;
+                console.log(regionId)
+                var regionName = layer.feature.properties.lga_name_long;
+                updateDataInfo(regionName)
+            });
+        })
+    }
+
+    for (var i = 0; i < data.features.length; i++) {
+        var lga = data.features[i];
+        var fillColor = getColor(regionsColor[i])
+        L.geoJSON(lga, {
+            style: {
+                fillColor: fillColor,
+                fillOpacity: 0.8,
+                weight: 2,
+                color: 'white'
+            }
+        }).addTo(map).eachLayer(function (layer) {
+            layer.on('click', function () {
+                var regionId = layer.feature;
+                console.log(regionId)
+                var regionName = layer.feature.properties.lga_name_long;
+                updateDataInfo(regionName)
+            });
+        })
+    }
+}
+
+function getTemperatureYear(year) {
+    console.log(year)
+    var filteredData;
+    (d3.csv("../static/data/data_map.csv").then(function (data) {
+        console.log("ok")
+        console.log(data[0].End_date.split("-")[0] === year)
+        filteredData = data.filter(function (d) { return d.End_date.split("-")[0] === year.toString(); })
+
+        return filteredData
+    }))
+    //return filteredData;
+}
+
+function avgOnList(list){
+    var totalValue = 0;
+    for(var elt in list){
+        totalValue += elt;
+    }
+    var avg = totalValue/list.length;
+    return avg;
+}
+
+function getTemperatureAverageYear(data, citiesPerRegion) {
+    var avgTemperatureRegion = [];
+    for (var region in citiesPerRegion) {
+        var temperatures = data.filter(function (d) { return d.Season === "Summer" && region.includes(d.city)});
+        avgTemperatureRegion.push(avgOnList(temperatures));
+    }
+    return avgTemperatureRegion;
+}
+
 
 // Create Leaflet map
 var map = L.map('map').setView([-25, 135], 4);
@@ -30,6 +155,51 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 18,
 }).addTo(map);
 
+// var cities = loadCities();
+var citiesPerRegion = loadCitiesPerRegion(loadCities());
+var regions = loadRegions();
+
+
+// $.getJSON("../static/geoJSON/local-government-area.geojson", function (data) {
+
+//     var regions = {};
+//     var regionsColor = {};
+//     for (var i = 0; i < data.features.length; i++) {
+//         regions[i] = [];
+//         regionsColor[i] = 0;
+//         var lga = data.features[i];
+//         for (var j = 0; j < cities.length; j++) {
+//             var city = cities[j];
+//             var point = turf.point([city.lng, city.lat]);
+//             if (turf.booleanPointInPolygon(point, lga)) {
+//                 regions[i].push(city);
+//                 regionsColor[i]++;
+//             }
+//         }
+//     }
+
+//     // Parcourir à nouveau le GeoJSON et ajouter chaque région à la carte en lui attribuant une couleur 
+//     for (var i = 0; i < data.features.length; i++) {
+//         var lga = data.features[i];
+//         var fillColor = getColor(regionsColor[i])
+//         L.geoJSON(lga, {
+//             style: {
+//                 fillColor: fillColor,
+//                 fillOpacity: 0.8,
+//                 weight: 2,
+//                 color: 'white'
+//             }
+//         }).addTo(map).eachLayer(function (layer) {
+//             layer.on('click', function () {
+//                 var regionId = layer.feature;
+//                 console.log(regionId)
+//                 var regionName = layer.feature.properties.lga_name_long;
+//                 updateDataInfo(regionName)
+//             });
+//         })
+//     }
+// });
+
 
 const slider1 = document.getElementById("slider1");
 const slider2 = document.getElementById("slider2");
@@ -39,41 +209,46 @@ const result2 = document.getElementById("result2");
 
 slider1.addEventListener("change", async (event) => {
 
-    if (event.target.value == 1) {
+    data = await getTemperatureYear(event.target.value);
+    console.log(typeof data)
+    console.log(data)
+    dataPerRegion = getTemperatureAverageYear(data, citiesPerRegion);
+    updateMap(dataPerRegion, regions);
+    // if (event.target.value == ) {
 
-        d3.csv("../static/data/au.csv").then(function (data) {
-            var filteredData = data.filter(function (d) { return d.population > 1000000; });
-            var cities = filteredData.map(function (d) { return d.city; });
-            // var jane = data.filter(function(d) { return d.city === 'Melbourne'; });
-            var population = filteredData.map(function (d) { return d.population; });
-            // var arr = Object.entries(cities)
+    //     d3.csv("../static/data/data_map.csv").then(function (data) {
+    //         // var filteredData = data.filter(function (d) { return d.population > 1000000; });
+    //         // var cities = filteredData.map(function (d) { return d.city; });
+    //         // var jane = data.filter(function(d) { return d.city === 'Melbourne'; });
+    //         // var population = filteredData.map(function (d) { return d.population; });
+    //         // var arr = Object.entries(cities)
 
-            var barColors = "red";
+    //         var barColors = "red";
 
-            new Chart("chart", {
-                type: "bar",
-                data: {
-                    labels: cities,
-                    datasets: [{
-                        backgroundColor: barColors,
-                        data: population
-                    }]
-                },
-                options: {
-                    legend: { display: false },
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }],
-                    }
-                }
-            });
-            console.log(filteredData)
+    //         new Chart("chart", {
+    //             type: "bar",
+    //             data: {
+    //                 labels: cities,
+    //                 datasets: [{
+    //                     backgroundColor: barColors,
+    //                     data: population
+    //                 }]
+    //             },
+    //             options: {
+    //                 legend: { display: false },
+    //                 scales: {
+    //                     yAxes: [{
+    //                         ticks: {
+    //                             beginAtZero: true
+    //                         }
+    //                     }],
+    //                 }
+    //             }
+    //         });
+    //         console.log(filteredData)
 
-        })
-    }
+    //     })
+    // }
 
 })
 
@@ -100,59 +275,3 @@ slider2.addEventListener("change", async (event) => {
         });
     }
 })
-
-d3.csv("../static/data/coordCities.csv").then(function (data) {
-
-    var cities = [];
-
-    //var populationTotale = 0;
-    data.forEach(function (d) {
-        cities.push({
-            id: parseInt(d.id),
-            name: d.city,
-            lat: parseInt(d.lat),
-            lng: parseInt(d.long),
-        });
-        //populationTotale += parseInt(d.population);
-    });
-
-    $.getJSON("../static/geoJSON/local-government-area.geojson", function (data) {
-
-        var regions = {};
-        var regionsColor = {};
-        for (var i = 0; i < data.features.length; i++) {
-            regions[i] = [];
-            regionsColor[i] = 0;
-            var lga = data.features[i];
-            for (var j = 0; j < cities.length; j++) {
-                var city = cities[j];
-                var point = turf.point([city.lng, city.lat]);
-                if (turf.booleanPointInPolygon(point, lga)) {
-                    regions[i].push(city);
-                    regionsColor[i]++;
-                }
-            }
-        }
-
-        // Parcourir à nouveau le GeoJSON et ajouter chaque région à la carte en lui attribuant une couleur 
-        for (var i = 0; i < data.features.length; i++) {
-            var lga = data.features[i];
-            var fillColor = getColor(regionsColor[i])
-            L.geoJSON(lga, {
-                style: {
-                    fillColor: fillColor,
-                    fillOpacity: 0.8,
-                    weight: 2,
-                    color: 'white'
-                }
-            }).addTo(map).eachLayer(function (layer) {
-                layer.on('click', function () {
-                    var regionId = layer.feature;
-                    console.log(regionId)
-                    var regionName = layer.feature.properties.lga_name_long;
-                    updateDataInfo(regionName)
-                });
-            })
-        }
-    });
-});
