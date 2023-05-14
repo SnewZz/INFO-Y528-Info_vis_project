@@ -6,14 +6,18 @@
     /* Hauteur souhaitée en pixels */
 }
 body{
-  background-color: lightsteelblue;
+  background-color: rgb(253, 252, 252);
 }
 
-#map{
-  float: left;
-  width: 75%;
-  height: 400px;
+#span {
+  display: inline-block;
+  width: 70px;
+  height: 70px;
+  margin: 10px;
+  background-color: #555;
 }
+
+
 #menu-container{
   float: left;
   width: 25%;
