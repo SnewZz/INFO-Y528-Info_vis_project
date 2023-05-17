@@ -18,7 +18,7 @@ app.get("/api/regionsGeoJSON", (req, res) =>{
     fs.createReadStream(path.join(__dirname, "../static/geoJSON/local-government-area.geojson")).pipe(res);
 })
 
-app.get("/api/avgTemperature", (req, res) => {
+app.get("/api/avgHighestTemperature", (req, res) => {
     const year = req.query.year;
     const season = req.query.season;
     const content = fs.readFileSync(path.join(__dirname, "../static/data/data_map.csv"));
@@ -26,7 +26,7 @@ app.get("/api/avgTemperature", (req, res) => {
 
     csv.parse(content, {}, (err, records) => {
 
-        //Filter the data on the year
+        //Filter the data on the year and season
         
         filteredData = records.filter(function (d) {
             return d[4].split("-")[0] === year && d[5] === season;
@@ -40,6 +40,37 @@ app.get("/api/avgTemperature", (req, res) => {
             filteredData.forEach(data => {
                 if (data[10].localeCompare(item)) {
                     totalTemp += parseFloat(data[8]);
+                    nbElts++;
+                }
+            });
+            regionsAvgTemp.push({ name: item, avgTemperature: totalTemp / nbElts });
+        });
+        res.status(200).send(regionsAvgTemp);
+    });
+});
+
+app.get("/api/avgLowestTemperature", (req, res) => {
+    const year = req.query.year;
+    const season = req.query.season;
+    const content = fs.readFileSync(path.join(__dirname, "../static/data/data_map.csv"));
+    var filteredData;
+
+    csv.parse(content, {}, (err, records) => {
+
+        //Filter the data on the year and season
+        
+        filteredData = records.filter(function (d) {
+            return d[4].split("-")[0] === year && d[5] === season;
+        });
+
+        //Calculate avg temperature per region
+        var regionsAvgTemp = [];
+        regions.REGIONS.forEach(item => {
+            var totalTemp = 0;
+            var nbElts = 0;
+            filteredData.forEach(data => {
+                if (data[10].localeCompare(item)) {
+                    totalTemp += parseFloat(data[7]);
                     nbElts++;
                 }
             });

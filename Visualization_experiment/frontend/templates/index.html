@@ -39,9 +39,9 @@
               <div class="col-sm-6">
                 <h6><p class="text-center">Coldest cities</p></h6>
                 <ul class="list-group">
-                  <li class="list-group-item">Elément 1</li>
-                  <li class="list-group-item">Elément 2</li>
-                  <li class="list-group-item">Elément 3</li>
+                  <li class="list-group-item" id="cold1">Elément 1</li>
+                  <li class="list-group-item" id="cold2">Elément 2</li>
+                  <li class="list-group-item" id="cold3">Elément 3</li>
                 </ul>
               </div>
             </div>
@@ -50,17 +50,17 @@
               <div class="col-sm-6">
                 <h6><p class="text-center">Rainiest cities</p></h6>
                 <ul class="list-group">
-                  <li class="list-group-item">Elément 1</li>
-                  <li class="list-group-item">Elément 2</li>
-                  <li class="list-group-item">Elément 3</li>
+                  <li class="list-group-item" id="rain1">Elément 1</li>
+                  <li class="list-group-item" id="rain2">Elément 2</li>
+                  <li class="list-group-item" id="rain3">Elément 3</li>
                 </ul>
               </div>
               <div class="col-sm-6">
                 <h6><p class="text-center">Sunniest cities</p></h6>
                 <ul class="list-group">
-                  <li class="list-group-item">Elément 1</li>
-                  <li class="list-group-item">Elément 2</li>
-                  <li class="list-group-item">Elément 3</li>
+                  <li class="list-group-item" id="sun1">Elément 1</li>
+                  <li class="list-group-item" id="sun2">Elément 2</li>
+                  <li class="list-group-item" id="sun3">Elément 3</li>
                 </ul>
               </div>
             </div>
@@ -75,56 +75,53 @@
           <h1><p class="text-center">Map menu</p></h1>
           <div class="row">
             <div class="col-12 ms-3">
-              <div class="d-flex flex-column">
+              <div id="radioContainer" class="d-flex flex-column">
                 <div class="form-check mt-2">
-                  <input class="form-check-input" type="radio" name="exampleRadios" id="r1" value="option1">
-                  <label class="form-check-label mb-2" for="exampleRadios1">
+                  <input class="form-check-input" type="radio" name="mode" id="r1" value="option1">
+                  <label class="form-check-label mb-2" for="mode1">
                     Temperature min
                   </label>
                 </div>
                 <div class="form-check mt-2">
-                  <input class="form-check-input" type="radio" name="exampleRadios" id="r2" value="option2">
-                  <label class="form-check-label mb-2" for="exampleRadios2">
+                  <input class="form-check-input" type="radio" name="mode" id="r2" value="option2">
+                  <label class="form-check-label mb-2" for="mode2">
                     Temperature max
                   </label>
                 </div>
                 <div class="form-check mt-2">
-                  <input class="form-check-input" type="radio" name="exampleRadios" id="r3" value="option3">
-                  <label class="form-check-label mb-2" for="exampleRadios3">
+                  <input class="form-check-input" type="radio" name="mode" id="r3" value="option3">
+                  <label class="form-check-label mb-2" for="mode3">
                     Rainfall
                   </label>
                 </div>
                 <div class="form-check mt-2">
-                  <input class="form-check-input" type="radio" name="exampleRadios" id="r4" value="option3">
-                  <label class="form-check-label mb-2" for="exampleRadios4">
+                  <input class="form-check-input" type="radio" name="mode" id="r4" value="option3">
+                  <label class="form-check-label mb-2" for="mode4">
                     Sunshine
                   </label>
                 </div>
               </div>
               <div class="row">
                 <div class="col-5 ">
-                  <select class="form-select" id="Year">
-                    <option value="2009">2009</option>
-                    <option value="2010">2010</option>
-                    <option value="2011">2011</option>
-                    <option value="2012">2012</option>
-                    <option value="2013">2013</option>
-                    <option value="2014">2014</option>
-                    <option value="2015">2015</option>
-                    <option value="2016">2016</option>
-                    <option value="2017">2017</option>
-                  </select>
+                  <input id="slider1" class="form-range" min="2009" max="2016" type="range" value="2016">
+                  <div id="result1">Year : 2016</div>
                 </div>
                 <div class="col-6">
-                  <select class="form-select" id="Season">
-                    <option value="-">-</option>
-                    <option value="Summer">Summer</option>
+                  <select class="form-select" id="select-season">
+                    <option value="Summer" selected>Summer</option>
                     <option value="Winter">Winter</option>
                     <option value="Spring">Spring</option>
                     <option value="Autumn">Autumn</option>
                   </select>
                 </div>        
-            </div>
+              </div>
+              <div class="row">
+                <div id="menu-error-container">
+                  <div class="alert alert-warning alert-dismissible fade show d-none" role="alert">
+                    <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+                  </div>                 
+                </div>
+              </div>
           </div>
         </div>
       </div>
@@ -133,8 +130,6 @@
       <div id="dashboard">
         <h2>Data Dashboard</h2>
         <p id="data-info"></p>
-        <input id = "slider1" min ="2009" max="2015" type="range">
-        <div id="result1"> </div>
     
         <h3>Year slider</h3>
         <input id = "slider2" min ="2010" max="2015" type="range" value="2010">

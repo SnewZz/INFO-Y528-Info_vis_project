@@ -43,6 +43,10 @@ body{
   display: flex;
 }
 
+#id-error{
+  color: red;
+}
+
 /* #dashboard{
   width: 100%;
   height: 95%;

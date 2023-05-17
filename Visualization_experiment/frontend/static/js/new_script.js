@@ -4,25 +4,18 @@
  * @param {number} n - The number of city in a region for which we want the color
  * @returns {string} The color, if the number of city is close to 40 it will be darker blue, else lighter blue. If the number is 0 the color is white.
  */
-// function getColor(n ,min, max) {
-//     if (n === 0) {
-//         return '#F0F0F0';
-//     } else {
-//         const baseColor = chroma('blue').saturate(0.8).brighten(1);
-//         // Calculer la saturation en fonction du nombre de villes
-//         const saturation = Math.min(n / 40, 1);
-//         // Créer une couleur plus foncée en utilisant la fonction darken de chroma.js
-//         return baseColor.darken(saturation * 2);
-//     }
-// }
-
-function getColor(avgTemperature, minTemperature, maxTemperature) {
+function getColor(avgTemperature, minTemperature, maxTemperature, red) {
     // Define the minimum and maximum temperature range for color mapping
     var minTemp = minTemperature; // Minimum temperature
     var maxTemp = maxTemperature; // Maximum temperature
 
+    var colorRange = [];
     // Define the color range from light red to dark red
-    var colorRange = ['#FFCDD2', '#EF5350', '#E53935', '#D32F2F', '#C62828', '#B71C1C', '#D50000', '#FF1744', '#F50057', '#FF4081'];
+    if (red) {
+        colorRange = ['#FFCDD2', '#EF5350', '#E53935', '#D32F2F', '#C62828', '#B71C1C', '#D50000', '#FF1744', '#F50057', '#FF4081'];
+    } else {
+        colorRange = ['#E1F5FE', '#B3E5FC', '#81D4FA', '#4FC3F7', '#29B6F6', '#03A9F4', '#039BE5', '#0288D1', '#0277BD', '#01579B'];
+    }
 
     // Calculate the normalized value (between 0 and 1) for the average temperature
     var normalizedValue = (avgTemperature - minTemp) / (maxTemp - minTemp);
@@ -40,60 +33,19 @@ function updateDataInfo(e) {
     document.getElementById('data-info').innerText = e;
 }
 
+function updateTemporalityInfo() {
+    const selectedYearSpan = document.getElementById("selected_year");
+    selectedYearSpan.textContent = getYear();
+    const selectedSeasonSpan = document.getElementById("selected_season");
+    selectedSeasonSpan.textContent = getSeason();
+}
+
 async function getRegions() {
     const httpResponse = await fetch(`/api/regionsGeoJSON`);
     const regions = await httpResponse.json();
 
     return regions;
 }
-
-function loadCities() {
-    var cities = []
-
-    // d3.csv("../static/data/coord_cities.csv").then(function (data) {
-    //     data.forEach(function (d) {
-    //         cities.push({
-    //             id: parseInt(d.id_location),
-    //             name: d.city,
-    //             lat: parseInt(d.lat),
-    //             lng: parseInt(d.long),
-    //             state: d.state,
-    //             lga: d.lga,
-    //         });
-    //     });
-    // });
-
-    return cities;
-}
-
-// function loadCitiesPerRegion(cities) {
-//     var citiesPerRegion = {};
-//     $.getJSON("./geoJSON/local-government-area.geojson", function (data) {
-
-//         for (var i = 0; i < data.features.length; i++) {
-//             citiesPerRegion[i] = [];
-//             var lga = data.features[i];
-//             for (var j = 0; j < cities.length; j++) {
-//                 var city = cities[j];
-//                 var point = turf.point([city.lng, city.lat]);
-//                 if (turf.booleanPointInPolygon(point, lga)) {
-//                     citiesPerRegion[i].push(city);
-//                 }
-//             }
-//         }
-//     });
-
-//     return citiesPerRegion;
-//}
-
-// function loadRegions() {
-// var regions;
-// $.getJSON("./geoJSON/local-government-area.geojson", function (data) {
-// regions = data;
-// console.log(regions)
-// return regions;
-// });
-// }
 
 
 function updateMap(regions, data) {
@@ -114,7 +66,8 @@ function updateMap(regions, data) {
     for (var i = 0; i < regions.features.length; i++) {
         var lga = data[i];
         if (lga !== undefined) {
-            var fillColor = getColor(data[i].avgTemperature, minTemp, maxTemp);
+            var isRed = currMode == "option2";
+            var fillColor = getColor(data[i].avgTemperature, minTemp, maxTemp, isRed);
             var layer = L.geoJSON(regions.features[i], {
                 style: {
                     fillColor: fillColor,
@@ -137,18 +90,58 @@ function updateMap(regions, data) {
     }
 }
 
-function avgOnList(list) {
-    var totalValue = 0;
-    for (var elt in list) {
-        totalValue += elt;
-    }
-    var avg = totalValue / list.length;
-    return avg;
+function getYear() {
+    return slider1.value;
 }
 
+function getSeason() {
+    return buttonSeason.value;
+}
 
+function getBaseUrlFromMode(mode) {
+    var url = ""
+    switch (mode) {
+        case "option1":
+            url = "/api/avgLowestTemperature";
+            break;
+        case "option2":
+            url = "/api/avgHighestTemperature";
+            break;
+        case "option3":
+            url = "/api/avgRain";
+            break;
+        case "option4":
+            url = "/api/avgSunshine";
+            break;
+        default:
+            console.log("Invalid mode");
+            break;
+    }
+    return url;
+}
 
+function mapModeHandler() {
+    if (currMode != null) {
+        $('.alert').addClass('d-none')
+        const year = getYear()
+        const season = getSeason();
+        const mode = currMode;
+        const baseUrl = getBaseUrlFromMode(mode);
+        const url = baseUrl + `?year=${year}&season=${season}`;
+        console.log(url)
+        fetch(url).then(data => {
+            return data.json()
+        }).then(res => {
+            updateMap(regions, res)
+        })
+    } else {
+        // Select the alert element
+        const alertElement = $('.alert');
 
+        // Remove the d-none class to show the alert
+        alertElement.removeClass('d-none');
+    }
+}
 // Create Leaflet map
 var map = L.map('map').setView([-25, 135], 4);
 
@@ -174,14 +167,24 @@ const slider2 = document.getElementById("slider2");
 const result1 = document.getElementById("result1");
 const result2 = document.getElementById("result2");
 
-slider1.addEventListener("change", async (event) => {
-    const url = `/api/avgTemperature?year=${event.target.value}&season=Winter`;
-    fetch(url).then(data => {
-        return data.json()
-    }).then(res => {
+const buttonSeason = document.getElementById("select-season");
 
-        updateMap(regions, res)
-    })
+const radioContainer = document.querySelector('#radioContainer');
+var currMode = null;
+updateTemporalityInfo()
+radioContainer.addEventListener('change', (event) => {
+    const checkedButton = event.target;
+    if (checkedButton.matches('input[name="mode"]')) {
+        currMode = checkedButton.value;
+        mapModeHandler();
+    }
+});
+
+
+slider1.addEventListener("change", async (event) => {
+    mapModeHandler();
+    updateTemporalityInfo();
+    result1.textContent = "Year : " + event.target.value;
 })
 
 slider2.addEventListener("change", async (event) => {
