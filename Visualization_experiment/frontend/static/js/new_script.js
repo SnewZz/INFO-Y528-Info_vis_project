@@ -56,18 +56,18 @@ function updateMap(regions, data) {
     }
     regionLayers = [];
 
-    var minTemp = 100;
-    var maxTemp = -100;
+    var minData = 100;
+    var maxData = -100;
     data.forEach(element => {
-        minTemp = element.avgTemperature < minTemp ? element.avgTemperature : minTemp;
-        maxTemp = element.avgTemperature > maxTemp ? element.avgTemperature : maxTemp;
+        minData = element.avgData < minData ? element.avgData : minData;
+        maxData = element.avgData > maxData ? element.avgData : maxData;
     });
 
     for (var i = 0; i < regions.features.length; i++) {
         var lga = data[i];
         if (lga !== undefined) {
-            var isRed = currMode == "option2";
-            var fillColor = getColor(data[i].avgTemperature, minTemp, maxTemp, isRed);
+            var isRed = (currMode == "option2" || currMode == "option4");
+            var fillColor = getColor(data[i].avgData, minData, maxData, isRed);
             var layer = L.geoJSON(regions.features[i], {
                 style: {
                     fillColor: fillColor,
@@ -81,7 +81,7 @@ function updateMap(regions, data) {
 
             layer.eachLayer(function (layer) {
                 layer.on('click', function () {
-                    var regionId = layer.feature;
+                    //var regionId = layer.feature;
                     var regionName = layer.feature.properties.lga_name_long;
                     updateDataInfo(regionName)
                 });
