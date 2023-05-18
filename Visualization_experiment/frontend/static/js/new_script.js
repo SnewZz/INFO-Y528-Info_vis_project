@@ -33,6 +33,57 @@ function updateDataInfo(e) {
     document.getElementById('data-info').innerText = e;
 }
 
+function updateColdestCities(){
+    const url = `/api/coldestCities?year=${getYear()}&season=${getSeason()}`;
+    fetch(url).then(data => {
+        return data.json()
+    }).then(res => {
+        document.getElementById("cold1").innerText = res[0].name+"   "+res[0].temp+"°";
+        document.getElementById("cold2").innerText = res[1].name+"   "+res[1].temp+"°";
+        document.getElementById("cold3").innerText = res[2].name+"   "+res[2].temp+"°";
+    })
+}
+
+function updateHottestCities(){
+    const url = `/api/hottestCities?year=${getYear()}&season=${getSeason()}`;
+    fetch(url).then(data => {
+        return data.json()
+    }).then(res => {
+        document.getElementById("hot1").innerText = res[0].name+"   "+res[0].temp+"°";
+        document.getElementById("hot2").innerText = res[1].name+"   "+res[1].temp+"°";
+        document.getElementById("hot3").innerText = res[2].name+"   "+res[2].temp+"°";
+    })
+}
+
+function updateRainiestCities(){
+    const url = `/api/rainiestCities?year=${getYear()}&season=${getSeason()}`;
+    fetch(url).then(data => {
+        return data.json()
+    }).then(res => {
+        document.getElementById("rain1").innerText = res[0].name+"   "+res[0].rainLvl;
+        document.getElementById("rain2").innerText = res[1].name+"   "+res[1].rainLvl;
+        document.getElementById("rain3").innerText = res[2].name+"   "+res[2].rainLvl;
+    })
+}
+
+function updateSunniestCities(){
+    const url = `/api/suniestCities?year=${getYear()}&season=${getSeason()}`;
+    fetch(url).then(data => {
+        return data.json()
+    }).then(res => {
+        document.getElementById("sun1").innerText = res[0].name+"   "+res[0].sunLvl;
+        document.getElementById("sun2").innerText = res[1].name+"   "+res[1].sunLvl;
+        document.getElementById("sun3").innerText = res[2].name+"   "+res[2].sunLvl;
+    })
+}
+
+function updateBestCitiesInfo() {
+    updateColdestCities();
+    updateHottestCities();
+    updateRainiestCities();
+    updateSunniestCities();
+}
+
 function updateTemporalityInfo() {
     const selectedYearSpan = document.getElementById("selected_year");
     selectedYearSpan.textContent = getYear();
@@ -171,7 +222,8 @@ const buttonSeason = document.getElementById("select-season");
 
 const radioContainer = document.querySelector('#radioContainer');
 var currMode = null;
-updateTemporalityInfo()
+updateTemporalityInfo();
+updateBestCitiesInfo();
 radioContainer.addEventListener('change', (event) => {
     const checkedButton = event.target;
     if (checkedButton.matches('input[name="mode"]')) {
@@ -184,6 +236,7 @@ radioContainer.addEventListener('change', (event) => {
 slider1.addEventListener("change", async (event) => {
     mapModeHandler();
     updateTemporalityInfo();
+    updateBestCitiesInfo();
     result1.textContent = "Year : " + event.target.value;
 })
 
