@@ -16,7 +16,26 @@ app.get("/api/regionsGeoJSON", (req, res) => {
     // const content = fs.readFileSync(path.join(__dirname, "../static/geoJSON/local-government-area.geojson"));
     res.setHeader('Content-Type', 'application/json');
     fs.createReadStream(path.join(__dirname, "../static/geoJSON/local-government-area.geojson")).pipe(res);
-})
+});
+
+app.get("/api/coordinateCities",(req,res) => {
+    const city = req.query.city;
+    const content = fs.readFileSync(path.join(__dirname, "../static/data/CoordCities.csv"));
+    const coordinate = ['yes'];
+    var data; 
+
+    csv.parse(content, {}, (err, records) => {
+        data = records;
+        return data
+    });
+    if (data[2] === city){
+        coordinate.push(line[3]);
+        coordinate.push(line[4]);
+    }
+    //console.log("YES");
+    res.status(200).send(coordinate);
+});
+    
 
 app.get("/api/rainiestCities", (req, res) => {
     const year = req.query.year;
@@ -25,7 +44,7 @@ app.get("/api/rainiestCities", (req, res) => {
     var filteredData;
 
     csv.parse(content, {}, (err, records) => {
-
+        console.log("Hello")
         //Filter the data on the year and season
 
         filteredData = records.filter(function (d) {

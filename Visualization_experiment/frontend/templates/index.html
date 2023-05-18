@@ -15,12 +15,17 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 
   <script type="text/javascript" src="/js/new_script.js" defer></script>
+  <style>
+    .btn-group-vertical .btn {
+      text-align: left;
+    }
+  </style>
 </head>
 
 <body>
   <div class="container-fluid bg-white m-0 p-0">
     <div class=" bg-primary text-white text-center">
-      <h1>Weather in Australia</h1>
+      <h3>Weather in Australia</h3>
     </div>
     <div class="row">
       <div class="col-sm-3 m-0 p-0">
@@ -29,46 +34,46 @@
           <div class="container">
             <div class="row">
               <div class="col-sm-6">
-                <h6><p class="text-center">Hottest cities</p></h6>
-                <ul class="list-group">
-                  <li class="list-group-item" id="hot1">Elément 1</li>
-                  <li class="list-group-item" id="hot2">Elément 2</li>
-                  <li class="list-group-item" id="hot3">Elément 3</li>
-                </ul>
+                <h6><p class="text-center">Hottest cities (°)</p></h6>
+                  <ul class="btn-group-vertical">
+                    <button type="button" class="btn btn-outline-primary btn-sm text-dark" id="hot1" ></button>
+                    <button type="button" class="btn btn-outline-primary btn-sm text-dark" id="hot2"></button>
+                    <button type="button" class="btn btn-outline-primary btn-sm text-dark" id="hot3"></button>
+                  </ul>
               </div>
               <div class="col-sm-6">
-                <h6><p class="text-center">Coldest cities</p></h6>
-                <ul class="list-group">
-                  <li class="list-group-item" id="cold1">Elément 1</li>
-                  <li class="list-group-item" id="cold2">Elément 2</li>
-                  <li class="list-group-item" id="cold3">Elément 3</li>
+                <h6><p class="text-center">Coldest cities (°)</p></h6>
+                <ul class="btn-group-vertical">
+                  <button type="button" class="btn btn-outline-primary btn-sm text-dark" id="cold1" ></button>
+                  <button type="button" class="btn btn-outline-primary btn-sm text-dark" id="cold2"></button>
+                  <button type="button" class="btn btn-outline-primary btn-sm text-dark" id="cold3"></button>
                 </ul>
               </div>
             </div>
             <br>
             <div class="row">
               <div class="col-sm-6">
-                <h6><p class="text-center">Rainiest cities</p></h6>
-                <ul class="list-group">
-                  <li class="list-group-item" id="rain1">Elément 1</li>
-                  <li class="list-group-item" id="rain2">Elément 2</li>
-                  <li class="list-group-item" id="rain3">Elément 3</li>
+                <h6><p class="text-center">Rainiest cities (mm)</p></h6>
+                <ul class="btn-group-vertical" id="hot">
+                  <button type="button" class="btn btn-outline-primary btn-sm text-dark" id="rain1" ></button>
+                  <button type="button" class="btn btn-outline-primary btn-sm text-dark" id="rain2"></button>
+                  <button type="button" class="btn btn-outline-primary btn-sm text-dark" id="rain3"></button>
                 </ul>
               </div>
               <div class="col-sm-6">
-                <h6><p class="text-center">Sunniest cities</p></h6>
-                <ul class="list-group">
-                  <li class="list-group-item" id="sun1">Elément 1</li>
-                  <li class="list-group-item" id="sun2">Elément 2</li>
-                  <li class="list-group-item" id="sun3">Elément 3</li>
+                <h6><p class="text-center">Sunniest cities (hours)</p></h6>
+                <ul class="btn-group-vertical">
+                  <button type="button" class="btn btn-outline-primary btn-sm text-dark" id="sun1" ></button>
+                  <button type="button" class="btn btn-outline-primary btn-sm text-dark" id="sun2"></button>
+                  <button type="button" class="btn btn-outline-primary btn-sm text-dark" id="sun3"></button>
                 </ul>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-md-6 m-0 p-0">
-        <div id="map" style="height: 400px;width:100%;"></div>
+      <div class="col-md-6 m-0 p-1">
+        <div id="map" style="height: 450px;width:100%;"></div>
       </div>
       <div class="col-sm-3">
         <div class="container pb-3 bg-light text-dark rounded-5">

@@ -1,37 +1,37 @@
-,id_location,city,lat,long,state_x,lga_x,state_y,lga_y,state_x,lga_x,state_y,lga_y
-0,0,Adelaide,-34.9289,138.6011,South Australia,Adelaide,South Australia,Adelaide,South Australia,Adelaide,South Australia,Adelaide
-1,1,Albany,-35.0228,117.8814,Western Australia,Albany,Western Australia,Albany,Western Australia,Albany,Western Australia,Albany
-2,2,Albury,-36.0806,146.9158,New South Wales,Albury,New South Wales,Albury,New South Wales,Albury,New South Wales,Albury
-3,3,AliceSprings,-23.697,133.883,Northern Territory,Alice Springs,Northern Territory,Alice Springs,Northern Territory,Alice Springs,Northern Territory,Alice Springs
-4,4,BadgerysCreek,-37.7,145.517,Victoria,Yarra Ranges,Victoria,Yarra Ranges,Victoria,Yarra Ranges,Victoria,Yarra Ranges
-5,5,Ballarat,-37.55,143.85,Victoria,Ballarat,Victoria,Ballarat,Victoria,Ballarat,Victoria,Ballarat
-6,6,Bendigo,-36.75,144.2667,Victoria,Greater Bendigo,Victoria,Greater Bendigo,Victoria,Greater Bendigo,Victoria,Greater Bendigo
-7,7,Brisbane,-27.4678,153.0281,Queensland,Brisbane,Queensland,Brisbane,Queensland,Brisbane,Queensland,Brisbane
-8,8,Cairns,-16.9303,145.7703,Queensland,Cairns,Queensland,Cairns,Queensland,Cairns,Queensland,Cairns
-9,9,Canberra,-35.2931,149.1269,Australian Capital Territory,Unincorporated ACT,Australian Capital Territory,Unincorporated ACT,Australian Capital Territory,Unincorporated ACT,Australian Capital Territory,Unincorporated ACT
-10,10,Cobar,-31.4997,145.8319,New South Wales,Cobar,New South Wales,Cobar,New South Wales,Cobar,New South Wales,Cobar
-11,11,CoffsHarbour,-30.296,153.113,New South Wales,Coffs Harbour,New South Wales,Coffs Harbour,New South Wales,Coffs Harbour,New South Wales,Coffs Harbour
-12,12,Dartmoor,-37.933,141.283,Victoria,Glenelg,Victoria,Glenelg,Victoria,Glenelg,Victoria,Glenelg
-13,13,Darwin,-12.4381,130.8411,Northern Territory,Darwin,Northern Territory,Darwin,Northern Territory,Darwin,Northern Territory,Darwin
-14,14,Hobart,-42.8806,147.325,Tasmania,Hobart,Tasmania,Hobart,Tasmania,Hobart,Tasmania,Hobart
-15,15,Launceston,-41.4419,147.145,Tasmania,Launceston,Tasmania,Launceston,Tasmania,Launceston,Tasmania,Launceston
-16,16,Melbourne,-37.8136,144.9631,Victoria,Melbourne,Victoria,Melbourne,Victoria,Melbourne,Victoria,Melbourne
-17,17,Mildura,-34.1889,142.1583,Victoria,Mildura,Victoria,Mildura,Victoria,Mildura,Victoria,Mildura
-18,18,Moree,-29.465,149.8344,New South Wales,Moree Plains,New South Wales,Moree Plains,New South Wales,Moree Plains,New South Wales,Moree Plains
-19,19,MountGambier,-37.831,140.779,South Australia,Mount Gambier,South Australia,Mount Gambier,South Australia,Mount Gambier,South Australia,Mount Gambier
-20,20,MountGinini,-35.533,148.783,Australian Capital Territory,Unincorporated ACT,Australian Capital Territory,Unincorporated ACT,Australian Capital Territory,Unincorporated ACT,Australian Capital Territory,Unincorporated ACT
-21,21,Newcastle,-32.9167,151.75,New South Wales,Newcastle,New South Wales,Newcastle,New South Wales,Newcastle,New South Wales,Newcastle
-22,22,NorfolkIsland,-29.029,167.956,Other Territories,Unincorp. Other Territories,Other Territories,Unincorp. Other Territories,Other Territories,Unincorp. Other Territories,Other Territories,Unincorp. Other Territories
-23,23,Nuriootpa,-34.4667,138.9833,South Australia,Barossa,South Australia,Barossa,South Australia,Barossa,South Australia,Barossa
-24,24,PearceRAAF,-31.666,116.016,Western Australia,Swan,Western Australia,Swan,Western Australia,Swan,Western Australia,Swan
-25,25,Perth,-31.9522,115.8589,Western Australia,Perth,Western Australia,Perth,Western Australia,Perth,Western Australia,Perth
-26,26,Portland,-38.3333,141.6,Victoria,Glenelg,Victoria,Glenelg,Victoria,Glenelg,Victoria,Glenelg
-27,27,Richmond,-33.5983,150.7511,New South Wales,Hawkesbury,New South Wales,Hawkesbury,New South Wales,Hawkesbury,New South Wales,Hawkesbury
-28,28,Sale,-38.1,147.0667,Victoria,Wellington,Victoria,Wellington,Victoria,Wellington,Victoria,Wellington
-29,29,Sydney,-33.865,151.2094,New South Wales,Sydney,New South Wales,Sydney,New South Wales,Sydney,New South Wales,Sydney
-30,30,Townsville,-19.2564,146.8183,Queensland,Townsville,Queensland,Townsville,Queensland,Townsville,Queensland,Townsville
-31,31,WaggaWagga,-35.125,147.353,New South Wales,Wagga Wagga,New South Wales,Wagga Wagga,New South Wales,Wagga Wagga,New South Wales,Wagga Wagga
-32,32,Watsonia,-37.716,145.083,Victoria,Banyule,Victoria,Banyule,Victoria,Banyule,Victoria,Banyule
-33,33,Witchcliffe,-34.033,115.1,Western Australia,Augusta Margaret River,Western Australia,Augusta Margaret River,Western Australia,Augusta Margaret River,Western Australia,Augusta Margaret River
-34,34,Wollongong,-34.4331,150.8831,New South Wales,Wollongong,New South Wales,Wollongong,New South Wales,Wollongong,New South Wales,Wollongong
-35,35,Woomera,-31.15,136.8,South Australia,Unincorporated SA,South Australia,Unincorporated SA,South Australia,Unincorporated SA,South Australia,Unincorporated SA
+,id_location,city,lat,long,state,lga
+0,0,Adelaide,-34.9289,138.6011,South Australia,Adelaide
+1,1,Albany,-35.0228,117.8814,Western Australia,Albany
+2,2,Albury,-36.0806,146.9158,New South Wales,Albury
+3,3,AliceSprings,-23.697,133.883,Northern Territory,Alice Springs
+4,4,BadgerysCreek,-37.7,145.517,Victoria,Yarra Ranges
+5,5,Ballarat,-37.55,143.85,Victoria,Ballarat
+6,6,Bendigo,-36.75,144.2667,Victoria,Greater Bendigo
+7,7,Brisbane,-27.4678,153.0281,Queensland,Brisbane
+8,8,Cairns,-16.9303,145.7703,Queensland,Cairns
+9,9,Canberra,-35.2931,149.1269,Australian Capital Territory,Unincorporated ACT
+10,10,Cobar,-31.4997,145.8319,New South Wales,Cobar
+11,11,CoffsHarbour,-30.296,153.113,New South Wales,Coffs Harbour
+12,12,Dartmoor,-37.933,141.283,Victoria,Glenelg
+13,13,Darwin,-12.4381,130.8411,Northern Territory,Darwin
+14,14,Hobart,-42.8806,147.325,Tasmania,Hobart
+15,15,Launceston,-41.4419,147.145,Tasmania,Launceston
+16,16,Melbourne,-37.8136,144.9631,Victoria,Melbourne
+17,17,Mildura,-34.1889,142.1583,Victoria,Mildura
+18,18,Moree,-29.465,149.8344,New South Wales,Moree Plains
+19,19,MountGambier,-37.831,140.779,South Australia,Mount Gambier
+20,20,MountGinini,-35.533,148.783,Australian Capital Territory,Unincorporated ACT
+21,21,Newcastle,-32.9167,151.75,New South Wales,Newcastle
+22,22,NorfolkIsland,-29.029,167.956,Other Territories,Unincorp. Other Territories
+23,23,Nuriootpa,-34.4667,138.9833,South Australia,Barossa
+24,24,PearceRAAF,-31.666,116.016,Western Australia,Swan
+25,25,Perth,-31.9522,115.8589,Western Australia,Perth
+26,26,Portland,-38.3333,141.6,Victoria,Glenelg
+27,27,Richmond,-33.5983,150.7511,New South Wales,Hawkesbury
+28,28,Sale,-38.1,147.0667,Victoria,Wellington
+29,29,Sydney,-33.865,151.2094,New South Wales,Sydney
+30,30,Townsville,-19.2564,146.8183,Queensland,Townsville
+31,31,WaggaWagga,-35.125,147.353,New South Wales,Wagga Wagga
+32,32,Watsonia,-37.716,145.083,Victoria,Banyule
+33,33,Witchcliffe,-34.033,115.1,Western Australia,Augusta Margaret River
+34,34,Wollongong,-34.4331,150.8831,New South Wales,Wollongong
+35,35,Woomera,-31.15,136.8,South Australia,Unincorporated SA
