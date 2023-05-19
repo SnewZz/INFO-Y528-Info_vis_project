@@ -38,9 +38,9 @@ function updateColdestCities(){
     fetch(url).then(data => {
         return data.json()
     }).then(res => {
-        document.getElementById("cold1").innerText = "1)"+res[0].name+"\n"+res[0].temp;
-        document.getElementById("cold2").innerText = "2)"+res[1].name+"\n"+res[1].temp;
-        document.getElementById("cold3").innerText = "3)"+res[2].name+"\n"+res[2].temp;
+        document.getElementById("cold1").innerText = res[0].name+" "+res[0].temp;
+        document.getElementById("cold2").innerText = res[1].name+" "+res[1].temp;
+        document.getElementById("cold3").innerText = res[2].name+" "+res[2].temp;
     })
 }
 
@@ -49,9 +49,9 @@ function updateHottestCities(){
     fetch(url).then(data => {
         return data.json()
     }).then(res => {
-        document.getElementById("hot1").innerText = "1)"+res[0].name+"\n"+res[0].temp;
-        document.getElementById("hot2").innerText = "2)"+res[1].name+"\n"+res[1].temp;
-        document.getElementById("hot3").innerText = "3)"+res[2].name+"\n"+res[2].temp;
+        document.getElementById("hot1").innerText = res[0].name+" "+res[0].temp;
+        document.getElementById("hot2").innerText = res[1].name+" "+res[1].temp;
+        document.getElementById("hot3").innerText = res[2].name+" "+res[2].temp;
     })
 }
 
@@ -60,9 +60,9 @@ function updateRainiestCities(){
     fetch(url).then(data => {
         return data.json()
     }).then(res => {
-        document.getElementById("rain1").innerText = "1)"+res[0].name+"\n"+res[0].rainLvl;
-        document.getElementById("rain2").innerText = "2)"+res[1].name+"\n"+res[1].rainLvl;
-        document.getElementById("rain3").innerText = "3)"+res[2].name+"\n"+res[2].rainLvl;
+        document.getElementById("rain1").innerText = res[0].name+" "+res[0].rainLvl;
+        document.getElementById("rain2").innerText = res[1].name+" "+res[1].rainLvl;
+        document.getElementById("rain3").innerText = res[2].name+" "+res[2].rainLvl;
     })
 }
 
@@ -71,9 +71,9 @@ function updateSunniestCities(){
     fetch(url).then(data => {
         return data.json()
     }).then(res => {
-        document.getElementById("sun1").innerText = "1)"+res[0].name+"\n"+res[0].sunLvl;
-        document.getElementById("sun2").innerText = "2)"+res[1].name+"\n"+res[1].sunLvl;
-        document.getElementById("sun3").innerText = "3)"+res[2].name+"\n"+res[2].sunLvl;
+        document.getElementById("sun1").innerText = res[0].name+" "+res[0].sunLvl;
+        document.getElementById("sun2").innerText = res[1].name+" "+res[1].sunLvl;
+        document.getElementById("sun3").innerText = res[2].name+" "+res[2].sunLvl;
     })
 }
 
@@ -199,8 +199,8 @@ function placeMarker(city_name){
     fetch(url).then(data => {
         return data.json()
     }).then(res => {
-        //L.marker([res[0],res[1]]).addTo(map);
-        console.log(res[0]);
+        L.marker([res[0],res[1]]).addTo(map);
+        //console.log(res[]);
     })
 }
 

@@ -19,6 +19,14 @@
     .btn-group-vertical .btn {
       text-align: left;
     }
+    new_link {
+    outline: none;
+    text-decoration: none;
+    color: #090909;
+    }
+    new_link:hover {
+  background: #ccd34b;
+}
   </style>
 </head>
 
@@ -31,55 +39,47 @@
       <div class="col-sm-3 m-0 p-0">
         <div class="container-fluid bg-light text-dark rounded-5 p-2">
           <h5><p class="text-center">Best cities <small>(Year: <span id="selected_year"></span> & Season: <span id="selected_season"></span>)</small></p></h5>
-          <div class="container">
+          <div class="container-fluid">
             <div class="row">
-              <div class="col-sm-6">
+              <div class="col-sm-6 ">
                 <h6><p class="text-center">Hottest cities (°)</p></h6>
-                  <ul class="btn-group-vertical">
-                    <button type="button" class="btn btn-outline-primary btn-sm text-dark" id="hot1" ></button>
-                    <button type="button" class="btn btn-outline-primary btn-sm text-dark" id="hot2"></button>
-                    <button type="button" class="btn btn-outline-primary btn-sm text-dark" id="hot3"></button>
-                  </ul>
+                <p class="text-left">1 <new_link href="#" id="hot1"></new_link></p>
+                <p class="text-left">2 <new_link href="#" id="hot2"></new_link></p>
+                <p class="text-left">3 <new_link href="#" id="hot3"></new_link></p>
               </div>
               <div class="col-sm-6">
                 <h6><p class="text-center">Coldest cities (°)</p></h6>
-                <ul class="btn-group-vertical">
-                  <button type="button" class="btn btn-outline-primary btn-sm text-dark" id="cold1" ></button>
-                  <button type="button" class="btn btn-outline-primary btn-sm text-dark" id="cold2"></button>
-                  <button type="button" class="btn btn-outline-primary btn-sm text-dark" id="cold3"></button>
-                </ul>
+                <p class="text-left">1 <new_link href="#" id="cold1"></new_link></p>
+                <p class="text-left">2 <new_link href="#" id="cold2"></new_link></p>
+                <p class="text-left">3 <new_link href="#" id="cold3"></new_link></p>
               </div>
             </div>
             <br>
             <div class="row">
               <div class="col-sm-6">
                 <h6><p class="text-center">Rainiest cities (mm)</p></h6>
-                <ul class="btn-group-vertical" id="hot">
-                  <button type="button" class="btn btn-outline-primary btn-sm text-dark" id="rain1" ></button>
-                  <button type="button" class="btn btn-outline-primary btn-sm text-dark" id="rain2"></button>
-                  <button type="button" class="btn btn-outline-primary btn-sm text-dark" id="rain3"></button>
-                </ul>
+                <p class="text-left">1 <new_link href="#" id="rain1"></new_link></p>
+                <p class="text-left">2 <new_link href="#" id="rain2"></new_link></p>
+                <p class="text-left">3 <new_link href="#" id="rain3"></new_link></p>
               </div>
               <div class="col-sm-6">
-                <h6><p class="text-center">Sunniest cities (hours)</p></h6>
-                <ul class="btn-group-vertical">
-                  <button type="button" class="btn btn-outline-primary btn-sm text-dark" id="sun1" ></button>
-                  <button type="button" class="btn btn-outline-primary btn-sm text-dark" id="sun2"></button>
-                  <button type="button" class="btn btn-outline-primary btn-sm text-dark" id="sun3"></button>
-                </ul>
+                <h6><p class="text-center">Sunniest cities (h)</p></h6>
+                <p class="text-left">1 <new_link href="#" id="sun1"></new_link></p>
+                <p class="text-left">2 <new_link href="#" id="sun2"></new_link></p>
+                <p class="text-left">3 <new_link href="#" id="sun3"></new_link></p>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-md-6 m-0 p-1">
-        <div id="map" style="height: 450px;width:100%;"></div>
+      <div class="col-sm-6 m-0 p-1">
+        <div id="map" style="height: 380px;width:100%;"></div>
       </div>
       <div class="col-sm-3">
         <div class="container pb-3 bg-light text-dark rounded-5">
           <h1><p class="text-center">Map menu</p></h1>
           <div class="row">
-            <div class="col-12 ms-3">
+            <div class="col-sm-12 ms-3">
               <div id="radioContainer" class="d-flex flex-column">
                 <div class="form-check mt-2">
                   <input class="form-check-input" type="radio" name="mode" id="r1" value="option1">
