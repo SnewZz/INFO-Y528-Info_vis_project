@@ -238,6 +238,7 @@ function placeMarker(city_name,bool){
         else{
             marker.on('click', function (e) {
                 console.log("Display graphics");
+                //Display the graphics for the city
             });
         }
         
@@ -392,7 +393,6 @@ boutons.forEach(function(btn){
         var city_name = document.getElementById(event.target.id).innerText.match(/[a-zA-Z]+/g);
         removerMarkers(false);
         placeMarker(city_name,false);
-        //Add a function that display the graphic. 
     });
 })
 
