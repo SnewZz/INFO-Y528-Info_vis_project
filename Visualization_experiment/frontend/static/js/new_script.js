@@ -29,9 +29,9 @@ function getColor(avgTemperature, minTemperature, maxTemperature, red) {
 
 
 
-function updateDataInfo(e) {
+/*function updateDataInfo(e) {
     document.getElementById('data-info').innerText = e;
-}
+}*/
 
 function updateColdestCities(){
     const url = `/api/coldestCities?year=${getYear()}&season=${getSeason()}`;
@@ -142,7 +142,7 @@ function updateMap(regions, data) {
                 layer.on('click', function () {
                     //var regionId = layer.feature;
                     var regionName = layer.feature.properties.lga_name_long;
-                    updateDataInfo(regionName)
+                    //updateDataInfo(regionName)
                     displayCitiesRegion(regionName)
                 });
             })
@@ -188,7 +188,7 @@ function mapModeHandler() {
         const mode = currMode;
         const baseUrl = getBaseUrlFromMode(mode);
         const url = baseUrl + `?year=${year}&season=${season}`;
-        console.log(url)
+        //console.log(url)
         fetch(url).then(data => {
             return data.json()
         }).then(res => {
@@ -204,13 +204,21 @@ function mapModeHandler() {
     }
 }
 
-function removerMarkers(){
-    markers.forEach(function(marker){
-        map.removeLayer(marker);
-    })
+function removerMarkers(bool){
+    if (bool){
+        comparison_marker.forEach(function(marker){
+            map.removeLayer(marker);
+        })
+    }
+    else{
+        markers.forEach(function(marker){
+            map.removeLayer(marker);
+        })
+    }
+    
 }
 
-function placeMarker(city_name){
+function placeMarker(city_name,bool){
     const url = `/api/coordinateCities?city=${city_name}`;
     fetch(url).then(data => {
         return data.json()
@@ -222,18 +230,30 @@ function placeMarker(city_name){
         marker.on('mouseout', function (e) {
             this.closePopup();
         });
-        marker.on('click', function (e) {
-            console.log("Display graphics"); //Put the function that display the graphics !!! 
-        });
+        if (bool){
+            marker.on('click', function (e) {
+                //Display the graphic on the graphic that is already printed (we add a layer on our graphic)
+            });
+        }
+        else{
+            marker.on('click', function (e) {
+                console.log("Display graphics");
+            });
+        }
+        
         marker.addTo(map);
         marker.bindPopup(city_name[0]);
-        console.log(city_name)
-        markers.push(marker);
+        if (bool){
+            comparison_marker.push(marker);
+        }
+        else{
+            markers.push(marker);
+        }
     })
 }
 
 function displayCitiesRegion(regionName){
-    removerMarkers();
+    removerMarkers(false);
     const url = `/api/citiesInRegion?region=${regionName}`;
     fetch(url).then(data => {
         return data.json()
@@ -247,8 +267,10 @@ function displayCitiesRegion(regionName){
             this.closePopup();
             });
             marker.on('click', function (e) {
-                console.log("Display graphics"); //Put the function that display the graphics !!! 
+                console.log("Display graphics"); 
+                //Put the function that display the graphics for the city!!! 
             });
+            //Display the graphics for the whole region!!!
             marker.addTo(map);
             marker.bindPopup(d[2]);
             markers.push(marker);
@@ -270,6 +292,7 @@ map.setView([-25, 135],1);
 
 var regionLayers = [];
 var markers = [];
+var comparison_marker = [];
 
 
 // Add tile layer to the map
@@ -305,7 +328,7 @@ radioContainer.addEventListener('change', (event) => {
     const checkedButton = event.target;
     if (checkedButton.matches('input[name="mode"]')) {
         currMode = checkedButton.value;
-        removerMarkers();
+        removerMarkers(false);
         mapModeHandler();
     }
 });
@@ -320,11 +343,11 @@ slider1.addEventListener("change", async (event) => {
     result1.textContent = "Year : " + event.target.value;
 })
 
-slider2.addEventListener("change", async (event) => {
+/*slider2.addEventListener("change", async (event) => {
     res.innerHTML = event.target.value;
-})
+})*/
 
-slider2.addEventListener("change", async (event) => {
+/*slider2.addEventListener("change", async (event) => {
     //Every year, the color changes..
     if (event.target.value == 2011) {
         $.getJSON("../static/geoJSON/local-government-area.geojson", function (data) {
@@ -342,24 +365,34 @@ slider2.addEventListener("change", async (event) => {
             }).addTo(map);
         });
     }
-})
+})*/
 
 var boutons = document.querySelectorAll("new_link");
 
 var select_city = document.getElementById("selected-city");
 
-select_city.addEventListener("change", (event) => {
-    removerMarkers();
+var compare_city = document.getElementById("comparison-city");
+
+compare_city.addEventListener("change", (event) => {
+    removerMarkers(true);
     var lst = [];
     lst.push(event.target.value);
-    placeMarker(lst);
+    placeMarker(lst,true);
+})
+
+select_city.addEventListener("change", (event) => {
+    removerMarkers(false);
+    var lst = [];
+    lst.push(event.target.value);
+    placeMarker(lst,false);
 })
 
 boutons.forEach(function(btn){
     btn.addEventListener("click",(event) =>{
         var city_name = document.getElementById(event.target.id).innerText.match(/[a-zA-Z]+/g);
-        removerMarkers();
-        placeMarker(city_name);
+        removerMarkers(false);
+        placeMarker(city_name,false);
+        //Add a function that display the graphic. 
     });
 })
 
