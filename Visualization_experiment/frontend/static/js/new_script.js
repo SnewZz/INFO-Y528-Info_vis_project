@@ -98,6 +98,13 @@ async function getRegions() {
     return regions;
 }
 
+function getCityRegion(lga,regions){
+    for (var i = 0; i < regions.features.length; i++){
+        if (lga.name === regions.features[i].properties.lga_name_long[0]){
+            return regions.features[i]
+        }
+    }
+}
 
 function updateMap(regions, data) {
 
@@ -116,10 +123,11 @@ function updateMap(regions, data) {
 
     for (var i = 0; i < regions.features.length; i++) {
         var lga = data[i];
+        //console.log(lga);
         if (lga !== undefined) {
             var isRed = (currMode == "option2" || currMode == "option4");
             var fillColor = getColor(data[i].avgData, minData, maxData, isRed);
-            var layer = L.geoJSON(regions.features[i], {
+            var layer = L.geoJSON(getCityRegion(lga,regions), {
                 style: {
                     fillColor: fillColor,
                     fillOpacity: 0.8,
@@ -135,6 +143,7 @@ function updateMap(regions, data) {
                     //var regionId = layer.feature;
                     var regionName = layer.feature.properties.lga_name_long;
                     updateDataInfo(regionName)
+                    displayCitiesRegion(regionName)
                 });
             })
         }
@@ -183,6 +192,7 @@ function mapModeHandler() {
         fetch(url).then(data => {
             return data.json()
         }).then(res => {
+            //console.log(regions)
             updateMap(regions, res)
         })
     } else {
@@ -194,26 +204,57 @@ function mapModeHandler() {
     }
 }
 
+function removerMarkers(){
+    markers.forEach(function(marker){
+        map.removeLayer(marker);
+    })
+}
+
 function placeMarker(city_name){
     const url = `/api/coordinateCities?city=${city_name}`;
     fetch(url).then(data => {
         return data.json()
     }).then(res => {
-        L.marker([res[0],res[1]]).addTo(map);
-        //console.log(res[]);
+        var marker = L.marker([res[0],res[1]]);
+        marker.on('mouseover', function (e) {
+            this.openPopup();
+        });
+        marker.on('mouseout', function (e) {
+            this.closePopup();
+        });
+        marker.on('click', function (e) {
+            console.log("Display graphics"); //Put the function that display the graphics !!! 
+        });
+        marker.addTo(map);
+        marker.bindPopup(city_name[0]);
+        markers.push(marker);
     })
 }
 
+function displayCitiesRegion(regionName){
+    removerMarkers();
+    //1) Get the city in the region 
+    //2) Display them 
+}
+
 // Create Leaflet map
-var map = L.map('map').setView([-25, 135], 4);
+var map = L.map('map',{
+    minZoom:3.5,
+    maxZoom:10,
+}).setView([-25, 135],3.5);
 
 var regionLayers = [];
+var markers = [];
+
 
 // Add tile layer to the map
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors',
     maxZoom: 18,
 }).addTo(map);
+
+
+    //map.setZoom(0);
 
 // var cities = loadCities();
 //var citiesPerRegion = loadCitiesPerRegion(loadCities());
@@ -239,9 +280,12 @@ radioContainer.addEventListener('change', (event) => {
     const checkedButton = event.target;
     if (checkedButton.matches('input[name="mode"]')) {
         currMode = checkedButton.value;
+        removerMarkers();
         mapModeHandler();
     }
 });
+
+/**/
 
 
 slider1.addEventListener("change", async (event) => {
@@ -275,11 +319,15 @@ slider2.addEventListener("change", async (event) => {
     }
 })
 
+var boutons = document.querySelectorAll("new_link");
 
-const hot1 = document.getElementById("hot1");
-
-hot1.addEventListener("click",(event) =>{
-    var city_name = document.getElementById("hot1").innerText.match(/[a-zA-Z]+/g);
-    placeMarker(city_name);
+boutons.forEach(function(btn){
+    btn.addEventListener("click",(event) =>{
+        var city_name = document.getElementById(event.target.id).innerText.match(/[a-zA-Z]+/g);
+        removerMarkers();
+        placeMarker(city_name);
+    });
 })
+
+
 

@@ -18,6 +18,11 @@ app.get("/api/regionsGeoJSON", (req, res) => {
     fs.createReadStream(path.join(__dirname, "../static/geoJSON/local-government-area.geojson")).pipe(res);
 });
 
+/*app.get("/api/citiesInRegion",(req,res) => {
+    const region = req.query.region; //Get the name of the region
+    const content = fs.readFileSync(path.join(__dirname, "../static/data/CoordCities.csv"));
+})*/
+
 app.get("/api/coordinateCities",(req,res) => {
     const city = req.query.city;
     const content = fs.readFileSync(path.join(__dirname, "../static/data/CoordCities.csv"));
@@ -30,6 +35,7 @@ app.get("/api/coordinateCities",(req,res) => {
             //console.log(d[2]);
             return d[2] === city;
         });
+        //console.log(filteredData)
         coordinate.push(filteredData[0][3]);
         coordinate.push(filteredData[0][4]);
 
