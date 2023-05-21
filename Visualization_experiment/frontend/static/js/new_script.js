@@ -219,38 +219,41 @@ function removerMarkers(bool){
 }
 
 function placeMarker(city_name,bool){
-    const url = `/api/coordinateCities?city=${city_name}`;
-    fetch(url).then(data => {
-        return data.json()
-    }).then(res => {
-        var marker = L.marker([res[0],res[1]]);
-        marker.on('mouseover', function (e) {
-            this.openPopup();
-        });
-        marker.on('mouseout', function (e) {
-            this.closePopup();
-        });
-        if (bool){
-            marker.on('click', function (e) {
+    if (city_name != "-"){
+        //console.log(city_name)
+        const url = `/api/coordinateCities?city=${city_name}`;
+        fetch(url).then(data => {
+            return data.json()
+        }).then(res => {
+            var marker = L.marker([res[0],res[1]]);
+            marker.on('mouseover', function (e) {
+                this.openPopup();
+            });
+            marker.on('mouseout', function (e) {
+                this.closePopup();
+            });
+            if (bool){
+                marker.on('click', function (e) {
                 //Display the graphic on the graphic that is already printed (we add a layer on our graphic)
-            });
-        }
-        else{
-            marker.on('click', function (e) {
-                console.log("Display graphics");
+                });
+            }
+            else{
+                marker.on('click', function (e) {
+                    console.log("Display graphics");
                 //Display the graphics for the city
-            });
-        }
+                });
+            }
         
-        marker.addTo(map);
-        marker.bindPopup(city_name[0]);
-        if (bool){
-            comparison_marker.push(marker);
-        }
-        else{
-            markers.push(marker);
-        }
-    })
+            marker.addTo(map);
+            marker.bindPopup(city_name[0]);
+            if (bool){
+                comparison_marker.push(marker);
+            }
+            else{
+                markers.push(marker);
+            }
+        })
+    }
 }
 
 function displayCitiesRegion(regionName){
