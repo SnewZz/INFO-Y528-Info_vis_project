@@ -18,10 +18,18 @@ app.get("/api/regionsGeoJSON", (req, res) => {
     fs.createReadStream(path.join(__dirname, "../static/geoJSON/local-government-area.geojson")).pipe(res);
 });
 
-/*app.get("/api/citiesInRegion",(req,res) => {
+app.get("/api/citiesInRegion",(req,res) => {
     const region = req.query.region; //Get the name of the region
     const content = fs.readFileSync(path.join(__dirname, "../static/data/CoordCities.csv"));
-})*/
+    var filteredData;
+
+    csv.parse(content,{},(err,records) => {
+        filteredData = records.filter(function (d) {
+            return d[6] === region;
+        });
+        res.status(200).send(filteredData);
+    })
+})
 
 app.get("/api/coordinateCities",(req,res) => {
     const city = req.query.city;

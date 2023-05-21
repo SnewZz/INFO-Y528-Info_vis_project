@@ -227,21 +227,46 @@ function placeMarker(city_name){
         });
         marker.addTo(map);
         marker.bindPopup(city_name[0]);
+        console.log(city_name)
         markers.push(marker);
     })
 }
 
 function displayCitiesRegion(regionName){
     removerMarkers();
-    //1) Get the city in the region 
-    //2) Display them 
+    const url = `/api/citiesInRegion?region=${regionName}`;
+    fetch(url).then(data => {
+        return data.json()
+    }).then(res => {
+        res.forEach(function(d) {
+            var marker = L.marker([d[3],d[4]]);
+            marker.on('mouseover', function (e) {
+                this.openPopup();
+            });
+            marker.on('mouseout', function (e) {
+            this.closePopup();
+            });
+            marker.on('click', function (e) {
+                console.log("Display graphics"); //Put the function that display the graphics !!! 
+            });
+            marker.addTo(map);
+            marker.bindPopup(d[2]);
+            markers.push(marker);
+        });
+    });
 }
+
+
+var bounds = L.latLng(-26.36, 134.87).toBounds(4500000);
 
 // Create Leaflet map
 var map = L.map('map',{
-    minZoom:3.5,
+    minZoom:4,
     maxZoom:10,
-}).setView([-25, 135],3.5);
+    maxBounds: bounds,
+});
+
+map.setView([-25, 135],1);
 
 var regionLayers = [];
 var markers = [];
@@ -320,6 +345,15 @@ slider2.addEventListener("change", async (event) => {
 })
 
 var boutons = document.querySelectorAll("new_link");
+
+var select_city = document.getElementById("selected-city");
+
+select_city.addEventListener("change", (event) => {
+    removerMarkers();
+    var lst = [];
+    lst.push(event.target.value);
+    placeMarker(lst);
+})
 
 boutons.forEach(function(btn){
     btn.addEventListener("click",(event) =>{

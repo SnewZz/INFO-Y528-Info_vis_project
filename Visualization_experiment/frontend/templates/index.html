@@ -31,10 +31,63 @@
 </head>
 
 <body>
-  <div class="container-fluid bg-white m-0 p-0">
-    <div class=" bg-primary text-white text-center">
-      <h3>Weather in Australia</h3>
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #87b6d8;">
+    <a class="navbar-brand ms-4" href="#">
+      <img src="https://th.bing.com/th/id/R.0f7b76ea8a53ed734d70e47f530b83d1?rik=PxxVVw6vth9qUg&riu=http%3a%2f%2fclipart-library.com%2fimages_k%2fflag-transparent%2fflag-transparent-23.png&ehk=yqIp7Q1EKOhQk9UyuwzcrEamUazdDs6gB6EmZSR3AIQ%3d&risl=&pid=ImgRaw&r=0" width="50" height="50" alt="">
+    </a>
+    <div class="container-fluid">
+        <a class="navbar-brand d-flex justify-content-center" href="#">Weather in Australia</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="nav navbar-nav navbar-right ">
+            <li class="nav-item">
+              <a class="nav-link" href="#">Search a city:</a>
+            </li>
+            <li class="nav-item">
+              <select class="form-select" id="selected-city">
+                <option id="none" selected>-</option>
+                <option id="Adelaide">Adelaide</option>
+                <option id="Albany">Albany</option>
+                <option id="Albury">Albury</option>
+                <option id="AliceSprings">AliceSprings</option>
+                <option id="BadgerysCreek">BadgerysCreek</option>
+                <option id="Ballarat">Ballarat</option>
+                <option id="Bendigo">Bendigo</option>
+                <option id="Brisbane">Brisbane</option>
+                <option id="Cairns">Cairns</option>
+                <option id="Canberra">Canberra</option>
+                <option id="Cobar">Cobar</option>
+                <option id="CoffsHarbour">CoffsHarbour</option>
+                <option id="Dartmoor">Dartmoor</option>
+                <option id="Darwin">Darwin</option>
+                <option id="Hobart">Hobart</option>
+                <option id="Launceston">Launceston</option>
+                <option id="Melbourne">Melbourne</option>
+                <option id="Mildura">Mildura</option>
+                <option id="Moree">Moree</option>
+                <option id="MountGambier">MountGambier</option>
+                <option id="MountGinini">MountGinini</option>
+                <option id="Newcastle">Newcastle</option>
+                <option id="NorfolkIsland">NorfolkIsland</option>
+                <option id="Nuriootpa">Nuriootpa</option>
+                <option id="PearceRAAF">PearceRAAF</option>
+                <option id="Perth">Perth</option>
+                <option id="Portland">Portland</option>
+                <option id="Richmond">Richmond</option>
+                <option id="Sale">Sale</option>
+                <option id="Sydney">Sydney</option>
+                <option id="Townsville">Townsville</option>
+                <option id="WaggaWagga">WaggaWagga</option>
+                <option id="Watsonia">Watsonia</option>
+                <option id="Witchcliffe">Witchcliffe</option>
+                <option id="Wollongong">Wollongong</option>
+                <option id="Woomera">Woomera</option>
+              </select>
+            </li>
+          </ul>
+        </div>
     </div>
+  </nav>
+  <div class="container-fluid bg-white m-0 p-0">
     <div class="row">
       <div class="col-sm-3 m-0 p-0">
         <div class="container-fluid bg-light text-dark rounded-5 p-2">
@@ -42,13 +95,13 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col-sm-6 ">
-                <h6><p class="text-center">Hottest cities (°)</p></h6>
+                <h6><p class="text-left">Hottest cities (°)</p></h6>
                 <p class="text-left">1 <new_link href="#" id="hot1"></new_link></p>
                 <p class="text-left">2 <new_link href="#" id="hot2"></new_link></p>
                 <p class="text-left">3 <new_link href="#" id="hot3"></new_link></p>
               </div>
               <div class="col-sm-6">
-                <h6><p class="text-center">Coldest cities (°)</p></h6>
+                <h6><p class="text-left">Coldest cities (°)</p></h6>
                 <p class="text-left">1 <new_link href="#" id="cold1"></new_link></p>
                 <p class="text-left">2 <new_link href="#" id="cold2"></new_link></p>
                 <p class="text-left">3 <new_link href="#" id="cold3"></new_link></p>
@@ -57,13 +110,13 @@
             <br>
             <div class="row">
               <div class="col-sm-6">
-                <h6><p class="text-center">Rainiest cities (mm)</p></h6>
+                <h6><p class="text-left">Rainiest cities (mm)</p></h6>
                 <p class="text-left">1 <new_link href="#" id="rain1"></new_link></p>
                 <p class="text-left">2 <new_link href="#" id="rain2"></new_link></p>
                 <p class="text-left">3 <new_link href="#" id="rain3"></new_link></p>
               </div>
               <div class="col-sm-6">
-                <h6><p class="text-center">Sunniest cities (h)</p></h6>
+                <h6><p class="text-left">Sunniest cities (h)</p></h6>
                 <p class="text-left">1 <new_link href="#" id="sun1"></new_link></p>
                 <p class="text-left">2 <new_link href="#" id="sun2"></new_link></p>
                 <p class="text-left">3 <new_link href="#" id="sun3"></new_link></p>
@@ -73,9 +126,9 @@
         </div>
       </div>
       <div class="col-sm-6 m-0 p-1">
-        <div id="map" style="height: 450px;width:100%;"></div>
+        <div id="map" style="height: 380px;width:100%;"></div>
       </div>
-      <div class="col-sm-3">
+      <div class="col-sm-3 p-1 me-0">
         <div class="container pb-3 bg-light text-dark rounded-5">
           <h1><p class="text-center">Map menu</p></h1>
           <div class="row">
