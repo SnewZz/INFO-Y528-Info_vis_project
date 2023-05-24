@@ -1,3 +1,5 @@
+
+
 /**
  * A function that give an appropriate color to represent the number of city of the dataset in a region.
  *
@@ -368,11 +370,74 @@ function placeMarker(city_name,bool){
 //index = 1 ==> Data for the comparison
 function addData(chart, label, data,index) {
     if (chart.data.datasets.length < 2){
-        chart.data.datasets.splice(index,1,{
-            label: label,
-            data: data,
-            backgroundColor: 'rgba(54, 162, 235, 0.5)' // Couleur de remplissage pour le type de données 2
-        })
+        if (index == 0){
+            if (chart == chart3 || chart == chart4){
+                chart.data.datasets.splice(index,1,{
+                    label: label,
+                    data: data,
+                    backgroundColor: '#F5793A',
+                    borderColor: '#F5793A',
+                    fill:false,
+                    borderWidth: 2
+                })
+            }
+            else{
+                chart.data.datasets.splice(index,1,{
+                    label: label,
+                    data: data,
+                    backgroundColor: [
+                        '#F5793A',
+                        '#F5793A',
+                        '#A95AA1',
+                        '#A95AA1',
+                        '#A95AA1',
+                        '#0F2080',
+                        '#0F2080',
+                        '#0F2080',
+                        '#85C0F9',
+                        '#85C0F9',
+                        '#85C0F9',
+                        '#F5793A'
+                      ] // Couleur de remplissage pour le type de données 2
+                })
+            }
+        }
+        else{
+            if (chart == chart3 || chart == chart4){
+                chart.data.datasets.splice(index,1,{
+                    label: label,
+                    data: data,
+                    backgroundColor: '#0F2080',
+                    borderColor: '#0F2080',
+                    borderWidth: 2,
+                    fill:false
+                })
+            }
+            else{
+                chart.data.datasets.splice(index,1,{
+                    label: label,
+                    data: data,
+                    backgroundColor: [
+                        'white','white','white','white','white','white','white','white','white','white','white','white'
+                      ],
+                    borderWidth: 5,
+                    borderColor: [
+                        '#F5793A',
+                        '#F5793A',
+                        '#A95AA1',
+                        '#A95AA1',
+                        '#A95AA1',
+                        '#0F2080',
+                        '#0F2080',
+                        '#0F2080',
+                        '#85C0F9',
+                        '#85C0F9',
+                        '#85C0F9',
+                        '#F5793A'
+                      ]
+                })
+            }
+        }
         chart.update();
     }
 }
@@ -397,22 +462,11 @@ async function createChartTmax(chartID,city){
               datasets: [{
                 label: city.concat(getYear()),
                 data: res,
-                borderWidth: 1,
+                //borderWidth: 1,
+                borderWidth: 2,
                 fill: false,
-                backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(255, 99, 132)',
-                    'rgb(75, 192, 192)',
-                    'rgb(75, 192, 192)',
-                    'rgb(75, 192, 192)',
-                    'rgb(153, 102, 255)',
-                    'rgb(153, 102, 255)',
-                    'rgb(153, 102, 255)',
-                    'rgb(54, 162, 235)',
-                    'rgb(54, 162, 235)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 99, 132)'
-                  ]
+                backgroundColor: '#F5793A',
+                borderColor: '#F5793A',    
               }]
             },
             options: {
@@ -470,33 +524,9 @@ async function createChartTmin(chartID,city){
                 label: city.concat(getYear()),
                 data: res,
                 fill:false,
-                //borderWidth: 1,
-                backgroundColor: [
-                    'red',
-                    'green',
-                    'green',
-                    'green',
-                    'green',
-                    'green',
-                    'green',
-                    'green',
-                    'green',
-                    'green',
-                    'green'
-                ],
-                borderColor: [
-                    'green',
-                    'green',
-                    'green',
-                    'green',
-                    'green',
-                    'green',
-                    'green',
-                    'green',
-                    'green',
-                    'green',
-                    'green'
-                  ]
+                borderWidth: 2,
+                backgroundColor: '#F5793A',
+                borderColor: '#F5793A',
               }]
             },
             options: {
@@ -548,18 +578,18 @@ async function createChartSun(chartID,city){
                 data: res,
                 borderWidth: 1,
                 backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(255, 99, 132)',
-                    'rgb(75, 192, 192)',
-                    'rgb(75, 192, 192)',
-                    'rgb(75, 192, 192)',
-                    'rgb(153, 102, 255)',
-                    'rgb(153, 102, 255)',
-                    'rgb(153, 102, 255)',
-                    'rgb(54, 162, 235)',
-                    'rgb(54, 162, 235)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 99, 132)'
+                    '#F5793A',
+                    '#F5793A',
+                    '#A95AA1',
+                    '#A95AA1',
+                    '#A95AA1',
+                    '#0F2080',
+                    '#0F2080',
+                    '#0F2080',
+                    '#85C0F9',
+                    '#85C0F9',
+                    '#85C0F9',
+                    '#F5793A'
                   ]
               }]
             },
@@ -597,7 +627,6 @@ async function createChartSun(chartID,city){
 }
 
 async function createChartRain(chartID,city){
-    console.log(city)
     const ctx = document.getElementById(chartID);
     const url = `/api/RainByMonth?year=${getYear()}&city=${city}`;
     chart1 = await fetch(url).then(data => {
@@ -612,18 +641,18 @@ async function createChartRain(chartID,city){
                 data: res,
                 borderWidth: 1,
                 backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(255, 99, 132)',
-                    'rgb(75, 192, 192)',
-                    'rgb(75, 192, 192)',
-                    'rgb(75, 192, 192)',
-                    'rgb(153, 102, 255)',
-                    'rgb(153, 102, 255)',
-                    'rgb(153, 102, 255)',
-                    'rgb(54, 162, 235)',
-                    'rgb(54, 162, 235)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 99, 132)'
+                    '#F5793A',
+                    '#F5793A',
+                    '#A95AA1',
+                    '#A95AA1',
+                    '#A95AA1',
+                    '#0F2080',
+                    '#0F2080',
+                    '#0F2080',
+                    '#85C0F9',
+                    '#85C0F9',
+                    '#85C0F9',
+                    '#F5793A'
                   ]
               }]
             },
@@ -663,6 +692,13 @@ async function createChartRain(chartID,city){
 function displayCitiesRegion(regionName){
     removerMarkers(false);
     removerMarkers(true);
+    if (! first_time){
+        chart1.destroy();
+        chart2.destroy();
+        chart3.destroy();
+        chart4.destroy();
+    }
+    first_time = false;
     compare_city.selectedIndex = 0;
     const url = `/api/citiesInRegion?region=${regionName}`;
     fetch(url).then(data => {
@@ -678,14 +714,7 @@ function displayCitiesRegion(regionName){
             });
             marker.on('click', function (e) {
                 removerMarkers(true);
-                if (! first_time){
-                    chart1.destroy();
-                    chart2.destroy();
-                    chart3.destroy();
-                    chart4.destroy();
-                }
-                first_time = false;
-                
+                compare_city.selectedIndex = 0;
                 createChartRain("chart1",[d[2]]);
                 createChartSun("chart2",[d[2]]);
                 createChartTmin("chart3",[d[2]]);
@@ -784,12 +813,10 @@ function updateLegend(mode) {
 
 function updateRain(year,index){
     city_name = chart1.chart.config.data.datasets[index].label[0];
-    console.log(city_name)
     const url1 = `/api/RainByMonth?year=${year}&city=${city_name}`;
     fetch(url1).then(data => {
         return data.json()
     }).then(res => {   
-        console.log(chart1.chart.config.data.datasets)
         chart1.chart.config.data.datasets[index].label = [city_name].concat(year);
         chart1.chart.config.data.datasets[index].data = res;
         chart1.update()
