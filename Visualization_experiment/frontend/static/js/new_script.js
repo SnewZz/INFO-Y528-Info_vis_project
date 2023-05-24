@@ -33,19 +33,19 @@ function getColorByTemperature(temperature) {
     var color;
 
     if (temperature <= 5) {
-        color = '#313695'; // Bleu foncé
+        color = '#313695'; 
     } else if (temperature <= 10) {
-        color = '#588BBF'; // Turquoise clair
+        color = '#588BBF'; 
     } else if (temperature <= 15) {
-        color = '#A3D3E5'; // Vert printemps
+        color = '#A3D3E5'; 
     } else if (temperature <= 20) {
-        color = '#E8F6E8'; // Jaune
+        color = '#E8F6E8'; 
     } else if (temperature <= 25) {
-        color = '#FEE89C'; // Orange
+        color = '#FEE89C'; 
     } else if (temperature <= 30) {
-        color = '#FBA55C'; // Orange-rouge
+        color = '#FBA55C'; 
     } else if (temperature <= 35) {
-        color = '#E24832'; // Rouge
+        color = '#E24832'; 
     } else {
         color = '#A50026';
     }
@@ -918,11 +918,9 @@ fetch(`/api/regionsGeoJSON`).then(data => {
 }).then(res => { regions = res; });
 
 const slider1 = document.getElementById("slider1");
-const slider2 = document.getElementById("slider2");
 const slider3 = document.getElementById("slider3");
 
 const result1 = document.getElementById("result1");
-const result2 = document.getElementById("result2");
 const result3 = document.getElementById("result3");
 
 //const error_msg = document.getElementById("error_msg");
@@ -960,6 +958,11 @@ radioContainer.addEventListener('change', (event) => {
     }
 });
 
+buttonSeason.addEventListener('change', (event) => {
+    const checkedButton = event.target;
+    mapModeHandler()
+})
+
 
 slider1.addEventListener("change", async (event) => {
     mapModeHandler();
@@ -994,12 +997,6 @@ slider3.addEventListener("change", (event) => {
     }
 });
 
-slider2.addEventListener("change", async (event) => {
-    // mapModeHandler();
-    // updateTemporalityInfo();
-    // updateBestCitiesInfo();
-    result2.textContent = "Reference year : " + event.target.value;
-})
 
 var boutons = document.querySelectorAll("new_link");
 
