@@ -31,19 +31,19 @@ function getColorByTemperature(temperature) {
     var color;
 
     if (temperature <= 5) {
-        color = '#313695'; // Bleu foncé
+        color = '#313695'; 
     } else if (temperature <= 10) {
-        color = '#588BBF'; // Turquoise clair
+        color = '#588BBF'; 
     } else if (temperature <= 15) {
-        color = '#A3D3E5'; // Vert printemps
+        color = '#A3D3E5'; 
     } else if (temperature <= 20) {
-        color = '#E8F6E8'; // Jaune
+        color = '#E8F6E8'; 
     } else if (temperature <= 25) {
-        color = '#FEE89C'; // Orange
+        color = '#FEE89C'; 
     } else if (temperature <= 30) {
-        color = '#FBA55C'; // Orange-rouge
+        color = '#FBA55C'; 
     } else if (temperature <= 35) {
-        color = '#E24832'; // Rouge
+        color = '#E24832'; 
     } else {
         color = '#A50026';
     }
@@ -597,7 +597,6 @@ async function createChartSun(chartID,city){
 }
 
 async function createChartRain(chartID,city){
-    console.log(city)
     const ctx = document.getElementById(chartID);
     const url = `/api/RainByMonth?year=${getYear()}&city=${city}`;
     chart1 = await fetch(url).then(data => {
@@ -612,6 +611,7 @@ async function createChartRain(chartID,city){
                 data: res,
                 borderWidth: 1,
                 backgroundColor: [
+                    //pattern.draw('triangle', '#ffce56'),
                     'rgb(255, 99, 132)',
                     'rgb(255, 99, 132)',
                     'rgb(75, 192, 192)',
