@@ -255,8 +255,7 @@ function getBaseUrlFromMode(mode) {
 
 function mapModeHandler() {
     if (currMode != null) {
-        $('#alert1').addClass('d-none')
-        $('#alert2').addClass('d-none')
+        $('.alert').addClass('d-none')
         const year = getYear()
         const season = getSeason();
         const mode = currMode;
@@ -270,7 +269,7 @@ function mapModeHandler() {
         })
     } else {
         // Select the alert element
-        const alertElement = $('#alert1');
+        const alertElement = $('.alert');
 
         // Remove the d-none class to show the alert
         alertElement.removeClass('d-none');
