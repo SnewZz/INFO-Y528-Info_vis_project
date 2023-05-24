@@ -961,6 +961,18 @@ radioContainer.addEventListener('change', (event) => {
 buttonSeason.addEventListener('change', (event) => {
     const checkedButton = event.target;
     mapModeHandler()
+    removerMarkers(true)
+    
+    if (compare_city.selectedIndex != 0)
+    {
+        removeData(chart1,1);
+        removeData(chart2,1);
+        removeData(chart3,1);
+        removeData(chart4,1);
+        compare_city.selectedIndex = 0;
+    }
+    
+    //Faut supprimer les données du dashnoard 
 })
 
 
