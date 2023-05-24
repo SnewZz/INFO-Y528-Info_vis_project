@@ -29,7 +29,88 @@ app.get("/api/citiesInRegion",(req,res) => {
         });
         res.status(200).send(filteredData);
     })
-})
+});
+
+
+//--------------------------------------------
+// CHART ---------------
+//--------------------------------------------
+
+app.get("/api/seasonchart", (req, res) => {
+    const city = req.query.city;
+    const year = req.query.year;
+    const season = req.query.season;
+    // console.log("X01");
+    // console.log(region);
+    // const season = req.query.season;
+    const content = fs.readFileSync(path.join(__dirname, "../static/data/data_map.csv"));
+    var filteredData;
+
+    csv.parse(content, {}, (err, records) => {
+        //Filter the data on the year and season
+        filteredData = records.filter(function (d) {
+            return d[2] === city;
+        });
+        const cities = [];
+
+        filteredData.forEach(item => {
+            if(item[6] != "NaN"){
+                const city = {
+                    id : item[1],
+                    name : item[2],
+                    startDat: item[3],
+                    season: item[5],
+                    rainLvl : item[6].substring(0,6),
+                    temp_min : item[7],
+                    temp_max : item[8],
+                    sunshine : item[9]
+                }
+                cities.push(city);
+            }
+        });
+
+        res.status(200).send(cities);
+    });
+});
+
+app.get("/api/monthschart", (req, res) => {
+    const city = req.query.city;
+    const year = req.query.year;
+    const season = req.query.season;
+    // console.log("X01");
+    // console.log(region);
+    // const season = req.query.season;
+    const content = fs.readFileSync(path.join(__dirname, "../static/data/Datamap_2.csv"));
+    var filteredData;
+
+    csv.parse(content, {}, (err, records) => {
+        //Filter the data on the year and season
+        filteredData = records.filter(function (d) {
+            return d[2] === city;
+        });
+        const cities = [];
+
+        filteredData.forEach(item => {
+            if(item[6] != "NaN"){
+                const city = {
+                    id : item[1],
+                    name : item[2],
+                    startDat: item[3],
+                    year: item[3].substring(0,4),
+                    month: item[3].substring(5,7),
+                    season: item[5],
+                    rainLvl : item[6].substring(0,6),
+                    temp_min : item[7],
+                    temp_max : item[8],
+                    sunshine : item[9]
+                }
+                cities.push(city);
+            }
+        });
+
+        res.status(200).send(cities);
+    });
+});
 
 app.get("/api/coordinateCities",(req,res) => {
     const city = req.query.city;
@@ -67,7 +148,7 @@ app.get("/api/rainiestCities", (req, res) => {
             return d[4].split("-")[0] === year && d[5] === season;
         });
 
-        console.log(filteredData)
+        // console.log(filteredData)
 
         const cities = [];
 
