@@ -1,11 +1,12 @@
 /* Sélecteur pour le conteneur du graphique */
 #chart {
-    width: 150px;
-    /* Largeur souhaitée en pixels */
-    height: 130px;
-    /* Hauteur souhaitée en pixels */
+  width: 150px;
+  /* Largeur souhaitée en pixels */
+  height: 130px;
+  /* Hauteur souhaitée en pixels */
 }
-body{
+
+body {
   background-color: rgb(253, 252, 252);
 }
 
@@ -18,13 +19,14 @@ body{
 }
 
 
-#menu-container{
+#menu-container {
   float: left;
   width: 25%;
   height: 400px;
   display: flex;
 }
-#menu{
+
+#menu {
   width: 90%;
   height: 95%;
   background-color: white;
@@ -36,16 +38,46 @@ body{
   border: 2px solid black;
 }
 
-#dashboard-container{
-  clear: both; /* efface les floats précédents */
+#dashboard-container {
+  clear: both;
+  /* efface les floats précédents */
   width: 100%;
-  height: 600px; /* ou la hauteur que tu veux */
+  height: 600px;
+  /* ou la hauteur que tu veux */
   display: flex;
 }
 
-#id-error{
+#id-error {
   color: red;
 }
+
+.info.legend {
+  line-height: 18px;
+  color: #555;
+}
+
+.info.legend i {
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin-right: 8px;
+  opacity: 0.7;
+}
+
+.fa-question-circle:focus {
+  outline: none;
+}
+
+.bi-question-circle:focus {
+  outline: none;
+}
+
+.btn-info:focus,
+.btn-info.focus {
+  box-shadow: none;
+}
+
+
 
 /* #dashboard{
   width: 100%;

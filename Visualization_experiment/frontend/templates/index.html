@@ -13,6 +13,9 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+
 
   <script type="text/javascript" src="/js/new_script.js" defer></script>
   <style>
@@ -100,13 +103,13 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col-sm-6 ">
-                <h6><p class="text-left">Hottest cities (°)</p></h6>
+                <h6><p class="text-left">Hottest cities (°C)</p></h6>
                 <p class="text-left">1 <new_link href="#" id="hot1"></new_link></p>
                 <p class="text-left">2 <new_link href="#" id="hot2"></new_link></p>
                 <p class="text-left">3 <new_link href="#" id="hot3"></new_link></p>
               </div>
               <div class="col-sm-6">
-                <h6><p class="text-left">Coldest cities (°)</p></h6>
+                <h6><p class="text-left">Coldest cities (°C)</p></h6>
                 <p class="text-left">1 <new_link href="#" id="cold1"></new_link></p>
                 <p class="text-left">2 <new_link href="#" id="cold2"></new_link></p>
                 <p class="text-left">3 <new_link href="#" id="cold3"></new_link></p>
@@ -115,13 +118,13 @@
             <br>
             <div class="row">
               <div class="col-sm-6">
-                <h6><p class="text-left">Rainiest cities (mm)</p></h6>
+                <h6><p class="text-left">Rainiest cities (mm/day)</p></h6>
                 <p class="text-left">1 <new_link href="#" id="rain1"></new_link></p>
                 <p class="text-left">2 <new_link href="#" id="rain2"></new_link></p>
                 <p class="text-left">3 <new_link href="#" id="rain3"></new_link></p>
               </div>
               <div class="col-sm-6">
-                <h6><p class="text-left">Sunniest cities (h)</p></h6>
+                <h6><p class="text-left">Sunniest cities (hour/day)</p></h6>
                 <p class="text-left">1 <new_link href="#" id="sun1"></new_link></p>
                 <p class="text-left">2 <new_link href="#" id="sun2"></new_link></p>
                 <p class="text-left">3 <new_link href="#" id="sun3"></new_link></p>
@@ -139,29 +142,51 @@
           <div class="row">
             <div class="col-sm-12 ms-3">
               <div id="radioContainer" class="d-flex flex-column">
-                <div class="form-check mt-2">
+                <div class="form-check mt-2 align-form">
                   <input class="form-check-input" type="radio" name="mode" id="r1" value="option1">
                   <label class="form-check-label mb-2" for="mode1">
                     Temperature min
                   </label>
+                  <button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="This mode represents the average of the minimum temperatures encountered in the cities within a region at the selected date and season.">
+                    <i class="fas fa-question-circle"></i>
+                  </button>
                 </div>
-                <div class="form-check mt-2">
+                
+                
+                
+                <div class="form-check mt-2 align-form">
                   <input class="form-check-input" type="radio" name="mode" id="r2" value="option2">
                   <label class="form-check-label mb-2" for="mode2">
                     Temperature max
                   </label>
+                  <button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="This mode represents the average of the maximum temperatures encountered in the cities within a region at the selected date and season.">
+                    <i class="fas fa-question-circle"></i>
+                  </button>
                 </div>
                 <div class="form-check mt-2">
                   <input class="form-check-input" type="radio" name="mode" id="r3" value="option3">
                   <label class="form-check-label mb-2" for="mode3">
                     Rainfall
                   </label>
+                  <button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="This mode represents the average of the number of mm of rainfall encountered in a day in the cities within a region at the selected date and season.">
+                    <i class="fas fa-question-circle"></i>
+                  </button>
                 </div>
                 <div class="form-check mt-2">
                   <input class="form-check-input" type="radio" name="mode" id="r4" value="option4">
                   <label class="form-check-label mb-2" for="mode4">
                     Sunshine
                   </label>
+                  <button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="This mode represents the average of the number of hour of sunshine encountered in a day in the cities within a region at the selected date and season.">
+                    <i class="fas fa-question-circle"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="row">
+                <div id="menu-error-container">
+                  <div class="alert alert-warning alert-dismissible fade show d-none" role="alert">
+                    <strong>No data on the map...</strong> To display data on the map, choose a mode.
+                  </div>                 
                 </div>
               </div>
               <div class="row">
@@ -179,11 +204,10 @@
                 </div>        
               </div>
               <div class="row">
-                <div id="menu-error-container">
-                  <div class="alert alert-warning alert-dismissible fade show d-none" role="alert" id="alert1">
-                    <strong>No data on the map...</strong> To display data on the map, choose a mode.
-                  </div>                   
-                </div>
+                <div class="col-5 ">
+                  <input id="slider2" class="form-range" min="2009" max="2016" type="range" value="2016">
+                  <div id="result2">Reference year : 2016</div>
+                </div>  
               </div>
           </div>
         </div>
@@ -267,7 +291,34 @@
           </div>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col"><canvas id="myChart5"></div>
+      </div>
+
+      <!-- <div class="p-2 w-50 align-self-center"><canvas id="myChart3"></div>
+      <div class="p-2 w-50 align-self-center"><canvas id="myChart2"></canvas></div> -->
+      
     </div>
+      <!-- <div class="col"><canvas id="myChart2" style="width:30%"></canvas> </div>
+      <div class="col"><canvas id="myChart3" style="width:30%"></canvas></div> -->
+
+
+      <!-- <div class="w-600"></div>
+      <div class="col cent"><canvas id="myChart3" style="width:30%"></canvas></div> -->
+      <!-- <div class="col">col</div> -->
+    </div>
+
+
+      <!-- <h2>Data Dashboard</h2>
+      <p id="data-info"></p>
+
+      <canvas id="myChart" style="width:30%;max-width:1000px"></canvas> -->
+
+      <!-- <p id="chart"> HIIIIIII</p> -->
+      
+      <!-- Canvas -->
+    
   </div>
 </body>
 

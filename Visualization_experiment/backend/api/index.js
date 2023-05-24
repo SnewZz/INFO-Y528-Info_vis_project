@@ -51,7 +51,29 @@ app.get("/api/RainByMonth",(req,res) => {
     })
 })
 
+/*app.get("/api/RainByRegion",(req,res) => {
+    const year = req.query.year; //Get the year
+    const region = req.query.region; //Get the city
+    const content = fs.readFileSync(path.join(__dirname, "../static/data/Datamap_2.csv"));
+    var filteredData;
+    rainAvgByMonth = [0,0,0,0,0,0,0,0,0,0,0,0];
+    cnt_NaN = [0,0,0,0,0,0,0,0,0,0,0,0] 
 
+    csv.parse(content,{},(err,records) => {
+        filteredData = records.filter(function (d) {
+            return d[10] === region && d[4].split("-")[0] === year;
+        });
+        //console.log(filteredData)
+        for (i = 0; i < filteredData.length/12; i++){
+            for (j = 0; j < filteredData.length; j++){
+                rainAvgByMonth[j] = rainAvgByMonth[j] + filteredData[j]
+            }
+            rainAvgByMonth.push(filteredData[i][6])
+        }
+
+        res.status(200).send(rainAvgByMonth);
+    })
+})*/
 
 app.get("/api/TminByMonth",(req,res) => {
     const year = req.query.year; //Get the year
@@ -173,6 +195,38 @@ app.get("/api/rainiestCities", (req, res) => {
     });
 });
 
+app.get("/api/driestCities", (req, res) => {
+    const year = req.query.year;
+    const season = req.query.season;
+    const content = fs.readFileSync(path.join(__dirname, "../static/data/data_map.csv"));
+    var filteredData;
+
+    csv.parse(content, {}, (err, records) => {
+        //Filter the data on the year and season
+
+        filteredData = records.filter(function (d) {
+            return d[4].split("-")[0] === year && d[5] === season;
+        });
+
+        const cities = [];
+
+        filteredData.forEach(item => {
+            if (item[6] != "NaN") {
+                const city = {
+                    id: item[1],
+                    name: item[2],
+                    rainLvl: item[6].substring(0, 6)
+                }
+                cities.push(city);
+            }
+        });
+
+        cities.sort((a, b) => a.rainLvl - b.rainLvl);
+        const top3Rainiest = cities.slice(0, 3);
+        res.status(200).send(top3Rainiest);
+    });
+});
+
 app.get("/api/suniestCities", (req, res) => {
     const year = req.query.year;
     const season = req.query.season;
@@ -205,6 +259,41 @@ app.get("/api/suniestCities", (req, res) => {
         res.status(200).send(top3Suniest);
     });
 });
+
+
+app.get("/api/leastSunnyCities", (req, res) => {
+    const year = req.query.year;
+    const season = req.query.season;
+    const content = fs.readFileSync(path.join(__dirname, "../static/data/data_map.csv"));
+    var filteredData;
+
+    csv.parse(content, {}, (err, records) => {
+
+        //Filter the data on the year and season
+
+        filteredData = records.filter(function (d) {
+            return d[4].split("-")[0] === year && d[5] === season;
+        });
+
+        const cities = [];
+
+        filteredData.forEach(item => {
+            if (item[9] != "NaN") {
+                const city = {
+                    id: item[1],
+                    name: item[2],
+                    sunLvl: item[9].substring(0, 6)
+                }
+                cities.push(city);
+            }
+        });
+
+        cities.sort((a, b) => a.sunLvl - b.sunLvl);
+        const top3Suniest = cities.slice(0, 3);
+        res.status(200).send(top3Suniest);
+    });
+});
+
 
 app.get("/api/hottestCities", (req, res) => {
     const year = req.query.year;
@@ -292,7 +381,7 @@ app.get("/api/avgRain", (req, res) => {
             var totalRain = 0;
             var nbElts = 0;
             filteredData.forEach(data => {
-                if (data[11].localeCompare(item)) {
+                if (data[11].localeCompare(item) == 0) {
                     if (data[6] != "NaN") {
                         totalRain += parseFloat(data[6]);
                         nbElts++;
@@ -325,7 +414,7 @@ app.get("/api/avgSunshine", (req, res) => {
             var totalSunshine = 0;
             var nbElts = 0;
             filteredData.forEach(data => {
-                if (data[11].localeCompare(item)) {
+                if (data[11].localeCompare(item) == 0) {
                     if (data[9] != "NaN" && data[9] != "0.0") {
                         totalSunshine += parseFloat(data[9]);
                         nbElts++;
@@ -358,7 +447,7 @@ app.get("/api/avgHighestTemperature", (req, res) => {
             var totalTemp = 0;
             var nbElts = 0;
             filteredData.forEach(data => {
-                if (data[11].localeCompare(item)) {
+                if (data[11].localeCompare(item) == 0) {
                     if (data[8] != "NaN") {
                         totalTemp += parseFloat(data[8]);
                         nbElts++;
@@ -391,7 +480,7 @@ app.get("/api/avgLowestTemperature", (req, res) => {
             var totalTemp = 0;
             var nbElts = 0;
             filteredData.forEach(data => {
-                if (data[11].localeCompare(item)) {
+                if (data[11].localeCompare(item) == 0) {
                     if (data[7] != "NaN") {
                         totalTemp += parseFloat(data[7]);
                         nbElts++;
@@ -407,3 +496,21 @@ app.get("/api/avgLowestTemperature", (req, res) => {
 app.listen(port, () => {
     console.log("App is started on ", port);
 })
+
+app.get("/api/cityInformation", (req, res) => {
+    const year = req.query.year;
+    const season = req.query.season;
+    const cityName = req.query.cityName;
+    const content = fs.readFileSync(path.join(__dirname, "../static/data/data_map.csv"));
+    var filteredData;
+
+    csv.parse(content, {}, (err, records) => {
+
+        //Filter data on cityName, the year and season
+
+        filteredData = records.filter(function (d) {
+            return d[2] === cityName && d[4].split("-")[0] === year && d[5] === season;
+        });
+        res.status(200).send({name: filteredData[0][2], highestTemp: filteredData[0][8], lowestTemp: filteredData[0][7], rain: filteredData[0][6], sun: filteredData[0][9]});
+    });
+});
