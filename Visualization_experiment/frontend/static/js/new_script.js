@@ -544,7 +544,7 @@ function getmonthsChart(city){
                 datasets: [{
                 data: rains,
                 label: "Rains",
-                borderColor: "red",
+                borderColor: "#02309c",
                 fill: false
                 }]
             },
@@ -563,7 +563,7 @@ function getmonthsChart(city){
                 datasets: [{
                 data: sun,
                 label: "Sun",
-                borderColor: "red",
+                borderColor: "#fff855",
                 fill: false
                 }]
             },
@@ -581,7 +581,7 @@ function getmonthsChart(city){
                 datasets: [{
                 data: min_templs,
                 label: "min-temp",
-                borderColor: "red",
+                borderColor: "#8f9bc2",
                 fill: false
                 }]
             },
@@ -599,7 +599,7 @@ function getmonthsChart(city){
                 datasets: [{
                 data: max_templs,
                 label: "Winter",
-                borderColor: "red",
+                borderColor: "#685f20",
                 fill: false
                 }]
             },
@@ -688,22 +688,22 @@ function getSeasonsChart(city){
             datasets: [{
             data: rain_winter,
             label: "Winter",
-            borderColor: "red",
+            borderColor: "#02309c",
             fill: false
             },{
             data: rain_summer,
             label: "Summer",
-            borderColor: "green",
+            borderColor: "#fff855",
             fill: false
             },{
             data: rain_spring,
             label: "Spring",
-            borderColor: "blue",
+            borderColor: "#8f9bc2",
             fill: false
             },{
             data: rain_autumn,
             label: "Autumn",
-            borderColor: "black",
+            borderColor: "#685f20",
             fill: false
             }]
         },
@@ -722,22 +722,22 @@ function getSeasonsChart(city){
                 datasets: [{
                 data: sun_winter,
                 label: "Winter",
-                borderColor: "red",
+                borderColor: "#02309c",
                 fill: false
                 },{
                 data: sun_summer,
                 label: "Summer",
-                borderColor: "green",
+                borderColor: "#fff855",
                 fill: false
                 },{
                 data: sun_spring,
                 label: "Spring",
-                borderColor: "blue",
+                borderColor: "#8f9bc2",
                 fill: false
                 },{
                 data: sun_autumn,
                 label: "Autumn",
-                borderColor: "black",
+                borderColor: "#685f20",
                 fill: false
                 }]
             },
@@ -755,22 +755,22 @@ function getSeasonsChart(city){
                 datasets: [{
                 data: min_temp_winter,
                 label: "Winter",
-                borderColor: "red",
+                borderColor: "#02309c",
                 fill: false
                 },{
                 data: min_temp_summer,
                 label: "Summer",
-                borderColor: "green",
+                borderColor: "#fff855",
                 fill: false
                 },{
                 data: min_temp_spring,
                 label: "Spring",
-                borderColor: "blue",
+                borderColor: "#8f9bc2",
                 fill: false
                 },{
                 data: min_temp_autumn,
                 label: "Autumn",
-                borderColor: "black",
+                borderColor: "#685f20",
                 fill: false,
                 text: "yo"
                 }]
@@ -789,22 +789,22 @@ function getSeasonsChart(city){
                     datasets: [{
                     data: max_temp_winter,
                     label: "Winter",
-                    borderColor: "red",
+                    borderColor: "#02309c",
                     fill: false
                     },{
                     data: max_temp_summer,
                     label: "Summer",
-                    borderColor: "green",
+                    borderColor: "#fff855",
                     fill: false
                     },{
                     data: max_temp_spring,
                     label: "Spring",
-                    borderColor: "blue",
+                    borderColor: "#8f9bc2",
                     fill: false
                     },{
                     data: max_temp_autumn,
                     label: "Autumn",
-                    borderColor: "black",
+                    borderColor: "#685f20",
                     fill: false,
                     text: "yo"
                     }]
@@ -818,13 +818,6 @@ function getSeasonsChart(city){
 
     })
 }
-
-// -------------------------------------------------------------------
-
-
-
-
-
 
 
 var bounds = L.latLng(-26.36, 134.87).toBounds(4500000);
