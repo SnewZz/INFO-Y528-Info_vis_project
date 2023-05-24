@@ -891,11 +891,9 @@ fetch(`/api/regionsGeoJSON`).then(data => {
 }).then(res => { regions = res; });
 
 const slider1 = document.getElementById("slider1");
-const slider2 = document.getElementById("slider2");
 const slider3 = document.getElementById("slider3");
 
 const result1 = document.getElementById("result1");
-const result2 = document.getElementById("result2");
 const result3 = document.getElementById("result3");
 
 //const error_msg = document.getElementById("error_msg");
@@ -933,6 +931,11 @@ radioContainer.addEventListener('change', (event) => {
     }
 });
 
+buttonSeason.addEventListener('change', (event) => {
+    const checkedButton = event.target;
+    mapModeHandler()
+})
+
 
 slider1.addEventListener("change", async (event) => {
     mapModeHandler();
@@ -967,12 +970,6 @@ slider3.addEventListener("change", (event) => {
     }
 });
 
-slider2.addEventListener("change", async (event) => {
-    // mapModeHandler();
-    // updateTemporalityInfo();
-    // updateBestCitiesInfo();
-    result2.textContent = "Reference year : " + event.target.value;
-})
 
 var boutons = document.querySelectorAll("new_link");
 
