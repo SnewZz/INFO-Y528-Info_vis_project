@@ -391,13 +391,28 @@ async function createChartTmax(chartID,city){
         return data.json()
     }).then(res => {
         return new Chart(ctx, {
-            type: 'bar',
+            type: 'line',
             data: {
               labels: ['January', 'February', 'March', 'April', 'May', 'June','July','August','September','October','November','December'],
               datasets: [{
                 label: city.concat(getYear()),
                 data: res,
-                borderWidth: 1
+                borderWidth: 1,
+                fill: false,
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(255, 99, 132)',
+                    'rgb(75, 192, 192)',
+                    'rgb(75, 192, 192)',
+                    'rgb(75, 192, 192)',
+                    'rgb(153, 102, 255)',
+                    'rgb(153, 102, 255)',
+                    'rgb(153, 102, 255)',
+                    'rgb(54, 162, 235)',
+                    'rgb(54, 162, 235)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 99, 132)'
+                  ]
               }]
             },
             options: {
@@ -433,6 +448,14 @@ async function createChartTmax(chartID,city){
     })
 }
 
+/*var ctx = document.getElementById('chart3').getContext('2d');
+var gradient = ctx.createLinearGradient(0, 0, 0, 300);
+gradient.addColorStop(0, 'rgb(255, 99, 132)');
+gradient.addColorStop(0.083,'rgb(75, 192, 192)');
+gradient.addColorStop(0.333,'rgb(153, 102, 255)');
+gradient.addColorStop(0.583,'rgb(54, 162, 235)')
+gradient.addColorStop(1, 'blue');*/
+
 async function createChartTmin(chartID,city){
     const ctx = document.getElementById(chartID);
     const url = `/api/TminByMonth?year=${getYear()}&city=${city}`;
@@ -440,13 +463,40 @@ async function createChartTmin(chartID,city){
         return data.json()
     }).then(res => {
         return new Chart(ctx, {
-            type: 'bar',
+            type: 'line',
             data: {
               labels: ['January', 'February', 'March', 'April', 'May', 'June','July','August','September','October','November','December'],
               datasets: [{
                 label: city.concat(getYear()),
                 data: res,
-                borderWidth: 1
+                fill:false,
+                //borderWidth: 1,
+                backgroundColor: [
+                    'red',
+                    'green',
+                    'green',
+                    'green',
+                    'green',
+                    'green',
+                    'green',
+                    'green',
+                    'green',
+                    'green',
+                    'green'
+                ],
+                borderColor: [
+                    'green',
+                    'green',
+                    'green',
+                    'green',
+                    'green',
+                    'green',
+                    'green',
+                    'green',
+                    'green',
+                    'green',
+                    'green'
+                  ]
               }]
             },
             options: {
@@ -475,7 +525,8 @@ async function createChartTmin(chartID,city){
                             display: true,
                             labelString: 'Months',
                             },
-                        }]
+                            
+                        }],
                 }
             }
           });
@@ -495,7 +546,21 @@ async function createChartSun(chartID,city){
               datasets: [{
                 label: city.concat(getYear()),
                 data: res,
-                borderWidth: 1
+                borderWidth: 1,
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(255, 99, 132)',
+                    'rgb(75, 192, 192)',
+                    'rgb(75, 192, 192)',
+                    'rgb(75, 192, 192)',
+                    'rgb(153, 102, 255)',
+                    'rgb(153, 102, 255)',
+                    'rgb(153, 102, 255)',
+                    'rgb(54, 162, 235)',
+                    'rgb(54, 162, 235)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 99, 132)'
+                  ]
               }]
             },
             options: {
@@ -545,7 +610,21 @@ async function createChartRain(chartID,city){
               datasets: [{
                 label: city.concat(getYear()),
                 data: res,
-                borderWidth: 1
+                borderWidth: 1,
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(255, 99, 132)',
+                    'rgb(75, 192, 192)',
+                    'rgb(75, 192, 192)',
+                    'rgb(75, 192, 192)',
+                    'rgb(153, 102, 255)',
+                    'rgb(153, 102, 255)',
+                    'rgb(153, 102, 255)',
+                    'rgb(54, 162, 235)',
+                    'rgb(54, 162, 235)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 99, 132)'
+                  ]
               }]
             },
             options: {
