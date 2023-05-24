@@ -13,6 +13,9 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+
 
   <script type="text/javascript" src="/js/new_script.js" defer></script>
   <style>
@@ -31,10 +34,64 @@
 </head>
 
 <body>
-  <div class="container-fluid bg-white m-0 p-0">
-    <div class=" bg-primary text-white text-center">
-      <h3>Weather in Australia</h3>
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #87b6d8;">
+    <a class="navbar-brand ms-4" href="#">
+      <img src="https://th.bing.com/th/id/R.0f7b76ea8a53ed734d70e47f530b83d1?rik=PxxVVw6vth9qUg&riu=http%3a%2f%2fclipart-library.com%2fimages_k%2fflag-transparent%2fflag-transparent-23.png&ehk=yqIp7Q1EKOhQk9UyuwzcrEamUazdDs6gB6EmZSR3AIQ%3d&risl=&pid=ImgRaw&r=0" width="50" height="50" alt="">
+    </a>
+    <div class="container-fluid">
+        <a class="navbar-brand d-flex justify-content-center" href="#">Weather in Australia</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="nav navbar-nav navbar-right ">
+            <li class="nav-item">
+              <a class="nav-link" href="#">Search a city:</a>
+            </li>
+            <li class="nav-item">
+              <select class="form-select" id="selected-city">
+                <option id="none" selected>-</option>
+                <option id="Adelaide">Adelaide</option>
+                <option id="Albany">Albany</option>
+                <option id="Albury">Albury</option>
+                <option id="AliceSprings">AliceSprings</option>
+                <option id="BadgerysCreek">BadgerysCreek</option>
+                <option id="Ballarat">Ballarat</option>
+                <option id="Bendigo">Bendigo</option>
+                <option id="Brisbane">Brisbane</option>
+                <option id="Cairns">Cairns</option>
+                <option id="Canberra">Canberra</option>
+                <option id="Cobar">Cobar</option>
+                <option id="CoffsHarbour">CoffsHarbour</option>
+                <option id="Dartmoor">Dartmoor</option>
+                <option id="Darwin">Darwin</option>
+                <option id="Hobart">Hobart</option>
+                <option id="Launceston">Launceston</option>
+                <option id="Melbourne">Melbourne</option>
+                <option id="Mildura">Mildura</option>
+                <option id="Moree">Moree</option>
+                <option id="MountGambier">MountGambier</option>
+                <option id="MountGinini">MountGinini</option>
+                <option id="Newcastle">Newcastle</option>
+                <option id="NorfolkIsland">NorfolkIsland</option>
+                <option id="Nuriootpa">Nuriootpa</option>
+                <option id="PearceRAAF">PearceRAAF</option>
+                <option id="Perth">Perth</option>
+                <option id="Portland">Portland</option>
+                <option id="Richmond">Richmond</option>
+                <option id="Sale">Sale</option>
+                <option id="Sydney">Sydney</option>
+                <option id="Townsville">Townsville</option>
+                <option id="WaggaWagga">WaggaWagga</option>
+                <option id="Watsonia">Watsonia</option>
+                <option id="Witchcliffe">Witchcliffe</option>
+                <option id="Wollongong">Wollongong</option>
+                <option id="Woomera">Woomera</option>
+
+              </select>
+            </li>
+          </ul>
+        </div>
     </div>
+  </nav>
+  <div class="container-fluid bg-white m-0 p-0">
     <div class="row">
       <div class="col-sm-3 m-0 p-0">
         <div class="container-fluid bg-light text-dark rounded-5 p-2">
@@ -42,13 +99,13 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col-sm-6 ">
-                <h6><p class="text-center">Hottest cities (°)</p></h6>
+                <h6><p class="text-left">Hottest cities (°C)</p></h6>
                 <p class="text-left">1 <new_link href="#" id="hot1"></new_link></p>
                 <p class="text-left">2 <new_link href="#" id="hot2"></new_link></p>
                 <p class="text-left">3 <new_link href="#" id="hot3"></new_link></p>
               </div>
               <div class="col-sm-6">
-                <h6><p class="text-center">Coldest cities (°)</p></h6>
+                <h6><p class="text-left">Coldest cities (°C)</p></h6>
                 <p class="text-left">1 <new_link href="#" id="cold1"></new_link></p>
                 <p class="text-left">2 <new_link href="#" id="cold2"></new_link></p>
                 <p class="text-left">3 <new_link href="#" id="cold3"></new_link></p>
@@ -57,13 +114,13 @@
             <br>
             <div class="row">
               <div class="col-sm-6">
-                <h6><p class="text-center">Rainiest cities (mm)</p></h6>
+                <h6><p class="text-left">Rainiest cities (mm/day)</p></h6>
                 <p class="text-left">1 <new_link href="#" id="rain1"></new_link></p>
                 <p class="text-left">2 <new_link href="#" id="rain2"></new_link></p>
                 <p class="text-left">3 <new_link href="#" id="rain3"></new_link></p>
               </div>
               <div class="col-sm-6">
-                <h6><p class="text-center">Sunniest cities (h)</p></h6>
+                <h6><p class="text-left">Sunniest cities (hour/day)</p></h6>
                 <p class="text-left">1 <new_link href="#" id="sun1"></new_link></p>
                 <p class="text-left">2 <new_link href="#" id="sun2"></new_link></p>
                 <p class="text-left">3 <new_link href="#" id="sun3"></new_link></p>
@@ -73,37 +130,59 @@
         </div>
       </div>
       <div class="col-sm-6 m-0 p-1">
-        <div id="map" style="height: 450px;width:100%;"></div>
+        <div id="map" style="height: 380px;width:100%;"></div>
       </div>
-      <div class="col-sm-3">
+      <div class="col-sm-3 p-1 me-0">
         <div class="container pb-3 bg-light text-dark rounded-5">
           <h1><p class="text-center">Map menu</p></h1>
           <div class="row">
             <div class="col-sm-12 ms-3">
               <div id="radioContainer" class="d-flex flex-column">
-                <div class="form-check mt-2">
+                <div class="form-check mt-2 align-form">
                   <input class="form-check-input" type="radio" name="mode" id="r1" value="option1">
                   <label class="form-check-label mb-2" for="mode1">
                     Temperature min
                   </label>
+                  <button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="This mode represents the average of the minimum temperatures encountered in the cities within a region at the selected date and season.">
+                    <i class="fas fa-question-circle"></i>
+                  </button>
                 </div>
-                <div class="form-check mt-2">
+                
+                
+                
+                <div class="form-check mt-2 align-form">
                   <input class="form-check-input" type="radio" name="mode" id="r2" value="option2">
                   <label class="form-check-label mb-2" for="mode2">
                     Temperature max
                   </label>
+                  <button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="This mode represents the average of the maximum temperatures encountered in the cities within a region at the selected date and season.">
+                    <i class="fas fa-question-circle"></i>
+                  </button>
                 </div>
                 <div class="form-check mt-2">
                   <input class="form-check-input" type="radio" name="mode" id="r3" value="option3">
                   <label class="form-check-label mb-2" for="mode3">
                     Rainfall
                   </label>
+                  <button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="This mode represents the average of the number of mm of rainfall encountered in a day in the cities within a region at the selected date and season.">
+                    <i class="fas fa-question-circle"></i>
+                  </button>
                 </div>
                 <div class="form-check mt-2">
                   <input class="form-check-input" type="radio" name="mode" id="r4" value="option4">
                   <label class="form-check-label mb-2" for="mode4">
                     Sunshine
                   </label>
+                  <button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="This mode represents the average of the number of hour of sunshine encountered in a day in the cities within a region at the selected date and season.">
+                    <i class="fas fa-question-circle"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="row">
+                <div id="menu-error-container">
+                  <div class="alert alert-warning alert-dismissible fade show d-none" role="alert">
+                    <strong>No data on the map...</strong> To display data on the map, choose a mode.
+                  </div>                 
                 </div>
               </div>
               <div class="row">
@@ -121,27 +200,66 @@
                 </div>        
               </div>
               <div class="row">
-                <div id="menu-error-container">
-                  <div class="alert alert-warning alert-dismissible fade show d-none" role="alert">
-                    <strong>No data on the map...</strong> To display data on the map, choose a mode.
-                  </div>                 
-                </div>
+                <div class="col-5 ">
+                  <input id="slider2" class="form-range" min="2009" max="2016" type="range" value="2016">
+                  <div id="result2">Reference year : 2016</div>
+                </div>  
               </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="container-fluid bg-primary m-0 p-3">
-      <div id="dashboard">
-        <h2>Data Dashboard</h2>
-        <p id="data-info"></p>
-    
-        <h3>Year slider</h3>
-        <input id = "slider2" min ="2010" max="2015" type="range" value="2010">
-        <div id="result2"> </div>
-
-        <h3>DATA</h3>
-        <canvas id="chart"></canvas>
+    <div class="container-fluid bg-light m-0 p-3">
+      <div class="row">
+        <div class="col-sm-6 p-1 ms-3">
+          <h2>Dashboard</h2>
+          <div class="row">
+            <div class="col-sm-2 p-1 ms-2">
+              <h6>Compare with:</h6>
+            </div>
+            <div class="col-sm-3">
+              <select class="form-select" id="comparison-city">
+                <option id="none" selected>-</option>
+                <option id="Adelaide">Adelaide</option>
+                <option id="Albany">Albany</option>
+                <option id="Albury">Albury</option>
+                <option id="AliceSprings">AliceSprings</option>
+                <option id="BadgerysCreek">BadgerysCreek</option>
+                <option id="Ballarat">Ballarat</option>
+                <option id="Bendigo">Bendigo</option>
+                <option id="Brisbane">Brisbane</option>
+                <option id="Cairns">Cairns</option>
+                <option id="Canberra">Canberra</option>
+                <option id="Cobar">Cobar</option>
+                <option id="CoffsHarbour">CoffsHarbour</option>
+                <option id="Dartmoor">Dartmoor</option>
+                <option id="Darwin">Darwin</option>
+                <option id="Hobart">Hobart</option>
+                <option id="Launceston">Launceston</option>
+                <option id="Melbourne">Melbourne</option>
+                <option id="Mildura">Mildura</option>
+                <option id="Moree">Moree</option>
+                <option id="MountGambier">MountGambier</option>
+                <option id="MountGinini">MountGinini</option>
+                <option id="Newcastle">Newcastle</option>
+                <option id="NorfolkIsland">NorfolkIsland</option>
+                <option id="Nuriootpa">Nuriootpa</option>
+                <option id="PearceRAAF">PearceRAAF</option>
+                <option id="Perth">Perth</option>
+                <option id="Portland">Portland</option>
+                <option id="Richmond">Richmond</option>
+                <option id="Sale">Sale</option>
+                <option id="Sydney">Sydney</option>
+                <option id="Townsville">Townsville</option>
+                <option id="WaggaWagga">WaggaWagga</option>
+                <option id="Watsonia">Watsonia</option>
+                <option id="Witchcliffe">Witchcliffe</option>
+                <option id="Wollongong">Wollongong</option>
+                <option id="Woomera">Woomera</option>
+              </select>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
