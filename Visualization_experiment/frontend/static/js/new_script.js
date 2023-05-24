@@ -150,6 +150,10 @@ function updateMap(regions, data) {
     }
 }
 
+function getYearSlider3() {
+    return slider3.value;
+}
+
 function getYear() {
     return slider1.value;
 }
@@ -233,15 +237,62 @@ function placeMarker(city_name,bool){
                 this.closePopup();
             });
             if (bool){
-                marker.on('click', function (e) {
-                //Display the graphic on the graphic that is already printed (we add a layer on our graphic)
+                removeData(chart1,1);
+                removeData(chart2,1);
+                removeData(chart3,1);
+                removeData(chart4,1);                
+                const url1 = `/api/RainByMonth?year=${getYearSlider3()}&city=${city_name}`;
+                fetch(url1).then(data => {
+                    return data.json()
+                }).then(res => {   
+                    addData(chart1,city_name,res,1); 
                 });
+                const url2 = `/api/SunByMonth?year=${getYearSlider3()}&city=${city_name}`;
+                fetch(url2).then(data => {
+                    return data.json()
+                }).then(res => {   
+                    addData(chart2,city_name,res,1); 
+                });
+                const url3 = `/api/TminByMonth?year=${getYearSlider3()}&city=${city_name}`;
+                fetch(url3).then(data => {
+                    return data.json()
+                }).then(res => {   
+                    addData(chart3,city_name,res,1); 
+                });
+                const url4 = `/api/TmaxByMonth?year=${getYearSlider3()}&city=${city_name}`;
+                fetch(url4).then(data => {
+                    return data.json()
+                }).then(res => {   
+                    addData(chart4,city_name,res,1); 
+                });
+                /*marker.on('click', function (e) {
+                    removeData(chart1,1);
+                    const url = `/api/RainByMonth?year=${getYearSlider3()}&city=${city_name}`;
+                    fetch(url).then(data => {
+                        return data.json()
+                    }).then(res => {   
+                        addData(chart1,city_name,res,1); 
+                    });
+                //Display the graphic on the graphic that is already printed (we add a layer on our graphic)
+                });*/
             }
             else{
-                marker.on('click', function (e) {
-                    console.log("Display graphics");
+                createChartRain("chart1",city_name);
+                createChartSun("chart2",city_name);
+                createChartTmin("chart3",city_name);
+                createChartTmax("chart4",city_name);
+                //removeData(chart1,0);
+                //Add the function for the other
+                /*marker.on('click', function (e) {
+                    removeData(chart1,0);
+                    const url = `/api/RainByMonth?year=${getYearSlider3()}&city=${city_name}`;
+                    fetch(url).then(data => {
+                        return data.json()
+                    }).then(res => {   
+                        addData(chart1,city_name,res,0); 
+                    });
                 //Display the graphics for the city
-                });
+                });*/
             }
         
             marker.addTo(map);
@@ -255,6 +306,147 @@ function placeMarker(city_name,bool){
             }
         })
     }
+}
+
+
+//index = 0 ==> Data from the map
+//index = 1 ==> Data for the comparison
+function addData(chart, label, data,index) {
+    if (chart.data.datasets.length < 2){
+        chart.data.datasets.splice(index,1,{
+            label: label,
+            data: data,
+            backgroundColor: 'rgba(54, 162, 235, 0.5)' // Couleur de remplissage pour le type de données 2
+        })
+        chart.update();
+    }
+}
+
+function removeData(chart,index) {
+    if (chart.data.datasets.length > 1){
+        chart.data.datasets.splice(index,1);
+        chart.update();
+    }
+}
+
+async function createChartTmax(chartID,city){
+    const ctx = document.getElementById(chartID);
+    const url = `/api/TmaxByMonth?year=${getYearSlider3()}&city=${city}`;
+    chart4 = await fetch(url).then(data => {
+        return data.json()
+    }).then(res => {
+        return new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: ['January', 'February', 'March', 'April', 'May', 'June','July','August','September','October','November','December'],
+              datasets: [{
+                label: city,
+                data: res,
+                borderWidth: 1
+              }]
+            },
+            options: {
+                responsive: true,
+              scales: {
+                y: {
+                  beginAtZero: true
+                }
+              }
+            }
+          });
+        //console.log(chart)
+    })
+    //console.log(chart1)
+}
+
+async function createChartTmin(chartID,city){
+    const ctx = document.getElementById(chartID);
+    const url = `/api/TminByMonth?year=${getYearSlider3()}&city=${city}`;
+    chart3 = await fetch(url).then(data => {
+        return data.json()
+    }).then(res => {
+        return new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: ['January', 'February', 'March', 'April', 'May', 'June','July','August','September','October','November','December'],
+              datasets: [{
+                label: city,
+                data: res,
+                borderWidth: 1
+              }]
+            },
+            options: {
+                responsive: true,
+              scales: {
+                y: {
+                  beginAtZero: true
+                }
+              }
+            }
+          });
+        //console.log(chart)
+    })
+    //console.log(chart1)
+}
+
+async function createChartSun(chartID,city){
+    const ctx = document.getElementById(chartID);
+    const url = `/api/SunByMonth?year=${getYearSlider3()}&city=${city}`;
+    chart2 = await fetch(url).then(data => {
+        return data.json()
+    }).then(res => {
+        return new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: ['January', 'February', 'March', 'April', 'May', 'June','July','August','September','October','November','December'],
+              datasets: [{
+                label: city,
+                data: res,
+                borderWidth: 1
+              }]
+            },
+            options: {
+                responsive: true,
+              scales: {
+                y: {
+                  beginAtZero: true
+                }
+              }
+            }
+          });
+        //console.log(chart)
+    })
+    //console.log(chart1)
+}
+
+async function createChartRain(chartID,city){
+    const ctx = document.getElementById(chartID);
+    const url = `/api/RainByMonth?year=${getYearSlider3()}&city=${city}`;
+    chart1 = await fetch(url).then(data => {
+        return data.json()
+    }).then(res => {
+        return new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: ['January', 'February', 'March', 'April', 'May', 'June','July','August','September','October','November','December'],
+              datasets: [{
+                label: city,
+                data: res,
+                borderWidth: 1
+              }]
+            },
+            options: {
+                responsive: true,
+              scales: {
+                y: {
+                  beginAtZero: true
+                }
+              }
+            }
+          });
+        //console.log(chart)
+    })
+    //console.log(chart1)
 }
 
 function displayCitiesRegion(regionName){
@@ -633,6 +825,8 @@ function getSeasonsChart(city){
 
 
 
+
+
 var bounds = L.latLng(-26.36, 134.87).toBounds(4500000);
 
 // Create Leaflet map
@@ -668,9 +862,17 @@ fetch(`/api/regionsGeoJSON`).then(data => {
 
 const slider1 = document.getElementById("slider1");
 const slider2 = document.getElementById("slider2");
+const slider3 = document.getElementById("slider3");
 
 const result1 = document.getElementById("result1");
 const result2 = document.getElementById("result2");
+const result3 = document.getElementById("result3");
+
+var chart1;
+var chart2;
+var chart3;
+var chart4;
+
 
 const buttonSeason = document.getElementById("select-season");
 
@@ -695,6 +897,10 @@ slider1.addEventListener("change", async (event) => {
     updateTemporalityInfo();
     updateBestCitiesInfo();
     result1.textContent = "Year : " + event.target.value;
+})
+
+slider3.addEventListener("change", async (event) => {
+    result3.textContent = "Year : " + event.target.value;
 })
 
 /*slider2.addEventListener("change", async (event) => {
