@@ -158,6 +158,10 @@ function getYear() {
     return slider1.value;
 }
 
+function getComparedCity() {
+    return compare_city.value;
+}
+
 function getSeason() {
     return buttonSeason.value;
 }
@@ -486,323 +490,467 @@ function displayCitiesRegion(regionName){
 
 function visualize(city){
     const sl = document.getElementById("visulaizion_option");
-    console.log(sl.value);
+    const compared_city = getComparedCity();
+
     if (sl.value === "Seasonly"){
-        getSeasonsChart(city);
+        getSeasonsChart(city, compared_city);
     }else if (sl.value === "Monthly"){
-        getmonthsChart(city);
+        getmonthsChart(city, compared_city);
     };
 }
 
-function getmonthsChart(city){
-    const url = `/api/monthschart?city=${city}&year=${getYear()}&season=${getSeason()}`
+function getmonthsChart(city, compared_city){
 
-    fetch(url).then(data => {
-        return data.json()
-    }).then(res => {
-        console.log(res);
+    if(compared_city === "-"){
+        const url = `/api/monthschart?city=${city}&year=${getYear()}&season=${getSeason()}`
+        fetch(url).then(data => {
+            return data.json()
+        }).then(res => {
+            console.log(res);
 
-        const rains = [];
-        const sun = [];
-        const min_templs= [];
-        const max_templs = [];
+            const rains = [];
+            const sun = [];
+            const min_templs= [];
+            const max_templs = [];
 
-        res.forEach(row => {
-            // filter data in groups :: season -> winter
-            const rain_value = row.rainLvl;
-            const min_temp = row.temp_min;
-            const max_temp = row.temp_max;
-            const year = row.year;
-            const month = row.month;
-            var sunshine = row.sunshine;
+            res.forEach(row => {
+                // filter data in groups :: season -> winter
+                const rain_value = row.rainLvl;
+                const min_temp = row.temp_min;
+                const max_temp = row.temp_max;
+                const year = row.year;
+                const month = row.month;
+                var sunshine = row.sunshine;
 
 
-            if (sunshine === 'NaN'){
-                console.log("oeps");
-                sunshine = 0;
-            };
+                if (sunshine === 'NaN'){
+                    console.log("oeps");
+                    sunshine = 0;
+                };
 
-            if (getYear() === year){
-                rains.push(rain_value);
-                sun.push(sunshine);
-                min_templs.push(min_temp);
-                max_templs.push(max_temp);
-            };
+                if (getYear() === year){
+                    rains.push(rain_value);
+                    sun.push(sunshine);
+                    min_templs.push(min_temp);
+                    max_templs.push(max_temp);
+                };
+                
+            });
+
+
+            console.log(rains);
+
+            const xValues = ["Jan", "Feb", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+            new Chart("myChart1", {
+                type: "line",
+                data: {
+                    labels: xValues,
+
+                    datasets: [{
+                    data: rains,
+                    label: "Rains",
+                    borderColor: "#02309c",
+                    fill: false
+                    }]
+                },
+                options: {
+                    legend: {display: true},
+                    title: {display: true, text: "Raining monthly"}
+                }
+                });
+
+
+                new Chart("myChart2", {
+                type: "line",
+                data: {
+                    labels: xValues,
+
+                    datasets: [{
+                    data: sun,
+                    label: "Sun",
+                    borderColor: "#fff855",
+                    fill: false
+                    }]
+                },
+                options: {
+                    legend: {display: true},
+                    title: {display: true, text: "Sun monthly"}
+                }
+                });
+                
+                new Chart("myChart3", {
+                type: "line",
+                data: {
+                    labels: xValues,
+
+                    datasets: [{
+                    data: min_templs,
+                    label: "min-temp",
+                    borderColor: "#8f9bc2",
+                    fill: false
+                    }]
+                },
+                options: {
+                    legend: {display: true},
+                    title: {display: true, text: "min-temp monthly"}
+                }
+                });
+
+                new Chart("myChart4", {
+                type: "line",
+                data: {
+                    labels: xValues,
+
+                    datasets: [{
+                    data: max_templs,
+                    label: "Winter",
+                    borderColor: "#685f20",
+                    fill: false
+                    }]
+                },
+                options: {
+                    legend: {display: true},
+                    title: {display: true, text: "max-temp monthly"}
+                }
+                });
+            });
+
+        }else{
+            // COMPARASION
+
+            const url1 = `/api/monthschart?city=${city}&year=${getYear()}&season=${getSeason()}`
+            const url2 = `/api/monthschart?city=${compared_city}&year=${getYear()}&season=${getSeason()}`
+
+            fetch(url1).then(data => {
+                return data.json()
+            }).then(res1 => {
+                console.log("we are in level1");
+
+                fetch(url2).then(data => {
+                    return data.json()
+                }).then(res2 => {
+
+                    const rains1 = [];
+                    const sun1 = [];
+                    const min_templs1 = [];
+                    const max_templs1 = [];
+
+                    const rains2 = [];
+                    const sun2 = [];
+                    const min_templs2 = [];
+                    const max_templs2 = [];
+        
+                    // Accumulate results from first
+                    res1.forEach(row => {
+                        // filter data in groups :: season -> winter
+                        const rain_value = row.rainLvl;
+                        const min_temp = row.temp_min;
+                        const max_temp = row.temp_max;
+                        const year = row.year;
+                        const month = row.month;
+                        var sunshine = row.sunshine;
+        
+        
+                        if (sunshine === 'NaN'){
+                            console.log("oeps");
+                            sunshine = 0;
+                        };
+        
+                        if (getYear() === year){
+                            rains1.push(rain_value);
+                            sun1.push(sunshine);
+                            min_templs1.push(min_temp);
+                            max_templs1.push(max_temp);
+                        };
+                        
+                    });
+                    
+                    // Accumulate results from second
+                    res2.forEach(row => {
+                        // filter data in groups :: season -> winter
+                        const rain_value = row.rainLvl;
+                        const min_temp = row.temp_min;
+                        const max_temp = row.temp_max;
+                        const year = row.year;
+                        const month = row.month;
+                        var sunshine = row.sunshine;
+        
+                        if (sunshine === 'NaN'){
+                            console.log("oeps");
+                            sunshine = 0;
+                        };
+        
+                        if (getYear() === year){
+                            rains2.push(rain_value);
+                            sun2.push(sunshine);
+                            min_templs2.push(min_temp);
+                            max_templs2.push(max_temp);
+                        };
+                        
+                    });
+        
+                    const xValues = ["Jan", "Feb", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        
+                    new Chart("myChart1", {
+                        type: "line",
+                        data: {
+                            labels: xValues,
+                            datasets: [{
+                            data: rains1,
+                            label: `Rain ${city}`,
+                            borderColor: "#02309c",
+                            fill: false
+                            },
+                            {
+                            data: rains2,
+                            label: `Rain ${compared_city}`,
+                            borderColor: "#fff855",
+                            fill: false
+                            }]
+                        },
+                        options: {
+                            legend: {display: true},
+                            title: {display: true, text: "Raining monthly"}
+                        }
+                        });
+        
+        
+                        new Chart("myChart2", {
+                        type: "line",
+                        data: {
+                            labels: xValues,
+        
+                            datasets: [{
+                            data: sun1,
+                            label: `Sun ${city}`,
+                            borderColor: "#fff855",
+                            fill: false
+                            },{
+                            data: sun2,
+                            label: `Sun ${compared_city}`,
+                            borderColor: "#fff855",
+                            fill: false
+                            }]
+                        },
+                        options: {
+                            legend: {display: true},
+                            title: {display: true, text: "Sun monthly"}
+                        }
+                        });
+                        
+                        new Chart("myChart3", {
+                        type: "line",
+                        data: {
+                            labels: xValues,
+        
+                            datasets: [{
+                            data: min_templs1,
+                            label: `Min temp ${city}`,
+                            borderColor: "#8f9bc2",
+                            fill: false
+                            },{
+                            data: min_templs2,
+                            label: `Min temp ${compared_city}`,
+                            borderColor: "#fff855",
+                            fill: false
+                            }]
+                        },
+                        options: {
+                            legend: {display: true},
+                            title: {display: true, text: "min-temp monthly"}
+                        }
+                        });
+        
+                        new Chart("myChart4", {
+                        type: "line",
+                        data: {
+                            labels: xValues,
+        
+                            datasets: [{
+                            data: max_templs1,
+                            label: `Winter ${city}`,
+                            borderColor: "#685f20",
+                            fill: false
+                            },{
+                            data: max_templs2,
+                            label: `Winter ${compared_city}`,
+                            borderColor: "#fff855",
+                            fill: false
+                            }]
+                        },
+                        options: {
+                            legend: {display: true},
+                            title: {display: true, text: "max-temp monthly"}
+                        }
+                        });
+                    });
+                    
+
+                })
             
-          });
+        }
+    
+}
 
 
-        console.log(rains);
+function getSeasonsChart(city, compared_city){
+    if(compared_city === "-"){
+        const url = `/api/seasonchart?city=${city}&year=${getYear()}&season=${getSeason()}`;
+        fetch(url).then(data => {
+            return data.json()
+        }).then(res => {
+            const years_in_data = 7;
+            const rain_winter = [];
+            const rain_spring = [];
+            const rain_summer = [];
+            const rain_autumn = [];
+            const sun_winter = [];
+            const sun_spring = [];
+            const sun_summer = [];
+            const sun_autumn = [];
+            const min_temp_winter = [];
+            const min_temp_spring = [];
+            const min_temp_summer = [];
+            const min_temp_autumn = [];
+            const max_temp_winter = [];
+            const max_temp_spring = [];
+            const max_temp_summer = [];
+            const max_temp_autumn = [];
+            console.log(res);
+            res.forEach(row => {
+                // filter data in groups :: season -> winter
+                const rain_value = row.rainLvl;
+                const min_temp = row.temp_min;
+                const max_temp = row.temp_max;
+                const season = row.season;
+                var sunshine = row.sunshine;
 
-        const xValues = ["Jan", "Feb", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                if (sunshine === 'NaN'){
+                    console.log("oeps");
+                    sunshine = 0;
+                };
+            
+                if (season === "Winter" && rain_winter.length <= years_in_data){
+                    rain_winter.push(rain_value);
+                    min_temp_winter.push(min_temp);
+                    max_temp_winter.push(max_temp);
+                    sun_winter.push(sunshine);
+                }else if (season === "Summer" && rain_summer.length <= years_in_data){
+                    rain_summer.push(rain_value);
+                    min_temp_summer.push(min_temp);
+                    max_temp_summer.push(max_temp);
+                    sun_summer.push(sunshine);
+                }else if (season === "Spring" && rain_spring.length <= years_in_data) {
+                    rain_spring.push(rain_value);
+                    min_temp_spring.push(min_temp);
+                    max_temp_spring.push(max_temp);
+                    sun_spring.push(sunshine);
+                }else if (season === "Autumn" && rain_autumn.length <= years_in_data){
+                    rain_autumn.push(rain_value);
+                    min_temp_autumn.push(min_temp);
+                    max_temp_autumn.push(max_temp);
+                    sun_autumn.push(sunshine);
+                };
+                
+            });
 
-        new Chart("myChart1", {
+            console.log(sun_summer);
+            console.log(sun_winter);
+            console.log(sun_spring);
+            console.log(sun_autumn);
+            
+            const xValues = [2009,2010,2011,2012,2013,2014,2015,2016];
+
+            new Chart("myChart1", {
             type: "line",
             data: {
                 labels: xValues,
 
                 datasets: [{
-                data: rains,
-                label: "Rains",
+                data: rain_winter,
+                label: "Winter",
                 borderColor: "#02309c",
+                fill: false
+                },{
+                data: rain_summer,
+                label: "Summer",
+                borderColor: "#fff855",
+                fill: false
+                },{
+                data: rain_spring,
+                label: "Spring",
+                borderColor: "#8f9bc2",
+                fill: false
+                },{
+                data: rain_autumn,
+                label: "Autumn",
+                borderColor: "#685f20",
                 fill: false
                 }]
             },
             options: {
                 legend: {display: true},
-                title: {display: true, text: "Raining monthly"}
+                title: {display: true, text: "Rain"}
             }
             });
 
 
             new Chart("myChart2", {
-            type: "line",
-            data: {
-                labels: xValues,
-
-                datasets: [{
-                data: sun,
-                label: "Sun",
-                borderColor: "#fff855",
-                fill: false
-                }]
-            },
-            options: {
-                legend: {display: true},
-                title: {display: true, text: "Sun monthly"}
-            }
-            });
-            
-            new Chart("myChart3", {
-            type: "line",
-            data: {
-                labels: xValues,
-
-                datasets: [{
-                data: min_templs,
-                label: "min-temp",
-                borderColor: "#8f9bc2",
-                fill: false
-                }]
-            },
-            options: {
-                legend: {display: true},
-                title: {display: true, text: "min-temp monthly"}
-            }
-            });
-
-            new Chart("myChart4", {
-            type: "line",
-            data: {
-                labels: xValues,
-
-                datasets: [{
-                data: max_templs,
-                label: "Winter",
-                borderColor: "#685f20",
-                fill: false
-                }]
-            },
-            options: {
-                legend: {display: true},
-                title: {display: true, text: "max-temp monthly"}
-            }
-            });
-        });
-    
-}
-
-
-function getSeasonsChart(city){
-    const url = `/api/seasonchart?city=${city}&year=${getYear()}&season=${getSeason()}`;
-    fetch(url).then(data => {
-        return data.json()
-    }).then(res => {
-        const years_in_data = 7;
-        const rain_winter = [];
-        const rain_spring = [];
-        const rain_summer = [];
-        const rain_autumn = [];
-        const sun_winter = [];
-        const sun_spring = [];
-        const sun_summer = [];
-        const sun_autumn = [];
-        const min_temp_winter = [];
-        const min_temp_spring = [];
-        const min_temp_summer = [];
-        const min_temp_autumn = [];
-        const max_temp_winter = [];
-        const max_temp_spring = [];
-        const max_temp_summer = [];
-        const max_temp_autumn = [];
-        console.log(res);
-        res.forEach(row => {
-            // filter data in groups :: season -> winter
-            const rain_value = row.rainLvl;
-            const min_temp = row.temp_min;
-            const max_temp = row.temp_max;
-            const season = row.season;
-            var sunshine = row.sunshine;
-
-            if (sunshine === 'NaN'){
-                console.log("oeps");
-                sunshine = 0;
-            };
-        
-            if (season === "Winter" && rain_winter.length <= years_in_data){
-                rain_winter.push(rain_value);
-                min_temp_winter.push(min_temp);
-                max_temp_winter.push(max_temp);
-                sun_winter.push(sunshine);
-            }else if (season === "Summer" && rain_summer.length <= years_in_data){
-                rain_summer.push(rain_value);
-                min_temp_summer.push(min_temp);
-                max_temp_summer.push(max_temp);
-                sun_summer.push(sunshine);
-            }else if (season === "Spring" && rain_spring.length <= years_in_data) {
-                rain_spring.push(rain_value);
-                min_temp_spring.push(min_temp);
-                max_temp_spring.push(max_temp);
-                sun_spring.push(sunshine);
-            }else if (season === "Autumn" && rain_autumn.length <= years_in_data){
-                rain_autumn.push(rain_value);
-                min_temp_autumn.push(min_temp);
-                max_temp_autumn.push(max_temp);
-                sun_autumn.push(sunshine);
-            };
-            
-          });
-
-          console.log(sun_summer);
-          console.log(sun_winter);
-          console.log(sun_spring);
-          console.log(sun_autumn);
-          
-        const xValues = [2009,2010,2011,2012,2013,2014,2015,2016];
-
-        new Chart("myChart1", {
-        type: "line",
-        data: {
-            labels: xValues,
-
-            datasets: [{
-            data: rain_winter,
-            label: "Winter",
-            borderColor: "#02309c",
-            fill: false
-            },{
-            data: rain_summer,
-            label: "Summer",
-            borderColor: "#fff855",
-            fill: false
-            },{
-            data: rain_spring,
-            label: "Spring",
-            borderColor: "#8f9bc2",
-            fill: false
-            },{
-            data: rain_autumn,
-            label: "Autumn",
-            borderColor: "#685f20",
-            fill: false
-            }]
-        },
-        options: {
-            legend: {display: true},
-            title: {display: true, text: "Rain"}
-        }
-        });
-
-
-        new Chart("myChart2", {
-            type: "line",
-            data: {
-                labels: xValues,
-    
-                datasets: [{
-                data: sun_winter,
-                label: "Winter",
-                borderColor: "#02309c",
-                fill: false
-                },{
-                data: sun_summer,
-                label: "Summer",
-                borderColor: "#fff855",
-                fill: false
-                },{
-                data: sun_spring,
-                label: "Spring",
-                borderColor: "#8f9bc2",
-                fill: false
-                },{
-                data: sun_autumn,
-                label: "Autumn",
-                borderColor: "#685f20",
-                fill: false
-                }]
-            },
-            options: {
-                legend: {display: true},
-                title: {display: true, text: "Sun"}
-            }
-            });
-
-
-        new Chart("myChart3", {
-            type: "line",
-            data: {
-                labels: xValues,
-                datasets: [{
-                data: min_temp_winter,
-                label: "Winter",
-                borderColor: "#02309c",
-                fill: false
-                },{
-                data: min_temp_summer,
-                label: "Summer",
-                borderColor: "#fff855",
-                fill: false
-                },{
-                data: min_temp_spring,
-                label: "Spring",
-                borderColor: "#8f9bc2",
-                fill: false
-                },{
-                data: min_temp_autumn,
-                label: "Autumn",
-                borderColor: "#685f20",
-                fill: false,
-                text: "yo"
-                }]
-            },
-            options: {
-                legend: {display: true},
-                title: {display: true, text: "min_temp"}
-            }
-            });
-
-
-            new Chart("myChart4", {
                 type: "line",
                 data: {
                     labels: xValues,
+        
                     datasets: [{
-                    data: max_temp_winter,
+                    data: sun_winter,
                     label: "Winter",
                     borderColor: "#02309c",
                     fill: false
                     },{
-                    data: max_temp_summer,
+                    data: sun_summer,
                     label: "Summer",
                     borderColor: "#fff855",
                     fill: false
                     },{
-                    data: max_temp_spring,
+                    data: sun_spring,
                     label: "Spring",
                     borderColor: "#8f9bc2",
                     fill: false
                     },{
-                    data: max_temp_autumn,
+                    data: sun_autumn,
+                    label: "Autumn",
+                    borderColor: "#685f20",
+                    fill: false
+                    }]
+                },
+                options: {
+                    legend: {display: true},
+                    title: {display: true, text: "Sun"}
+                }
+                });
+
+
+            new Chart("myChart3", {
+                type: "line",
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                    data: min_temp_winter,
+                    label: "Winter",
+                    borderColor: "#02309c",
+                    fill: false
+                    },{
+                    data: min_temp_summer,
+                    label: "Summer",
+                    borderColor: "#fff855",
+                    fill: false
+                    },{
+                    data: min_temp_spring,
+                    label: "Spring",
+                    borderColor: "#8f9bc2",
+                    fill: false
+                    },{
+                    data: min_temp_autumn,
                     label: "Autumn",
                     borderColor: "#685f20",
                     fill: false,
@@ -811,12 +959,423 @@ function getSeasonsChart(city){
                 },
                 options: {
                     legend: {display: true},
-                    title: {display: true, text: "max_temp"}
+                    title: {display: true, text: "min_temp"}
                 }
                 });
 
 
-    })
+                new Chart("myChart4", {
+                    type: "line",
+                    data: {
+                        labels: xValues,
+                        datasets: [{
+                        data: max_temp_winter,
+                        label: "Winter",
+                        borderColor: "#02309c",
+                        fill: false
+                        },{
+                        data: max_temp_summer,
+                        label: "Summer",
+                        borderColor: "#fff855",
+                        fill: false
+                        },{
+                        data: max_temp_spring,
+                        label: "Spring",
+                        borderColor: "#8f9bc2",
+                        fill: false
+                        },{
+                        data: max_temp_autumn,
+                        label: "Autumn",
+                        borderColor: "#685f20",
+                        fill: false,
+                        text: "yo"
+                        }]
+                    },
+                    options: {
+                        legend: {display: true},
+                        title: {display: true, text: "max_temp"}
+                    }
+                    });
+
+
+        })
+    }else{
+        const url = `/api/seasonchart?city=${city}&year=${getYear()}&season=${getSeason()}`;
+        fetch(url).then(data => {
+            return data.json()
+        }).then(res1 => {
+            console.log("level1");
+
+            const url = `/api/seasonchart?city=${compared_city}&year=${getYear()}&season=${getSeason()}`;
+            fetch(url).then(data => {
+                return data.json()
+            }).then(res2 => {
+                console.log("level2");
+
+            const years_in_data = 7;
+            const rain_winter1 = [];
+            const rain_spring1 = [];
+            const rain_summer1 = [];
+            const rain_autumn1 = [];
+            const sun_winter1 = [];
+            const sun_spring1 = [];
+            const sun_summer1 = [];
+            const sun_autumn1 = [];
+            const min_temp_winter1 = [];
+            const min_temp_spring1 = [];
+            const min_temp_summer1 = [];
+            const min_temp_autumn1 = [];
+            const max_temp_winter1 = [];
+            const max_temp_spring1 = [];
+            const max_temp_summer1 = [];
+            const max_temp_autumn1 = [];
+            // ----
+            const rain_winter2 = [];
+            const rain_spring2 = [];
+            const rain_summer2 = [];
+            const rain_autumn2 = [];
+            const sun_winter2 = [];
+            const sun_spring2 = [];
+            const sun_summer2 = [];
+            const sun_autumn2 = [];
+            const min_temp_winter2 = [];
+            const min_temp_spring2 = [];
+            const min_temp_summer2 = [];
+            const min_temp_autumn2 = [];
+            const max_temp_winter2 = [];
+            const max_temp_spring2 = [];
+            const max_temp_summer2 = [];
+            const max_temp_autumn2 = [];
+
+            res1.forEach(row => {
+                // filter data in groups :: season -> winter
+                const rain_value = row.rainLvl;
+                const min_temp = row.temp_min;
+                const max_temp = row.temp_max;
+                const season = row.season;
+                var sunshine = row.sunshine;
+
+                if (sunshine === 'NaN'){
+                    console.log("oeps");
+                    sunshine = 0;
+                };
+            
+                if (season === "Winter" && rain_winter1.length <= years_in_data){
+                    rain_winter1.push(rain_value);
+                    min_temp_winter1.push(min_temp);
+                    max_temp_winter1.push(max_temp);
+                    sun_winter1.push(sunshine);
+                }else if (season === "Summer" && rain_summer1.length <= years_in_data){
+                    rain_summer1.push(rain_value);
+                    min_temp_summer1.push(min_temp);
+                    max_temp_summer1.push(max_temp);
+                    sun_summer1.push(sunshine);
+                }else if (season === "Spring" && rain_spring1.length <= years_in_data) {
+                    rain_spring1.push(rain_value);
+                    min_temp_spring1.push(min_temp);
+                    max_temp_spring1.push(max_temp);
+                    sun_spring1.push(sunshine);
+                }else if (season === "Autumn" && rain_autumn1.length <= years_in_data){
+                    rain_autumn1.push(rain_value);
+                    min_temp_autumn1.push(min_temp);
+                    max_temp_autumn1.push(max_temp);
+                    sun_autumn1.push(sunshine);
+                };
+                
+            });
+
+            res2.forEach(row => {
+                // filter data in groups :: season -> winter
+                const rain_value = row.rainLvl;
+                const min_temp = row.temp_min;
+                const max_temp = row.temp_max;
+                const season = row.season;
+                var sunshine = row.sunshine;
+
+                if (sunshine === 'NaN'){
+                    console.log("oeps");
+                    sunshine = 0;
+                };
+            
+                if (season === "Winter" && rain_winter2.length <= years_in_data){
+                    rain_winter2.push(rain_value);
+                    min_temp_winter2.push(min_temp);
+                    max_temp_winter2.push(max_temp);
+                    sun_winter2.push(sunshine);
+                }else if (season === "Summer" && rain_summer2.length <= years_in_data){
+                    rain_summer2.push(rain_value);
+                    min_temp_summer2.push(min_temp);
+                    max_temp_summer2.push(max_temp);
+                    sun_summer2.push(sunshine);
+                }else if (season === "Spring" && rain_spring2.length <= years_in_data) {
+                    rain_spring2.push(rain_value);
+                    min_temp_spring2.push(min_temp);
+                    max_temp_spring2.push(max_temp);
+                    sun_spring2.push(sunshine);
+                }else if (season === "Autumn" && rain_autumn2.length <= years_in_data){
+                    rain_autumn2.push(rain_value);
+                    min_temp_autumn2.push(min_temp);
+                    max_temp_autumn2.push(max_temp);
+                    sun_autumn2.push(sunshine);
+                };
+                
+            });
+
+            console.log(rain_autumn1);
+            console.log(rain_autumn2);
+
+            const xValues = [2009,2010,2011,2012,2013,2014,2015,2016];
+
+            new Chart("myChart1", {
+                type: "line",
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                    data: rain_winter1,
+                    label: `Winter ${city}`,
+                    borderColor: "#1f77b4",
+                    fill: false,
+                    hidden: true
+                    },{
+                    data: rain_summer1,
+                    label: `Summer ${city}`,
+                    borderColor: "#ff7f0e",
+                    fill: false,
+                    hidden: true
+                    },{
+                    data: rain_spring1,
+                    label: `Spring ${city}`,
+                    borderColor: " #9467bd",
+                    fill: false,
+                    hidden: true
+                    },{
+                    data: rain_autumn1,
+                    label: `Automn ${city}`,
+                    borderColor: "#fff855",
+                    fill: false,
+                    hidden: true
+                    },{//--------
+                    data: rain_winter2,
+                    label: `Winter ${compared_city}`,
+                    borderColor: "#17becf",
+                    fill: false,
+                    hidden: true
+                    },{
+                    data: rain_summer2,
+                    label: `Summer ${compared_city}`,
+                    borderColor: "#685f20",
+                    fill: false,
+                    hidden: true
+                    },{
+                    data: rain_spring2,
+                    label: `Spring ${compared_city}`,
+                    borderColor: "#1f77b4",
+                    fill: false,
+                    hidden: true
+                    },{
+                    data: rain_autumn2,
+                    label: `Automn ${compared_city}`,
+                    borderColor: "#e377c2",
+                    fill: false,
+                    hidden: true
+                    }]
+                },
+                options: {
+                    legend: {display: true},
+                    title: {display: true, text: `Rain comparasion betweenSummer ${compared_city} and ${city}`}
+                }
+                });
+
+                new Chart("myChart2", {
+                type: "line",
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                    data: sun_winter1,
+                    label: `Winter ${city}`,
+                    borderColor: "#1f77b4",
+                    fill: false,
+                    hidden: true
+                    },{
+                    data: sun_summer1,
+                    label: `Summer ${city}`,
+                    borderColor: "#ff7f0e",
+                    fill: false,
+                    hidden: true
+                    },{
+                    data: sun_spring1,
+                    label: `Spring ${city}`,
+                    borderColor: " #9467bd",
+                    fill: false,
+                    hidden: true
+                    },{
+                    data: sun_autumn1,
+                    label: `Automn ${city}`,
+                    borderColor: "#fff855",
+                    fill: false,
+                    hidden: true
+                    },{//--------
+                    data: sun_winter2,
+                    label: `Winter ${compared_city}`,
+                    borderColor: "#17becf",
+                    fill: false,
+                    hidden: true
+                    },{
+                    data: sun_summer2,
+                    label: `Summer ${compared_city}`,
+                    borderColor: "#685f20",
+                    fill: false,
+                    hidden: true
+                    },{
+                    data: sun_spring2,
+                    label: `Spring ${compared_city}`,
+                    borderColor: "#1f77b4",
+                    fill: false,
+                    hidden: true
+                    },{
+                    data: sun_autumn2,
+                    label: `Automn ${compared_city}`,
+                    borderColor: "#e377c2",
+                    fill: false,
+                    hidden: true
+                    }]
+                },
+                options: {
+                    legend: {display: true},
+                    title: {display: true, text: `Sun comparasion betweenSummer ${compared_city} and ${city}`}
+                }
+                });
+
+                new Chart("myChart3", {
+                type: "line",
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                    data: min_temp_winter1,
+                    label: `Winter ${city}`,
+                    borderColor: "#1f77b4",
+                    fill: false,
+                    hidden: true
+                    },{
+                    data: min_temp_summer1,
+                    label: `Summer ${city}`,
+                    borderColor: "#ff7f0e",
+                    fill: false,
+                    hidden: true
+                    },{
+                    data: min_temp_spring1,
+                    label: `Spring ${city}`,
+                    borderColor: " #9467bd",
+                    fill: false,
+                    hidden: true
+                    },{
+                    data: min_temp_autumn1,
+                    label: `Automn ${city}`,
+                    borderColor: "#fff855",
+                    fill: false,
+                    hidden: true
+                    },{//--------
+                    data: min_temp_winter2,
+                    label: `Winter ${compared_city}`,
+                    borderColor: "#17becf",
+                    fill: false,
+                    hidden: true
+                    },{
+                    data: min_temp_summer2,
+                    label: `Summer ${compared_city}`,
+                    borderColor: "#685f20",
+                    fill: false,
+                    hidden: true
+                    },{
+                    data: min_temp_spring2,
+                    label: `Spring ${compared_city}`,
+                    borderColor: "#1f77b4",
+                    fill: false,
+                    hidden: true
+                    },{
+                    data: min_temp_autumn2,
+                    label: `Automn ${compared_city}`,
+                    borderColor: "#e377c2",
+                    fill: false,
+                    hidden: true
+                    }]
+                },
+                options: {
+                    legend: {display: true},
+                    title: {display: true, text: `Min temperature comparasion betweenSummer ${compared_city} and ${city}`}
+                }
+                });
+
+                new Chart("myChart4", {
+                type: "line",
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                    data: max_temp_winter1,
+                    label: `Winter ${city}`,
+                    borderColor: "#1f77b4",
+                    fill: false,
+                    hidden: true
+                    },{
+                    data: max_temp_summer1,
+                    label: `Summer ${city}`,
+                    borderColor: "#ff7f0e",
+                    fill: false,
+                    hidden: true
+                    },{
+                    data: max_temp_spring1,
+                    label: `Spring ${city}`,
+                    borderColor: " #9467bd",
+                    fill: false,
+                    hidden: true
+                    },{
+                    data: max_temp_autumn1,
+                    label: `Automn ${city}`,
+                    borderColor: "#fff855",
+                    fill: false,
+                    hidden: true
+                    },{//--------
+                    data: max_temp_winter2,
+                    label: `Winter ${compared_city}`,
+                    borderColor: "#17becf",
+                    fill: false,
+                    hidden: true
+                    },{
+                    data: max_temp_summer2,
+                    label: `Summer ${compared_city}`,
+                    borderColor: "#685f20",
+                    fill: false,
+                    hidden: true
+                    },{
+                    data: max_temp_spring2,
+                    label: `Spring ${compared_city}`,
+                    borderColor: "#1f77b4",
+                    fill: false,
+                    hidden: true
+                    },{
+                    data: max_temp_autumn2,
+                    label: `Automn ${compared_city}`,
+                    borderColor: "#e377c2",
+                    fill: false,
+                    hidden: true
+                    }]
+                },
+                options: {
+                    legend: {display: true},
+                    title: {display: true, text: `Max temperature comparasion betweenSummer ${compared_city} and ${city}`}
+                }
+                });
+
+
+
+
+            })
+
+        })
+
+
+
+    }
 }
 
 
