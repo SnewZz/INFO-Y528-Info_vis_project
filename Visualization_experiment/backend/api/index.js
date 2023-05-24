@@ -43,31 +43,33 @@ app.get("/api/RainByMonth",(req,res) => {
             return d[2] === city && d[4].split("-")[0] === year;
         });
 
-        filteredData.forEach(item => {
-            rain_val.push(item[5])
-        });
+        for (i = 0; i < filteredData.length; i++){
+            rain_val.push(filteredData[i][5])
+        }
 
         res.status(200).send(rain_val);
     })
 })
+
+
 
 app.get("/api/TminByMonth",(req,res) => {
     const year = req.query.year; //Get the year
     const city = req.query.city; //Get the city
     const content = fs.readFileSync(path.join(__dirname, "../static/data/Datamap_2.csv"));
     var filteredData;
-    rain_val = []
+    t_min_val = []
 
     csv.parse(content,{},(err,records) => {
         filteredData = records.filter(function (d) {
             return d[2] === city && d[4].split("-")[0] === year;
         });
+        //console.log(filteredData)
+        for (i = 0; i < filteredData.length; i++){
+            t_min_val.push(filteredData[i][6])
+        }
 
-        filteredData.forEach(item => {
-            rain_val.push(item[6])
-        });
-
-        res.status(200).send(rain_val);
+        res.status(200).send(t_min_val);
     })
 })
 
@@ -76,18 +78,19 @@ app.get("/api/TmaxByMonth",(req,res) => {
     const city = req.query.city; //Get the city
     const content = fs.readFileSync(path.join(__dirname, "../static/data/Datamap_2.csv"));
     var filteredData;
-    rain_val = []
+    t_max_val = []
 
     csv.parse(content,{},(err,records) => {
         filteredData = records.filter(function (d) {
             return d[2] === city && d[4].split("-")[0] === year;
         });
 
-        filteredData.forEach(item => {
-            rain_val.push(item[7])
-        });
+        //console.log(filteredData.length)
+        for (i = 0; i < filteredData.length; i++){
+            t_max_val.push(filteredData[i][7])
+        }
 
-        res.status(200).send(rain_val);
+        res.status(200).send(t_max_val);
     })
 })
 
@@ -96,18 +99,18 @@ app.get("/api/SunByMonth",(req,res) => {
     const city = req.query.city; //Get the city
     const content = fs.readFileSync(path.join(__dirname, "../static/data/Datamap_2.csv"));
     var filteredData;
-    rain_val = []
+    sun_val = []
 
     csv.parse(content,{},(err,records) => {
         filteredData = records.filter(function (d) {
             return d[2] === city && d[4].split("-")[0] === year;
         });
 
-        filteredData.forEach(item => {
-            rain_val.push(item[8])
-        });
+        for (i = 0; i < filteredData.length; i++){
+            sun_val.push(filteredData[i][8])
+        }
 
-        res.status(200).send(rain_val);
+        res.status(200).send(sun_val);
     })
 })
 
@@ -131,6 +134,8 @@ app.get("/api/coordinateCities",(req,res) => {
         //return data
     });
 });
+
+
     
 
 app.get("/api/rainiestCities", (req, res) => {

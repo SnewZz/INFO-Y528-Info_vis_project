@@ -144,6 +144,7 @@ function updateMap(regions, data) {
                     var regionName = layer.feature.properties.lga_name_long;
                     //updateDataInfo(regionName)
                     displayCitiesRegion(regionName)
+                    //Mettre graphique pour les régions ici. 
                 });
             })
         }
@@ -186,7 +187,8 @@ function getBaseUrlFromMode(mode) {
 
 function mapModeHandler() {
     if (currMode != null) {
-        $('.alert').addClass('d-none')
+        $('#alert1').addClass('d-none')
+        $('#alert2').addClass('d-none')
         const year = getYear()
         const season = getSeason();
         const mode = currMode;
@@ -201,7 +203,7 @@ function mapModeHandler() {
         })
     } else {
         // Select the alert element
-        const alertElement = $('.alert');
+        const alertElement = $('#alert1');
 
         // Remove the d-none class to show the alert
         alertElement.removeClass('d-none');
@@ -222,10 +224,12 @@ function removerMarkers(bool){
     
 }
 
+
 function placeMarker(city_name,bool){
     if (city_name != "-"){
         //console.log(city_name)
         const url = `/api/coordinateCities?city=${city_name}`;
+        //console.log(city_name)
         fetch(url).then(data => {
             return data.json()
         }).then(res => {
@@ -237,62 +241,55 @@ function placeMarker(city_name,bool){
                 this.closePopup();
             });
             if (bool){
-                removeData(chart1,1);
-                removeData(chart2,1);
-                removeData(chart3,1);
-                removeData(chart4,1);                
-                const url1 = `/api/RainByMonth?year=${getYearSlider3()}&city=${city_name}`;
-                fetch(url1).then(data => {
-                    return data.json()
-                }).then(res => {   
-                    addData(chart1,city_name,res,1); 
-                });
-                const url2 = `/api/SunByMonth?year=${getYearSlider3()}&city=${city_name}`;
-                fetch(url2).then(data => {
-                    return data.json()
-                }).then(res => {   
-                    addData(chart2,city_name,res,1); 
-                });
-                const url3 = `/api/TminByMonth?year=${getYearSlider3()}&city=${city_name}`;
-                fetch(url3).then(data => {
-                    return data.json()
-                }).then(res => {   
-                    addData(chart3,city_name,res,1); 
-                });
-                const url4 = `/api/TmaxByMonth?year=${getYearSlider3()}&city=${city_name}`;
-                fetch(url4).then(data => {
-                    return data.json()
-                }).then(res => {   
-                    addData(chart4,city_name,res,1); 
-                });
-                /*marker.on('click', function (e) {
+                if (!first_time){
                     removeData(chart1,1);
-                    const url = `/api/RainByMonth?year=${getYearSlider3()}&city=${city_name}`;
-                    fetch(url).then(data => {
+                    removeData(chart2,1);
+                    removeData(chart3,1);
+                    removeData(chart4,1);                
+                    const url1 = `/api/RainByMonth?year=${getYearSlider3()}&city=${city_name}`;
+                    fetch(url1).then(data => {
                         return data.json()
                     }).then(res => {   
-                        addData(chart1,city_name,res,1); 
+                        //console.log(city_name)
+                        addData(chart1,[city_name[0],getYearSlider3()],res,1); 
                     });
-                //Display the graphic on the graphic that is already printed (we add a layer on our graphic)
-                });*/
+                    const url2 = `/api/SunByMonth?year=${getYearSlider3()}&city=${city_name}`;
+                    fetch(url2).then(data => {
+                        return data.json()
+                    }).then(res => {   
+                        //console.log(res)
+                        addData(chart2,[city_name[0],getYearSlider3()],res,1); 
+                    });
+                    const url3 = `/api/TminByMonth?year=${getYearSlider3()}&city=${city_name}`;
+                    fetch(url3).then(data => {
+                        return data.json()
+                    }).then(res => {   
+                        addData(chart3,[city_name[0],getYearSlider3()],res,1); 
+                    });
+                    const url4 = `/api/TmaxByMonth?year=${getYearSlider3()}&city=${city_name}`;
+                    fetch(url4).then(data => {
+                        return data.json()
+                    }).then(res => {   
+                        //console.log(res)
+                        addData(chart4,[city_name[0],getYearSlider3()],res,1); 
+                    });
+                    //console.log(chart1.chart.config.data.datasets)
+                }
             }
             else{
+                if (! first_time){
+                    chart1.destroy();
+                    chart2.destroy();
+                    chart3.destroy();
+                    chart4.destroy();
+                }
+                first_time = false;
+                compare_city.selectedIndex = 0;
+                //console.log(city_name)
                 createChartRain("chart1",city_name);
                 createChartSun("chart2",city_name);
                 createChartTmin("chart3",city_name);
                 createChartTmax("chart4",city_name);
-                //removeData(chart1,0);
-                //Add the function for the other
-                /*marker.on('click', function (e) {
-                    removeData(chart1,0);
-                    const url = `/api/RainByMonth?year=${getYearSlider3()}&city=${city_name}`;
-                    fetch(url).then(data => {
-                        return data.json()
-                    }).then(res => {   
-                        addData(chart1,city_name,res,0); 
-                    });
-                //Display the graphics for the city
-                });*/
             }
         
             marker.addTo(map);
@@ -319,6 +316,7 @@ function addData(chart, label, data,index) {
         })
         chart.update();
     }
+    //console.log(chart.data.datasets)
 }
 
 function removeData(chart,index) {
@@ -330,7 +328,7 @@ function removeData(chart,index) {
 
 async function createChartTmax(chartID,city){
     const ctx = document.getElementById(chartID);
-    const url = `/api/TmaxByMonth?year=${getYearSlider3()}&city=${city}`;
+    const url = `/api/TmaxByMonth?year=${getYear()}&city=${city}`;
     chart4 = await fetch(url).then(data => {
         return data.json()
     }).then(res => {
@@ -339,18 +337,39 @@ async function createChartTmax(chartID,city){
             data: {
               labels: ['January', 'February', 'March', 'April', 'May', 'June','July','August','September','October','November','December'],
               datasets: [{
-                label: city,
+                label: city.concat(getYear()),
                 data: res,
                 borderWidth: 1
               }]
             },
             options: {
                 responsive: true,
-              scales: {
-                y: {
-                  beginAtZero: true
+                title:{
+                    display: true,
+                    text: 'Temperature max by month'
+                },
+                legend: {
+                    position: 'right',
+                    display:true,
+                    maxHeight: 10,
+                    maxWidth: 10
+                  },
+                scales: {
+                    yAxes: [
+                        {
+                          scaleLabel: {
+                            display: true,
+                            labelString: 'Temperature max (°)',
+                          },
+                        }],
+                    xAxes: [
+                        {
+                            scaleLabel: {
+                            display: true,
+                            labelString: 'Months',
+                            },
+                        }]
                 }
-              }
             }
           });
         //console.log(chart)
@@ -360,7 +379,7 @@ async function createChartTmax(chartID,city){
 
 async function createChartTmin(chartID,city){
     const ctx = document.getElementById(chartID);
-    const url = `/api/TminByMonth?year=${getYearSlider3()}&city=${city}`;
+    const url = `/api/TminByMonth?year=${getYear()}&city=${city}`;
     chart3 = await fetch(url).then(data => {
         return data.json()
     }).then(res => {
@@ -369,18 +388,39 @@ async function createChartTmin(chartID,city){
             data: {
               labels: ['January', 'February', 'March', 'April', 'May', 'June','July','August','September','October','November','December'],
               datasets: [{
-                label: city,
+                label: city.concat(getYear()),
                 data: res,
                 borderWidth: 1
               }]
             },
             options: {
                 responsive: true,
-              scales: {
-                y: {
-                  beginAtZero: true
+                title:{
+                    display: true,
+                    text: 'Temperature min by month'
+                },
+                legend: {
+                    position: 'right',
+                    display:true,
+                    maxHeight: 10,
+                    maxWidth: 10
+                  },
+                scales: {
+                    yAxes: [
+                        {
+                          scaleLabel: {
+                            display: true,
+                            labelString: 'Temperature min (°)',
+                          },
+                        }],
+                    xAxes: [
+                        {
+                            scaleLabel: {
+                            display: true,
+                            labelString: 'Months',
+                            },
+                        }]
                 }
-              }
             }
           });
         //console.log(chart)
@@ -390,7 +430,7 @@ async function createChartTmin(chartID,city){
 
 async function createChartSun(chartID,city){
     const ctx = document.getElementById(chartID);
-    const url = `/api/SunByMonth?year=${getYearSlider3()}&city=${city}`;
+    const url = `/api/SunByMonth?year=${getYear()}&city=${city}`;
     chart2 = await fetch(url).then(data => {
         return data.json()
     }).then(res => {
@@ -399,18 +439,39 @@ async function createChartSun(chartID,city){
             data: {
               labels: ['January', 'February', 'March', 'April', 'May', 'June','July','August','September','October','November','December'],
               datasets: [{
-                label: city,
+                label: city.concat(getYear()),
                 data: res,
                 borderWidth: 1
               }]
             },
             options: {
                 responsive: true,
-              scales: {
-                y: {
-                  beginAtZero: true
+                title:{
+                    display: true,
+                    text: 'Average number of hours of sunshine by month'
+                },
+                legend: {
+                    position: 'right',
+                    display:true,
+                    maxHeight: 10,
+                    maxWidth: 10
+                  },
+                scales: {
+                    yAxes: [
+                        {
+                          scaleLabel: {
+                            display: true,
+                            labelString: 'Sunshine (h)',
+                          },
+                        }],
+                    xAxes: [
+                        {
+                            scaleLabel: {
+                            display: true,
+                            labelString: 'Months',
+                            },
+                        }]
                 }
-              }
             }
           });
         //console.log(chart)
@@ -419,8 +480,10 @@ async function createChartSun(chartID,city){
 }
 
 async function createChartRain(chartID,city){
+    console.log(city)
     const ctx = document.getElementById(chartID);
-    const url = `/api/RainByMonth?year=${getYearSlider3()}&city=${city}`;
+    const url = `/api/RainByMonth?year=${getYear()}&city=${city}`;
+    //console.log(slider1.value)
     chart1 = await fetch(url).then(data => {
         return data.json()
     }).then(res => {
@@ -429,22 +492,44 @@ async function createChartRain(chartID,city){
             data: {
               labels: ['January', 'February', 'March', 'April', 'May', 'June','July','August','September','October','November','December'],
               datasets: [{
-                label: city,
+                label: city.concat(getYear()),
                 data: res,
                 borderWidth: 1
               }]
             },
             options: {
                 responsive: true,
-              scales: {
-                y: {
-                  beginAtZero: true
+                title:{
+                    display: true,
+                    text: 'Average amount of rainfall by month'
+                },
+                legend: {
+                    position: 'right',
+                    display:true,
+                    maxHeight: 10,
+                    maxWidth: 10
+                  },
+                scales: {
+                    yAxes: [
+                        {
+                          scaleLabel: {
+                            display: true,
+                            labelString: 'Rainfall (mm)',
+                          },
+                        }],
+                    xAxes: [
+                        {
+                            scaleLabel: {
+                            display: true,
+                            labelString: 'Months',
+                            },
+                        }]
                 }
-              }
             }
           });
         //console.log(chart)
     })
+    //console.log(chart1.chart.config.data.datasets[0].label)
     //console.log(chart1)
 }
 
@@ -463,9 +548,51 @@ function displayCitiesRegion(regionName){
             this.closePopup();
             });
             marker.on('click', function (e) {
-                console.log("Display graphics"); 
-                //Put the function that display the graphics for the city!!! 
+                if (! first_time){
+                    chart1.destroy();
+                    chart2.destroy();
+                    chart3.destroy();
+                    chart4.destroy();
+                }
+                first_time = false;
+                compare_city.selectedIndex = 0;
+                createChartRain("chart1",d[2]);
+                createChartSun("chart2",d[2]);
+                createChartTmin("chart3",d[2]);
+                createChartTmax("chart4",d[2]);
             });
+            /*if (res.length > 1){
+                $('#alert2').removeClass('d-none');
+                marker.on('click', function (e) {
+                    $('#alert2').addClass('d-none');
+                    if (! first_time){
+                        chart1.destroy();
+                        chart2.destroy();
+                        chart3.destroy();
+                        chart4.destroy();
+                    }
+                    first_time = false;
+                    compare_city.selectedIndex = 0;
+                    createChartRain("chart1",d[2]);
+                    createChartSun("chart2",d[2]);
+                    createChartTmin("chart3",d[2]);
+                    createChartTmax("chart4",d[2]);
+                });
+            }
+            else{
+                if (! first_time){
+                    chart1.destroy();
+                    chart2.destroy();
+                    chart3.destroy();
+                    chart4.destroy();
+                }
+                first_time = false;
+                compare_city.selectedIndex = 0;
+                createChartRain("chart1",d[2]);
+                createChartSun("chart2",d[2]);
+                createChartTmin("chart3",d[2]);
+                createChartTmax("chart4",d[2]);
+            }*/
             //Display the graphics for the whole region!!!
             marker.addTo(map);
             marker.bindPopup(d[2]);
@@ -474,6 +601,68 @@ function displayCitiesRegion(regionName){
     });
 }
 
+
+function updateRain(year,index){
+    city_name = chart1.chart.config.data.datasets[index].label[0];
+    console.log(city_name)
+    const url1 = `/api/RainByMonth?year=${year}&city=${city_name}`;
+    fetch(url1).then(data => {
+        return data.json()
+    }).then(res => {   
+        //addData(chart1,city_name,res,0); 
+        //console.log(city_name)
+        //console.log(year)
+        console.log(chart1.chart.config.data.datasets)
+        chart1.chart.config.data.datasets[index].label = [city_name].concat(year);
+        chart1.chart.config.data.datasets[index].data = res;
+        chart1.update()
+    });
+    //console.log(chart1.chart.config.data.datasets[index].label)
+    //console.log(chart1)
+}
+
+function updateSun(year,index){
+    city_name = chart2.chart.config.data.datasets[index].label[0] 
+    const url1 = `/api/SunByMonth?year=${year}&city=${city_name}`;
+    fetch(url1).then(data => {
+        return data.json()
+    }).then(res => {   
+        //addData(chart1,city_name,res,0); 
+        chart2.chart.config.data.datasets[index].label = [city_name].concat(year);//.concat(' ',year);
+        chart2.chart.config.data.datasets[index].data = res;
+        chart2.update()
+    });
+    //console.log(chart1)
+}
+
+function updateTmin(year,index){
+    city_name = chart3.chart.config.data.datasets[index].label[0] 
+    const url1 = `/api/TminByMonth?year=${year}&city=${city_name}`;
+    fetch(url1).then(data => {
+        return data.json()
+    }).then(res => {   
+        //addData(chart1,city_name,res,0); 
+        chart3.chart.config.data.datasets[index].label = [city_name].concat(year);
+        chart3.chart.config.data.datasets[index].data = res;
+        chart3.update()
+    });
+    //console.log(chart1)
+}
+
+function updateTmax(year,index){
+    city_name = chart4.chart.config.data.datasets[index].label[0] 
+    const url1 = `/api/TmaxByMonth?year=${year}&city=${city_name}`;
+    fetch(url1).then(data => {
+        return data.json()
+    }).then(res => {   
+        //addData(chart1,city_name,res,0); 
+        //chart4.chart.config.data.datasets[index].label = city_name.concat(' ',year);
+        chart4.chart.config.data.datasets[index].label = [city_name].concat(year);
+        chart4.chart.config.data.datasets[index].data = res;
+        chart4.update()
+    });
+    //console.log(chart1)
+}
 
 
 
@@ -518,10 +707,14 @@ const result1 = document.getElementById("result1");
 const result2 = document.getElementById("result2");
 const result3 = document.getElementById("result3");
 
+//const error_msg = document.getElementById("error_msg");
+
 var chart1;
 var chart2;
 var chart3;
 var chart4;
+
+var first_time = true;
 
 
 const buttonSeason = document.getElementById("select-season");
@@ -536,6 +729,12 @@ radioContainer.addEventListener('change', (event) => {
         currMode = checkedButton.value;
         removerMarkers(false);
         mapModeHandler();
+        if (!first_time){
+            chart1.destroy();
+            chart2.destroy();
+            chart3.destroy();
+            chart4.destroy();
+        }
     }
 });
 
@@ -546,36 +745,37 @@ slider1.addEventListener("change", async (event) => {
     mapModeHandler();
     updateTemporalityInfo();
     updateBestCitiesInfo();
+    removerMarkers(true);
     result1.textContent = "Year : " + event.target.value;
-})
-
-slider3.addEventListener("change", async (event) => {
-    result3.textContent = "Year : " + event.target.value;
-})
-
-/*slider2.addEventListener("change", async (event) => {
-    res.innerHTML = event.target.value;
-})*/
-
-/*slider2.addEventListener("change", async (event) => {
-    //Every year, the color changes..
-    if (event.target.value == 2011) {
-        $.getJSON("../static/geoJSON/local-government-area.geojson", function (data) {
-            var myLayer = L.geoJSON(data, {
-                style: function (feature) {
-                    return {
-                        color: "red",
-                        weight: 2,
-                        fillOpacity: 0
-                    };
-                },
-                onEachFeature: function (feature, layer) {
-                    layer.bindPopup(`<b>${feature.properties.name}</b>`);
-                }
-            }).addTo(map);
-        });
+    compare_city.selectedIndex = 0;
+    if (!first_time){
+        removeData(chart1,1);
+        removeData(chart2,1);
+        removeData(chart3,1);
+        removeData(chart4,1);
+        updateRain(event.target.value,0);
+        updateSun(event.target.value,0);
+        updateTmin(event.target.value,0);
+        updateTmax(event.target.value,0);
     }
-})*/
+    
+    //Faut udpate les graphique pour l'index 0; 
+    //Faut aussi lancer l'action du slider 3
+    
+})
+
+slider3.addEventListener("change", (event) => {
+    result3.textContent = "Year : " + event.target.value;
+    if ((compare_city.selectedIndex != 0 && markers.length > 0)){
+        //console.log("he")
+        updateRain(event.target.value,1);
+        updateSun(event.target.value,1);
+        updateTmin(event.target.value,1);
+        updateTmax(event.target.value,1);
+    }
+    //console.log(chart1.chart.config.data.datasets[0].label[0]); 
+    
+})
 
 var boutons = document.querySelectorAll("new_link");
 
@@ -592,6 +792,7 @@ compare_city.addEventListener("change", (event) => {
 
 select_city.addEventListener("change", (event) => {
     removerMarkers(false);
+    removerMarkers(true);
     var lst = [];
     lst.push(event.target.value);
     placeMarker(lst,false);
@@ -601,6 +802,7 @@ boutons.forEach(function(btn){
     btn.addEventListener("click",(event) =>{
         var city_name = document.getElementById(event.target.id).innerText.match(/[a-zA-Z]+/g);
         removerMarkers(false);
+        removerMarkers(true);
         placeMarker(city_name,false);
     });
 })
