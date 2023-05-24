@@ -293,9 +293,7 @@ function removerMarkers(bool) {
 
 function placeMarker(city_name,bool){
     if (city_name != "-"){
-        //console.log(city_name)
         const url = `/api/coordinateCities?city=${city_name}`;
-        //console.log(city_name)
         fetch(url).then(data => {
             return data.json()
         }).then(res => {
@@ -316,14 +314,12 @@ function placeMarker(city_name,bool){
                     fetch(url1).then(data => {
                         return data.json()
                     }).then(res => {   
-                        //console.log(city_name)
                         addData(chart1,[city_name[0],getYearSlider3()],res,1); 
                     });
                     const url2 = `/api/SunByMonth?year=${getYearSlider3()}&city=${city_name}`;
                     fetch(url2).then(data => {
                         return data.json()
                     }).then(res => {   
-                        //console.log(res)
                         addData(chart2,[city_name[0],getYearSlider3()],res,1); 
                     });
                     const url3 = `/api/TminByMonth?year=${getYearSlider3()}&city=${city_name}`;
@@ -336,10 +332,8 @@ function placeMarker(city_name,bool){
                     fetch(url4).then(data => {
                         return data.json()
                     }).then(res => {   
-                        //console.log(res)
                         addData(chart4,[city_name[0],getYearSlider3()],res,1); 
                     });
-                    //console.log(chart1.chart.config.data.datasets)
                 }
             }
             else{
@@ -351,7 +345,6 @@ function placeMarker(city_name,bool){
                 }
                 first_time = false;
                 compare_city.selectedIndex = 0;
-                //console.log(city_name)
                 createChartRain("chart1",city_name);
                 createChartSun("chart2",city_name);
                 createChartTmin("chart3",city_name);
@@ -382,7 +375,6 @@ function addData(chart, label, data,index) {
         })
         chart.update();
     }
-    //console.log(chart.data.datasets)
 }
 
 function removeData(chart,index) {
@@ -438,9 +430,7 @@ async function createChartTmax(chartID,city){
                 }
             }
           });
-        //console.log(chart)
     })
-    //console.log(chart1)
 }
 
 async function createChartTmin(chartID,city){
@@ -489,9 +479,7 @@ async function createChartTmin(chartID,city){
                 }
             }
           });
-        //console.log(chart)
     })
-    //console.log(chart1)
 }
 
 async function createChartSun(chartID,city){
@@ -540,16 +528,13 @@ async function createChartSun(chartID,city){
                 }
             }
           });
-        //console.log(chart)
     })
-    //console.log(chart1)
 }
 
 async function createChartRain(chartID,city){
     console.log(city)
     const ctx = document.getElementById(chartID);
     const url = `/api/RainByMonth?year=${getYear()}&city=${city}`;
-    //console.log(slider1.value)
     chart1 = await fetch(url).then(data => {
         return data.json()
     }).then(res => {
@@ -593,14 +578,13 @@ async function createChartRain(chartID,city){
                 }
             }
           });
-        //console.log(chart)
     })
-    //console.log(chart1.chart.config.data.datasets[0].label)
-    //console.log(chart1)
 }
 
 function displayCitiesRegion(regionName){
     removerMarkers(false);
+    removerMarkers(true);
+    compare_city.selectedIndex = 0;
     const url = `/api/citiesInRegion?region=${regionName}`;
     fetch(url).then(data => {
         return data.json()
@@ -614,6 +598,7 @@ function displayCitiesRegion(regionName){
                 this.closePopup();
             });
             marker.on('click', function (e) {
+                removerMarkers(true);
                 if (! first_time){
                     chart1.destroy();
                     chart2.destroy();
@@ -621,11 +606,11 @@ function displayCitiesRegion(regionName){
                     chart4.destroy();
                 }
                 first_time = false;
-                compare_city.selectedIndex = 0;
-                createChartRain("chart1",d[2]);
-                createChartSun("chart2",d[2]);
-                createChartTmin("chart3",d[2]);
-                createChartTmax("chart4",d[2]);
+                
+                createChartRain("chart1",[d[2]]);
+                createChartSun("chart2",[d[2]]);
+                createChartTmin("chart3",[d[2]]);
+                createChartTmax("chart4",[d[2]]);
             });
             /*if (res.length > 1){
                 $('#alert2').removeClass('d-none');
@@ -725,16 +710,11 @@ function updateRain(year,index){
     fetch(url1).then(data => {
         return data.json()
     }).then(res => {   
-        //addData(chart1,city_name,res,0); 
-        //console.log(city_name)
-        //console.log(year)
         console.log(chart1.chart.config.data.datasets)
         chart1.chart.config.data.datasets[index].label = [city_name].concat(year);
         chart1.chart.config.data.datasets[index].data = res;
         chart1.update()
     });
-    //console.log(chart1.chart.config.data.datasets[index].label)
-    //console.log(chart1)
 }
 
 function updateSun(year,index){
@@ -748,7 +728,6 @@ function updateSun(year,index){
         chart2.chart.config.data.datasets[index].data = res;
         chart2.update()
     });
-    //console.log(chart1)
 }
 
 function updateTmin(year,index){
@@ -762,7 +741,6 @@ function updateTmin(year,index){
         chart3.chart.config.data.datasets[index].data = res;
         chart3.update()
     });
-    //console.log(chart1)
 }
 
 function updateTmax(year,index){
@@ -777,7 +755,6 @@ function updateTmax(year,index){
         chart4.chart.config.data.datasets[index].data = res;
         chart4.update()
     });
-    //console.log(chart1)
 }
 
 // // Créez une fonction pour générer la légende
@@ -865,7 +842,8 @@ radioContainer.addEventListener('change', (event) => {
     if (checkedButton.matches('input[name="mode"]')) {
         currMode = checkedButton.value;
         removerMarkers(false);
-        console.log("radioContainer")
+        removerMarkers(true);
+        compare_city.selectedIndex = 0
         mapModeHandler();
         if (!first_time){
             chart1.destroy();
@@ -903,14 +881,11 @@ slider1.addEventListener("change", async (event) => {
 slider3.addEventListener("change", (event) => {
     result3.textContent = "Year : " + event.target.value;
     if ((compare_city.selectedIndex != 0 && markers.length > 0)){
-        //console.log("he")
         updateRain(event.target.value,1);
         updateSun(event.target.value,1);
         updateTmin(event.target.value,1);
         updateTmax(event.target.value,1);
     }
-    //console.log(chart1.chart.config.data.datasets[0].label[0]); 
-    
 });
 
 slider2.addEventListener("change", async (event) => {
