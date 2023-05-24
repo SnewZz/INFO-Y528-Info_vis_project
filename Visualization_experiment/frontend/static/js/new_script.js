@@ -214,8 +214,16 @@ function updateMap(regions, data) {
     }
 }
 
+function getYearSlider3() {
+    return slider3.value;
+}
+
 function getYear() {
     return slider1.value;
+}
+
+function getComparedCity() {
+    return compare_city.value;
 }
 
 function getSeason() {
@@ -345,6 +353,7 @@ function displayCitiesRegion(regionName) {
         });
     });
 }
+// ------------------------------------------------------------------
 
 function updateLegend(mode) {
     if (legend) {
@@ -452,9 +461,17 @@ fetch(`/api/regionsGeoJSON`).then(data => {
 
 const slider1 = document.getElementById("slider1");
 const slider2 = document.getElementById("slider2");
+const slider3 = document.getElementById("slider3");
 
 const result1 = document.getElementById("result1");
 const result2 = document.getElementById("result2");
+const result3 = document.getElementById("result3");
+
+var chart1;
+var chart2;
+var chart3;
+var chart4;
+
 
 const buttonSeason = document.getElementById("select-season");
 const radioContainer = document.querySelector('#radioContainer');
