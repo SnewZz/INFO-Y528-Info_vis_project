@@ -962,7 +962,8 @@ buttonSeason.addEventListener('change', (event) => {
     const checkedButton = event.target;
     mapModeHandler()
     removerMarkers(true)
-    
+    updateBestCitiesInfo();
+    updateTemporalityInfo();
     if (compare_city.selectedIndex != 0)
     {
         removeData(chart1,1);
