@@ -101,7 +101,17 @@ body {
   padding-left: 0.5rem;
 }
 
+.link-perso {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
 
+.link-perso:hover,
+.link-perso:active, 
+.link-perso:focus {
+  text-decoration: underline;
+}
 
 
 

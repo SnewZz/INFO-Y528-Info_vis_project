@@ -99,148 +99,141 @@
     </div>
   </nav>
   <div class="container-fluid bg-white m-0 p-0">
-    <div class="row">
-      <div class="col-sm-3 m-0 p-0">
-        <div class="container-fluid bg-light text-dark rounded-5 p-2">
-          <h5>
-            <p class="text-center">Best cities <small>(Year: <span id="selected_year"></span> & Season: <span
-                  id="selected_season"></span>)</small></p>
-          </h5>
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-sm-6 ">
-                <h6>
-                  <p class="text-left">Hottest cities (°C)</p>
-                </h6>
-                <p class="text-left">1 <new_link href="#" id="hot1"></new_link>
-                </p>
-                <p class="text-left">2 <new_link href="#" id="hot2"></new_link>
-                </p>
-                <p class="text-left">3 <new_link href="#" id="hot3"></new_link>
-                </p>
+    <div class="container-fluid bg-light m-0 p-2">
+      <div class="row">
+        <div class="col-sm-3 m-0 p-0">
+          <div class="container-fluid bg-light text-dark rounded-5 p-0">
+            <h3 class="text-center display-6"> Best cities</h3>
+            <h4 class= "text-center">(Year: <span id="selected_year"></span> & Season: <span
+              id="selected_season"></span>)</h4>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-sm-6">
+                  <h5 class="text-left">Hottest cities (°C)
+                  </h5>
+                  <p class="text-left">1. <new_link class="link-perso" href="#" id="hot1"></new_link>
+                  </p>
+                  <p class="text-left">2. <new_link class="link-perso" href="#" id="hot2"></new_link>
+                  </p>
+                  <p class="text-left">3. <new_link class="link-perso" href="#" id="hot3"></new_link>
+                  </p>
+                </div>
+                <div class="col-sm-6">
+                  <h5 class="text-center">Coldest cities (°C)</h5>
+                  <p class="text-left">1. <new_link class="link-perso" href="#" id="cold1"></new_link>
+                  </p>
+                  <p class="text-left">2. <new_link class="link-perso" href="#" id="cold2"></new_link>
+                  </p>
+                  <p class="text-left">3. <new_link class="link-perso" href="#" id="cold3"></new_link>
+                  </p>
+                </div>
               </div>
-              <div class="col-sm-6">
-                <h6>
-                  <p class="text-left">Coldest cities (°C)</p>
-                </h6>
-                <p class="text-left">1 <new_link href="#" id="cold1"></new_link>
-                </p>
-                <p class="text-left">2 <new_link href="#" id="cold2"></new_link>
-                </p>
-                <p class="text-left">3 <new_link href="#" id="cold3"></new_link>
-                </p>
-              </div>
-            </div>
-            <br>
-            <div class="row">
-              <div class="col-sm-6">
-                <h6>
-                  <p class="text-left">Rainiest cities (mm/day)</p>
-                </h6>
-                <p class="text-left">1 <new_link href="#" id="rain1"></new_link>
-                </p>
-                <p class="text-left">2 <new_link href="#" id="rain2"></new_link>
-                </p>
-                <p class="text-left">3 <new_link href="#" id="rain3"></new_link>
-                </p>
-              </div>
-              <div class="col-sm-6">
-                <h6>
-                  <p class="text-left">Sunniest cities (hour/day)</p>
-                </h6>
-                <p class="text-left">1 <new_link href="#" id="sun1"></new_link>
-                </p>
-                <p class="text-left">2 <new_link href="#" id="sun2"></new_link>
-                </p>
-                <p class="text-left">3 <new_link href="#" id="sun3"></new_link>
-                </p>
+              <br>
+              <div class="row">
+                <div class="col-sm-6">
+                  <h5 class="text-center">Rainiest cities (mm/day)</h5>
+                  <p class="text-left">1. <new_link class="link-perso" href="#" id="rain1"></new_link>
+                  </p>
+                  <p class="text-left">2. <new_link class="link-perso" href="#" id="rain2"></new_link>
+                  </p>
+                  <p class="text-left">3. <new_link class="link-perso" href="#" id="rain3"></new_link>
+                  </p>
+                </div>
+                <div class="col-sm-6">
+                  <h5 class="text-center">Sunniest cities (h/day)</h5>
+                  <p class="text-left">1. <new_link class="link-perso" href="#" id="sun1"></new_link>
+                  </p>
+                  <p class="text-left">2. <new_link class="link-perso" href="#" id="sun2"></new_link>
+                  </p>
+                  <p class="text-left">3. <new_link class="link-perso" href="#" id="sun3"></new_link>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-sm-6 m-0 p-1">
-        <div id="map" style="height: 380px;width:100%;"></div>
-      </div>
-      <div class="col-sm-3 p-1 me-0">
-        <div class="container pb-3 bg-light text-dark rounded-5">
-          <h1>
-            <p class="text-center">Map menu</p>
-          </h1>
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="container p-0">
-                <div id="radioContainer" class="d-flex mb-2">
+        <div class="col-sm-6 m-0 p-0">
+          <div id="map" style="height: 410px;width:100%;"></div>
+        </div>
+        <div class="col-sm-3 p-0 me-0">
+          <div class="container pb-3 bg-light text-dark rounded-5">
+            <h1 class="display-5 text-center">Map menu
+            </h1>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="container p-0">
+                  <div id="radioContainer" class="d-flex mb-2">
 
-                  <div class="radio-left">
-                    <div class="form-check align-form">
-                      <input class="form-check-input" type="radio" name="mode" id="r1" value="option1">
-                      <label class="form-check-label" for="mode1">
-                        Temperature min
-                      </label>
-                      <button type="button" class="btn btn-link pr-0" data-toggle="tooltip" data-placement="top"
-                        title="This mode represents the average of the minimum temperatures encountered in the cities within a region at the selected date and season.">
-                        <i class="fas fa-question-circle"></i>
-                      </button>
+                    <div class="radio-left">
+                      <div class="form-check align-form">
+                        <input class="form-check-input" type="radio" name="mode" id="r1" value="option1">
+                        <label class="form-check-label" for="mode1">
+                          Temperature min
+                        </label>
+                        <button type="button" class="btn btn-link pr-0" data-toggle="tooltip" data-placement="top"
+                          title="This mode represents the average of the minimum temperatures encountered in the cities within a region at the selected date and season.">
+                          <i class="fas fa-question-circle"></i>
+                        </button>
+                      </div>
+                      <div class="form-check align-form">
+                        <input class="form-check-input" type="radio" name="mode" id="r2" value="option2">
+                        <label class="form-check-label" for="mode2">
+                          Temperature max
+                        </label>
+                        <button type="button" class="btn btn-link pr-0" data-toggle="tooltip" data-placement="top"
+                          title="This mode represents the average of the maximum temperatures encountered in the cities within a region at the selected date and season.">
+                          <i class="fas fa-question-circle"></i>
+                        </button>
+                      </div>
                     </div>
-                    <div class="form-check align-form">
-                      <input class="form-check-input" type="radio" name="mode" id="r2" value="option2">
-                      <label class="form-check-label" for="mode2">
-                        Temperature max
-                      </label>
-                      <button type="button" class="btn btn-link pr-0" data-toggle="tooltip" data-placement="top"
-                        title="This mode represents the average of the maximum temperatures encountered in the cities within a region at the selected date and season.">
-                        <i class="fas fa-question-circle"></i>
-                      </button>
-                    </div>
-                  </div>
-                  <div class="radio-right">
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="mode" id="r3" value="option3">
-                      <label class="form-check-label" for="mode3">
-                        Rainfall
-                      </label>
-                      <button type="button" class="btn btn-link pr-0" data-toggle="tooltip" data-placement="top"
-                        title="This mode represents the average of the number of mm of rainfall encountered in a day in the cities within a region at the selected date and season.">
-                        <i class="fas fa-question-circle"></i>
-                      </button>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="mode" id="r4" value="option4">
-                      <label class="form-check-label" for="mode4">
-                        Sunshine
-                      </label>
-                      <button type="button" class="btn btn-link pr-0" data-toggle="tooltip" data-placement="top"
-                        title="This mode represents the average of the number of hour of sunshine encountered in a day in the cities within a region at the selected date and season.">
-                        <i class="fas fa-question-circle"></i>
-                      </button>
+                    <div class="radio-right">
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="mode" id="r3" value="option3">
+                        <label class="form-check-label" for="mode3">
+                          Rainfall
+                        </label>
+                        <button type="button" class="btn btn-link pr-0" data-toggle="tooltip" data-placement="top"
+                          title="This mode represents the average of the number of mm of rainfall encountered in a day in the cities within a region at the selected date and season.">
+                          <i class="fas fa-question-circle"></i>
+                        </button>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="mode" id="r4" value="option4">
+                        <label class="form-check-label" for="mode4">
+                          Sunshine
+                        </label>
+                        <button type="button" class="btn btn-link pr-0" data-toggle="tooltip" data-placement="top"
+                          title="This mode represents the average of the number of hour of sunshine encountered in a day in the cities within a region at the selected date and season.">
+                          <i class="fas fa-question-circle"></i>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="container p-0">
-                <div class="row">
-                  <div id="menu-error-container">
-                    <div class="alert alert-warning alert-dismissible fade show d-none" role="alert">
-                      <strong>No data on the map...</strong> To display data on the map, choose a mode.
+                <div class="container p-0">
+                  <div class="row">
+                    <div id="menu-error-container">
+                      <div class="alert alert-warning alert-dismissible fade show d-none" role="alert">
+                        <strong>No data on the map...</strong> To display data on the map, choose a mode.
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="container p-0">
-                <div class="row">
-                  <div class="col-5 ">
-                    <input id="slider1" class="form-range" min="2009" max="2016" type="range" value="2016">
-                    <div id="result1">Year : 2016</div>
-                  </div>
-                  <div class="col-6">
-                    <select class="form-select" id="select-season">
-                      <option value="Summer" selected>Summer</option>
-                      <option value="Winter">Winter</option>
-                      <option value="Spring">Spring</option>
-                      <option value="Autumn">Autumn</option>
-                    </select>
+                <div class="container p-0">
+                  <div class="row">
+                    <div class="col-5 ">
+                      <input id="slider1" class="form-range" min="2009" max="2016" type="range" value="2016">
+                      <div id="result1">Year : 2016</div>
+                    </div>
+                    <div class="col-6">
+                      <select class="form-select" id="select-season">
+                        <option value="Summer" selected>Summer</option>
+                        <option value="Winter">Winter</option>
+                        <option value="Spring">Spring</option>
+                        <option value="Autumn">Autumn</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -252,7 +245,7 @@
 
 
     <div class="row">
-      <div id="dash" class="container-fluid bg-light m-0 p-3">
+      <div id="dash" class="container-fluid bg-light m-3 p-0">
         <div class="row">
           <div class="col-sm-6 p-1 ms-3">
             <h2>Dashboard</h2>
