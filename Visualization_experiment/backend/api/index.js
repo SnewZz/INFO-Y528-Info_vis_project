@@ -349,7 +349,7 @@ app.get("/api/coldestCities", (req, res) => {
                 const city = {
                     id : item[1],
                     name : item[2],
-                    temp : item[8].substring(0,6)
+                    temp : item[7].substring(0,6)
                 }
                 cities.push(city);
             }
