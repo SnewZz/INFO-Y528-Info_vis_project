@@ -176,8 +176,6 @@ app.get("/api/rainiestCities", (req, res) => {
             return d[4].split("-")[0] === year && d[5] === season;
         });
 
-        console.log(filteredData)
-
         const cities = [];
 
         filteredData.forEach(item => {
