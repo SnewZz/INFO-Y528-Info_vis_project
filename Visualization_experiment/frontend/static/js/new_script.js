@@ -698,7 +698,6 @@ function displayCitiesRegion(regionName){
         chart3.destroy();
         chart4.destroy();
     }
-    first_time = false;
     compare_city.selectedIndex = 0;
     const url = `/api/citiesInRegion?region=${regionName}`;
     fetch(url).then(data => {
@@ -713,6 +712,7 @@ function displayCitiesRegion(regionName){
                 this.closePopup();
             });
             marker.on('click', function (e) {
+                first_time = false;
                 removerMarkers(true);
                 compare_city.selectedIndex = 0;
                 createChartRain("chart1",[d[2]]);
