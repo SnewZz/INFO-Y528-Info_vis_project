@@ -375,8 +375,8 @@ function addData(chart, label, data,index) {
                 chart.data.datasets.splice(index,1,{
                     label: label,
                     data: data,
-                    backgroundColor: '#F5793A',
-                    borderColor: '#F5793A',
+                    backgroundColor: '#004D40',
+                    borderColor: '#004D40',
                     fill:false,
                     borderWidth: 2
                 })
@@ -407,8 +407,8 @@ function addData(chart, label, data,index) {
                 chart.data.datasets.splice(index,1,{
                     label: label,
                     data: data,
-                    backgroundColor: '#0F2080',
-                    borderColor: '#0F2080',
+                    backgroundColor: '#FFC107',
+                    borderColor: '#FFC107',
                     borderWidth: 2,
                     fill:false
                 })
@@ -434,7 +434,7 @@ function addData(chart, label, data,index) {
                         '#85C0F9',
                         '#85C0F9',
                         '#F5793A'
-                      ]
+                      ],
                 })
             }
         }
@@ -465,8 +465,8 @@ async function createChartTmax(chartID,city){
                 //borderWidth: 1,
                 borderWidth: 2,
                 fill: false,
-                backgroundColor: '#F5793A',
-                borderColor: '#F5793A',    
+                backgroundColor: '#004D40',
+                borderColor: '#004D40',    
               }]
             },
             options: {
@@ -525,8 +525,8 @@ async function createChartTmin(chartID,city){
                 data: res,
                 fill:false,
                 borderWidth: 2,
-                backgroundColor: '#F5793A',
-                borderColor: '#F5793A',
+                backgroundColor: '#004D40',
+                borderColor: '#004D40',
               }]
             },
             options: {
