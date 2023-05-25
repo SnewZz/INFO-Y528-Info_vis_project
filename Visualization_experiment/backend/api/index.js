@@ -493,10 +493,6 @@ app.get("/api/avgLowestTemperature", (req, res) => {
     });
 });
 
-app.listen(port, () => {
-    console.log("App is started on ", port);
-})
-
 app.get("/api/cityInformation", (req, res) => {
     const year = req.query.year;
     const season = req.query.season;
@@ -514,3 +510,7 @@ app.get("/api/cityInformation", (req, res) => {
         res.status(200).send({name: filteredData[0][2], highestTemp: filteredData[0][8], lowestTemp: filteredData[0][7], rain: filteredData[0][6], sun: filteredData[0][9]});
     });
 });
+
+app.listen(port, () => {
+    console.log("App is started on ", port);
+})
