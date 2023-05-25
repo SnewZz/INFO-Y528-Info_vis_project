@@ -486,7 +486,7 @@ async function createChartTmax(chartID,city){
                         {
                           scaleLabel: {
                             display: true,
-                            labelString: 'Temperature max (°)',
+                            labelString: 'Temperature max (°C)',
                           },
                         }],
                     xAxes: [
@@ -495,7 +495,7 @@ async function createChartTmax(chartID,city){
                             display: true,
                             labelString: 'Months',
                             },
-                        }]
+                        }],
                 }
             }
           });
@@ -546,7 +546,7 @@ async function createChartTmin(chartID,city){
                         {
                           scaleLabel: {
                             display: true,
-                            labelString: 'Temperature min (°)',
+                            labelString: 'Temperature min (°C)',
                           },
                         }],
                     xAxes: [
@@ -610,7 +610,7 @@ async function createChartSun(chartID,city){
                         {
                           scaleLabel: {
                             display: true,
-                            labelString: 'Sunshine (h)',
+                            labelString: 'Sunshine (h/day)',
                           },
                         }],
                     xAxes: [
@@ -673,7 +673,7 @@ async function createChartRain(chartID,city){
                         {
                           scaleLabel: {
                             display: true,
-                            labelString: 'Rainfall (mm)',
+                            labelString: 'Rainfall (mm/day)',
                           },
                         }],
                     xAxes: [
