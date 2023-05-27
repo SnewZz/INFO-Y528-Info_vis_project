@@ -45,6 +45,19 @@ Once it is done, you can run the application on you localhost (port 3000 by defa
 ### Content
 ***
 
-There is two main folder : The Preprocessing and the Visualization.
+There is two main folder : The Preprocessing and the Visualization. 
+
+In the Preprocessing one, all the code is in the project.ipynb file. The data folder contains the datasets from Kaggle on which we are applying preprocessing.
+
+In the Visualization one, there is one folder for the backend and one for the frontend. 
+
+- backend is composed of : 
+  - api folder : in which there is the index.js which is the api used to do our app. 
+  - static folder : in which there is the preprocessed data.
+  - utils folder : which provides a file in which there is a constant with the list of the different regions
+
+- frontend is composed of : 
+  - static folder : which contains the CSS (additional to bootstrap) and all the javascript used to call API and handle function of the frontend.
+  - templates folder : which contain the index.html which is our main web page.
 
 
