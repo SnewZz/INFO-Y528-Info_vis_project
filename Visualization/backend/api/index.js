@@ -15,7 +15,6 @@ app.get("/", (req, res) => {
 app.use(express.static(path.join(__dirname, "../../frontend/static")));
 
 app.get("/api/regionsGeoJSON", (req, res) => {
-    // const content = fs.readFileSync(path.join(__dirname, "../static/geoJSON/local-government-area.geojson"));
     res.setHeader('Content-Type', 'application/json');
     fs.createReadStream(path.join(__dirname, "../static/geoJSON/local-government-area.geojson")).pipe(res);
 });
@@ -53,29 +52,6 @@ app.get("/api/RainByMonth",(req,res) => {
     })
 })
 
-/*app.get("/api/RainByRegion",(req,res) => {
-    const year = req.query.year; //Get the year
-    const region = req.query.region; //Get the city
-    const content = fs.readFileSync(path.join(__dirname, "../static/data/Datamap_2.csv"));
-    var filteredData;
-    rainAvgByMonth = [0,0,0,0,0,0,0,0,0,0,0,0];
-    cnt_NaN = [0,0,0,0,0,0,0,0,0,0,0,0] 
-
-    csv.parse(content,{},(err,records) => {
-        filteredData = records.filter(function (d) {
-            return d[10] === region && d[4].split("-")[0] === year;
-        });
-        //console.log(filteredData)
-        for (i = 0; i < filteredData.length/12; i++){
-            for (j = 0; j < filteredData.length; j++){
-                rainAvgByMonth[j] = rainAvgByMonth[j] + filteredData[j]
-            }
-            rainAvgByMonth.push(filteredData[i][6])
-        }
-
-        res.status(200).send(rainAvgByMonth);
-    })
-})*/
 
 app.get("/api/TminByMonth",(req,res) => {
     const year = req.query.year; //Get the year
@@ -88,7 +64,6 @@ app.get("/api/TminByMonth",(req,res) => {
         filteredData = records.filter(function (d) {
             return d[2] === city && d[4].split("-")[0] === year;
         });
-        //console.log(filteredData)
         for (i = 0; i < filteredData.length; i++){
             t_min_val.push(filteredData[i][6])
         }
@@ -109,7 +84,6 @@ app.get("/api/TmaxByMonth",(req,res) => {
             return d[2] === city && d[4].split("-")[0] === year;
         });
 
-        //console.log(filteredData.length)
         for (i = 0; i < filteredData.length; i++){
             t_max_val.push(filteredData[i][7])
         }
@@ -144,18 +118,14 @@ app.get("/api/coordinateCities",(req,res) => {
     const coordinate = [];
     var filteredData; 
 
-    //console.log(city)
     csv.parse(content, {}, (err, records) => {
         filteredData = records.filter(function (d) {
-            //console.log(d[2]);
             return d[2] === city;
         });
-        //console.log(filteredData)
         coordinate.push(filteredData[0][3]);
         coordinate.push(filteredData[0][4]);
 
         res.status(200).send(coordinate);
-        //return data
     });
 });
 
@@ -169,9 +139,8 @@ app.get("/api/rainiestCities", (req, res) => {
     var filteredData;
 
     csv.parse(content, {}, (err, records) => {
-        //console.log("Hello")
+        
         //Filter the data on the year and season
-
         filteredData = records.filter(function (d) {
             return d[4].split("-")[0] === year && d[5] === season;
         });

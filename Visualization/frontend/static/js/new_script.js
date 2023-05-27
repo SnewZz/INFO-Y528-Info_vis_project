@@ -1,34 +1,3 @@
-
-
-/**
- * A function that give an appropriate color to represent the number of city of the dataset in a region.
- *
- * @param {number} n - The number of city in a region for which we want the color
- * @returns {string} The color, if the number of city is close to 40 it will be darker blue, else lighter blue. If the number is 0 the color is white.
- */
-function getColor(avgTemperature, minTemperature, maxTemperature, red) {
-    // Define the minimum and maximum temperature range for color mapping
-    var minTemp = minTemperature; // Minimum temperature
-    var maxTemp = maxTemperature; // Maximum temperature
-
-    var colorRange = [];
-    // Define the color range from light red to dark red
-    if (red) {
-        colorRange = ['#FFCDD2', '#EF5350', '#E53935', '#D32F2F', '#C62828', '#B71C1C', '#D50000', '#FF1744', '#F50057', '#FF4081'];
-    } else {
-        colorRange = ['#E1F5FE', '#B3E5FC', '#81D4FA', '#4FC3F7', '#29B6F6', '#03A9F4', '#039BE5', '#0288D1', '#0277BD', '#01579B'];
-    }
-
-    // Calculate the normalized value (between 0 and 1) for the average temperature
-    var normalizedValue = (avgTemperature - minTemp) / (maxTemp - minTemp);
-
-    // Calculate the index in the color range array
-    var colorIndex = Math.round(normalizedValue * (colorRange.length - 1));
-
-    // Return the color corresponding to the index
-    return colorRange[colorIndex];
-}
-
 function getColorByTemperature(temperature) {
     var color;
 
@@ -57,19 +26,19 @@ function getColorBySunshine(sun) {
     var color;
 
     if (sun <= 2) {
-        color = '#313695'; // Bleu foncé
+        color = '#313695'; 
     } else if (sun <= 4) {
-        color = '#588BBF'; // Turquoise clair
+        color = '#588BBF'; 
     } else if (sun <= 6) {
-        color = '#A3D3E5'; // Vert printemps
+        color = '#A3D3E5'; 
     } else if (sun <= 8) {
-        color = '#E8F6E8'; // Jaune
+        color = '#E8F6E8'; 
     } else if (sun <= 10) {
-        color = '#FEE89C'; // Orange
+        color = '#FEE89C'; 
     } else if (sun <= 12) {
-        color = '#FBA55C'; // Orange-rouge
+        color = '#FBA55C'; 
     } else if (sun <= 14) {
-        color = '#E24832'; // Rouge
+        color = '#E24832'; 
     } else {
         color = '#A50026';
     }
@@ -81,19 +50,19 @@ function getColorByRain(rain) {
     var color;
 
     if (rain <= 4) {
-        color = '#A50026'; // Bleu foncé
+        color = '#A50026'; 
     } else if (rain <= 8) {
-        color = '#E24832'; // Turquoise clair
+        color = '#E24832'; 
     } else if (rain <= 12) {
-        color = '#FBA55C'; // Vert printemps
+        color = '#FBA55C'; 
     } else if (rain <= 16) {
-        color = '#FEE89C'; // Jaune
+        color = '#FEE89C'; 
     } else if (rain <= 20) {
-        color = '#E8F6E8'; // Orange
+        color = '#E8F6E8'; 
     } else if (rain <= 24) {
-        color = '#A3D3E5'; // Orange-rouge
+        color = '#A3D3E5'; 
     } else if (rain <= 28) {
-        color = '#588BBF'; // Rouge
+        color = '#588BBF'; 
     } else {
         color = '#313695';
     }
@@ -502,14 +471,6 @@ async function createChartTmax(chartID,city){
     })
 }
 
-/*var ctx = document.getElementById('chart3').getContext('2d');
-var gradient = ctx.createLinearGradient(0, 0, 0, 300);
-gradient.addColorStop(0, 'rgb(255, 99, 132)');
-gradient.addColorStop(0.083,'rgb(75, 192, 192)');
-gradient.addColorStop(0.333,'rgb(153, 102, 255)');
-gradient.addColorStop(0.583,'rgb(54, 162, 235)')
-gradient.addColorStop(1, 'blue');*/
-
 async function createChartTmin(chartID,city){
     const ctx = document.getElementById(chartID);
     const url = `/api/TminByMonth?year=${getYear()}&city=${city}`;
@@ -720,38 +681,6 @@ function displayCitiesRegion(regionName){
                 createChartTmin("chart3",[d[2]]);
                 createChartTmax("chart4",[d[2]]);
             });
-            /*if (res.length > 1){
-                $('#alert2').removeClass('d-none');
-                marker.on('click', function (e) {
-                    $('#alert2').addClass('d-none');
-                    if (! first_time){
-                        chart1.destroy();
-                        chart2.destroy();
-                        chart3.destroy();
-                        chart4.destroy();
-                    }
-                    first_time = false;
-                    compare_city.selectedIndex = 0;
-                    createChartRain("chart1",d[2]);
-                    createChartSun("chart2",d[2]);
-                    createChartTmin("chart3",d[2]);
-                    createChartTmax("chart4",d[2]);
-                });
-            }
-            else{
-                if (! first_time){
-                    chart1.destroy();
-                    chart2.destroy();
-                    chart3.destroy();
-                    chart4.destroy();
-                }
-                first_time = false;
-                compare_city.selectedIndex = 0;
-                createChartRain("chart1",d[2]);
-                createChartSun("chart2",d[2]);
-                createChartTmin("chart3",d[2]);
-                createChartTmax("chart4",d[2]);
-            }*/
             //Display the graphics for the whole region!!!
             marker.addTo(map);
             marker.bindPopup(d[2]);
@@ -759,11 +688,10 @@ function displayCitiesRegion(regionName){
         });
     });
 }
-// ------------------------------------------------------------------
 
 function updateLegend(mode) {
     if (legend) {
-        // Si la légende existe déjà, la retirer de la carte
+        // If the legend already exist, remove it from the map
         legend.remove();
     }
 
@@ -775,7 +703,7 @@ function updateLegend(mode) {
         var grades = [];
         var labels = [];
 
-        // Déterminer les grades et les labels en fonction du mode sélectionné
+        // Define grades and labels in function of the selected mode
         if (mode === "option1" || mode === "option2") {
             for (var i = 0; i <= 40; i += 5) {
                 grades.push(i);
@@ -829,8 +757,7 @@ function updateSun(year,index){
     fetch(url1).then(data => {
         return data.json()
     }).then(res => {   
-        //addData(chart1,city_name,res,0); 
-        chart2.chart.config.data.datasets[index].label = [city_name].concat(year);//.concat(' ',year);
+        chart2.chart.config.data.datasets[index].label = [city_name].concat(year);
         chart2.chart.config.data.datasets[index].data = res;
         chart2.update()
     });
@@ -842,7 +769,6 @@ function updateTmin(year,index){
     fetch(url1).then(data => {
         return data.json()
     }).then(res => {   
-        //addData(chart1,city_name,res,0); 
         chart3.chart.config.data.datasets[index].label = [city_name].concat(year);
         chart3.chart.config.data.datasets[index].data = res;
         chart3.update()
@@ -855,38 +781,12 @@ function updateTmax(year,index){
     fetch(url1).then(data => {
         return data.json()
     }).then(res => {   
-        //addData(chart1,city_name,res,0); 
-        //chart4.chart.config.data.datasets[index].label = city_name.concat(' ',year);
         chart4.chart.config.data.datasets[index].label = [city_name].concat(year);
         chart4.chart.config.data.datasets[index].data = res;
         chart4.update()
     });
 }
 
-// // Créez une fonction pour générer la légende
-// function updateLegend() {
-
-//     legend.onAdd = function (map) {
-//         var div = L.DomUtil.create('div', 'info legend');
-//         var grades = [];
-//         for (var i = 0; i <= 40; i += 5) {
-//             grades.push(i)
-//         }
-//         var labels = [];
-
-//         for (var i = 1; i < grades.length; i++) {
-//             div.innerHTML +=
-//                 '<i style="background:' + getColorByTemperature(grades[i-1] + 1) + '"></i> ' +
-//                 grades[i-1] + '&ndash;' + grades[i] + ' °C<br>';
-//         }
-
-//         return div;
-//     };
-
-//     legend.addTo(map);
-// }
-
-// Start of the code
 
 
 var bounds = L.latLng(-26.36, 134.87).toBounds(4500000);
@@ -923,7 +823,6 @@ const slider3 = document.getElementById("slider3");
 const result1 = document.getElementById("result1");
 const result3 = document.getElementById("result3");
 
-//const error_msg = document.getElementById("error_msg");
 
 var chart1;
 var chart2;
@@ -973,7 +872,6 @@ buttonSeason.addEventListener('change', (event) => {
         compare_city.selectedIndex = 0;
     }
     
-    //Faut supprimer les données du dashnoard 
 })
 
 
@@ -994,9 +892,6 @@ slider1.addEventListener("change", async (event) => {
         updateTmin(event.target.value,0);
         updateTmax(event.target.value,0);
     }
-    
-    //Faut udpate les graphique pour l'index 0; 
-    //Faut aussi lancer l'action du slider 3
     
 })
 
